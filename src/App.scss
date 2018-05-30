@@ -1,0 +1,27 @@
+// important !!!!!!!!!!!!
+@import "scss/variables.scss";
+// important !!!!!!!!!!!!
+@import "scss/normalize.scss";
+// important !!!!!!!!!!!!
+@import "scss/fonts.scss";
+// important !!!!!!!!!!!!
+@import "scss/mixins.scss";
+
+// global styles
+@import "scss/global.scss";
+// symp;e loader
+@import "scss/loader.scss"; 
+
+// pageas or componentns
+@import "scss/login.scss";
+@import "scss/header.scss";
+@import "scss/sidebar.scss";
+@import "scss/profil.scss";
+@import "scss/main.scss";
+@import "scss/article.scss";
+@import "scss/footer.scss";
+
+// responsive
+@import "scss/tablet";
+@import "scss/mobile";
+ 

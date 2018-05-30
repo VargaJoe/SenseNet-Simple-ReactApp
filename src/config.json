@@ -1,0 +1,9 @@
+{
+	"domain" : 		"https://www.vargajoe.eu",
+	"site" : 		"/Root/Sites/LeisureWeb",
+	"ims" : 		"/Root/IMS/BuiltIn/Portal",
+	"menu" : 		"/Root/Sites/LeisureWeb",
+	"home" : 		"/Root/Sites/LeisureWeb/Ismertetők",
+	"article" :		"/Root/Sites/LeisureWeb/Ismertetők",
+	"avatar":		"/Root/Sites/LeisureWeb/Galéria"
+} 
