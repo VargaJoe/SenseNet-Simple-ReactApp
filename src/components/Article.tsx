@@ -19,7 +19,7 @@ class Article extends React.Component<any, any> {
 		let path = PathHelper.joinPaths(DATA.article);
 		// get the current user info
 		let userGet = this.props.getHomeContent(path, {
-			select: ['CreationDate', 'CreatedBy', 'Description', 'DisplayName', 'Id', 'OriginalAuthor', 'Author', 'Publisher', 'Body', 'Actions'],
+			select: ['CreationDate', 'CreatedBy', 'Description', 'DisplayName', 'Id', 'OriginalAuthor', 'Author', 'Publisher', 'PublishDate', 'Body', 'Actions'],
 			expand: ['CreatedBy', 'Actions'],
 			query: 'TypeIs:LeisureArticle AND Name:\'' + this.props.match.params.articleName + '\'',
 		});
@@ -56,13 +56,10 @@ class Article extends React.Component<any, any> {
 						<i>{article[key].Description}</i>
 						<p dangerouslySetInnerHTML={{ __html: article[key].Body }} />
 						<div className="small">
-						{article[key].Author + ' '} 
-						({article[key].Publisher + ', '} 
-							<Moment format="YYYY.MM.DD">
-								{article[key].PublishDate}
-            				</Moment>						)
-						
-					</div>
+							{article[key].Author + ' '}
+							({article[key].Publisher + ', '}
+							<Moment date={article[key].PublishDate} format="YYYY.MM.DD." />			)
+						</div>
 					</div>
 				</div>
 			)

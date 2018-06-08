@@ -77,9 +77,7 @@ class Reviews extends React.Component<any, any> {
 								<p className="hidden">{homePageItems[key].Description}</p>
 								<div className="small hidden">{homePageItems[key].Author}</div>
 								<div className="small hidden">
-									<Moment format="YYYY.MM.DD.">
-										{homePageItems[key].PublishDate}
-									</Moment>
+									<Moment date={homePageItems[key].PublishDate} format="YYYY.MM.DD."/>
 								</div>
 							</div>							
 						</div>
