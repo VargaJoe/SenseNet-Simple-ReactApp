@@ -1,9 +1,6 @@
 {
 	"domain" : 		"https://data.mangajanlo.hu",
-	"site" : 		"/Root/Sites/LeisureWeb",
-	"ims" : 		"/Root/IMS/BuiltIn/Portal",
-	"menu" : 		"/Root/Sites/LeisureWeb",
-	"home" : 		"/Root/Sites/LeisureWeb/Ismertetők",
-	"article" :		"/Root/Sites/LeisureWeb/Ismertetők",
-	"avatar":		"/Root/Sites/LeisureWeb/Galéria"
+	"menu" : 		"/Root/Sites/mangajanlo",
+	"home" : 		"/Ismertetők",
+	"article" :		"/Ismertetők"
 } 

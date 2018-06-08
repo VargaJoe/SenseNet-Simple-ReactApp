@@ -1,5 +1,35 @@
-body {
+/* body {
   margin: 0;
   padding: 0;
   font-family: sans-serif;
+
+  
+} */
+
+body,h1,h2,h3,h4,h5,h6 {
+  font-family: "Raleway", sans-serif
+}
+
+.hidden {
+  display: none;
+}
+
+.full-width {
+  width:  100%;
+}
+
+small {
+  font-size: small;
+}
+
+.w3-main {
+  margin-left: 300px;
+}
+
+.side-logo {
+  width:  150px;
+}
+
+.left-float{
+  float: left;
 }

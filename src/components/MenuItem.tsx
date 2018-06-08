@@ -21,14 +21,13 @@ class MenuItem extends React.Component<Props, {}> {
 
 	public render() {
 		return (
-			<Link to={this.props.pathTo} className="sn_sidebar__menu__item" onClick={this.handleClick}>
-				<span className="sn_sidebar__menu__item__icon">
+			<div className="w3-container">
+			<Link to={this.props.pathTo} className="w3-bar-item w3-button w3-padding w3-text-teal" onClick={this.handleClick}>
 					<i className={this.props.icon} />
-				</span>
-				<span className="sn_sidebar__menu__item__name">
+					{/* <i class="fa fa-th-large fa-fw w3-margin-right"/> */}			
 					{this.props.name}
-				</span>
 			</Link>
+			</div>
 		);
 	}
 }

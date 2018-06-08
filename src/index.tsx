@@ -21,12 +21,10 @@ const DATA = require('./config.json');
 const sensenet = Reducers.sensenet;
 const myReducer = combineReducers({ 
   sensenet, 
-  // new added reducer
   user, 
 });
 
 const repository = new Repository ({
-    // repositoryUrl: process.env.REACT_APP_SERVICE_URL || 'https://www.vargajoe.eu',
     repositoryUrl: process.env.REACT_APP_SERVICE_URL || DATA.domain
 });
 const jwtService = new JwtService(repository);
