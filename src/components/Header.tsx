@@ -17,7 +17,7 @@ class Header extends React.Component<any, any> {
 	public render() {
 		return (
 			<header id="portfolio">
-				<a href="#"><img src="/w3images/avatar_g2.jpg" className="w3-circle w3-right w3-margin w3-hide-large w3-hover-opacity" /></a>
+				{/* <a href="#"><img src="/w3images/avatar_g2.jpg" className="w3-circle w3-right w3-margin w3-hide-large w3-hover-opacity" /></a> */}
 				<span className="w3-button w3-hide-large w3-xxlarge w3-hover-text-grey" ><i className="fa fa-bars" /></span>
 				<div className="w3-container">
 					<h1><b>PlasticE manga ismertetői... és miegymás</b></h1>

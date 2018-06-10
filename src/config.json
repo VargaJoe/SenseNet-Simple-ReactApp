@@ -1,6 +1,8 @@
 {
 	"domain" : 		"https://data.mangajanlo.hu",
-	"menu" : 		"/Root/Sites/mangajanlo",
+	"menu" : 		"/(structure)/MainMenu",
 	"home" : 		"/Ismertetők",
-	"article" :		"/Ismertetők"
+	"kjk" : 		"/Jatekkonyvek",
+	"other" : 		"/miegymas",
+	"article" :		"/"
 } 

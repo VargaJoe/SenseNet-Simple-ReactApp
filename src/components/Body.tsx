@@ -10,7 +10,11 @@ import {
 
 import Home                                 from './Home';
 import Article                              from './Article';
-import Reviews                                 from './Reviews';
+import Reviews                              from './Reviews';
+import ReviewsBio                           from './ReviewsBio';
+import ReviewsAnime                         from './ReviewsAnime';
+import ReviewsKJK                           from './ReviewsKJK';
+import ReviewsOther                         from './ReviewsOther';
 import Missing                              from './Missing';
 
 class Body extends React.Component<any, any> {
@@ -47,9 +51,29 @@ class Body extends React.Component<any, any> {
 								/>
 								<Route 
 									exact={true}
-									path="/Ismertetők"
+									path="/Manga"
 									component={Reviews}
-								/>    
+								/>  
+								<Route 
+									exact={true}
+									path="/Mangaka"
+									component={ReviewsBio}
+								/>  
+								<Route 
+									exact={true}
+									path="/Anime és játék"
+									component={ReviewsAnime}
+								/>  
+								<Route 
+									exact={true}
+									path="/KJK"
+									component={ReviewsKJK}
+								/>   
+								<Route 
+									exact={true}
+									path="/miegymás"
+									component={ReviewsOther}
+								/>   
 								<Route 
 									exact={true}
 									path="/"

@@ -5,6 +5,8 @@ import * as React from 'react';
 import { connect } from 'react-redux';
 import MenuItem from './MenuItem';
 import { Link } from 'react-router-dom';
+import { IODataParams } from '@sensenet/client-core';
+import { GenericContent } from '@sensenet/default-content-types';
 
 const DATA = require('../config.json');
 const fontImportantClass = ' fi ';
@@ -21,21 +23,28 @@ class Menu extends React.Component<any, any> {
 
     public componentDidMount() {
         const path = DATA.menu;
-        const options = {
-            select: ['Name', 'IconName', 'Id', 'Path', 'DisplayName'],
-            query: 'Type:Folder AND Hidden:0 AND InFolder:\'' + path + '\''
-        };
-        const users = this.props.getMenuItems(path, options);
+        // const options = {
+        //     select: ['Name', 'IconName', 'Id', 'Path', 'Index', 'DisplayName'],
+        //     query: 'Type:GenericContent AND Hidden:0 .AUTOFILTERS:OFF'            
+        // } as IODataParams<IContent>;
+        // const users = this.props.getMenuItems(path, options);
 
-        users.then((result: any) => {
+        let menuitems = this.props.getMenuItems(path, {
+			select: ['Name', 'IconName', 'Id', 'Path', 'Index', 'DisplayName'],
+			query: 'Type:GenericContent AND Hidden:0 .AUTOFILTERS:OFF',
+			orderby: ['Index', 'DisplayName']
+		} as IODataParams<GenericContent>);
+
+        menuitems.then((result: any) => {
             console.log(result.value.entities.entities);
             this.setState({
                 isDataFetched: true,
-                menuItems: result.value.entities.entities
+                menuItems: result.value.entities.entities,
+                ids: result.value.result
             });
         });
 
-        users.catch((err: any) => {
+        menuitems.catch((err: any) => {
             console.log(err);
         });
     }
@@ -46,7 +55,11 @@ class Menu extends React.Component<any, any> {
         }
         console.log(status);
         const menuItems = this.state.menuItems;
-        const menu = Object.keys(menuItems).map((key: any) =>
+		const menuIds = this.state.ids;
+
+        // const menu = Object.keys(menuItems).map((key: any) =>
+        const menu = menuIds
+			.map((key: number) =>
             (
                 <MenuItem key={key} name={menuItems[key].DisplayName} icon={fontImportantClass + this.state.menuItems[key].IconName} pathTo={'/' + menuItems[key].Name} />
             )

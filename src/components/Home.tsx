@@ -27,10 +27,10 @@ class Home extends React.Component<any, any> {
 		let path = PathHelper.joinPaths(DATA.home);
 		// get the current user info
 		let userGet = this.props.getHomeContent(path, {
-			select: ['CreationDate', 'CreatedBy', 'Description', 'DisplayName', 'Id', 'OriginalAuthor', 'Author', 'PublishDate', 'Actions'],
+			select: ['CreationDate', 'CreatedBy', 'Description', 'DisplayName', 'Id', 'OriginalAuthor', 'Author', 'PublishDate', 'Index', 'Actions'],
 			expand: ['CreatedBy', 'Actions'],
 			query: 'TypeIs:LeisureArticle .TOP:3',
-			orderby: [['PublishDate', 'desc'], , 'DisplayName'],
+			orderby: [['PublishDate', 'desc'], 'Index', 'DisplayName'],
 		} as IODataParams<LeisureArticle>);
 
 		userGet.then((result: any) => {

@@ -16,7 +16,7 @@ class LeisureArticle extends Folder {
 	PublishDate: Date;
 }
 
-class Reviews extends React.Component<any, any> {
+class ReviewsAnime extends React.Component<any, any> {
 	constructor(props: any) {
 		super(props);
 		this.state = {
@@ -39,7 +39,7 @@ class Reviews extends React.Component<any, any> {
 		let userGet = this.props.getHomeContent(path, {
 			select: ['Publisher', 'Author', 'Description', 'DisplayName', 'Id', 'OriginalAuthor', 'Author', 'PublishDate', 'Index', 'Actions'],
 			expand: ['CreatedBy', 'Actions'],
-			query: 'TypeIs:(LeisureMangaReview)',
+			query: 'TypeIs:(LeisureAnimeReview LeisureGameReview)',
 			orderby: [['PublishDate', 'desc'], ['Index', 'desc'], 'DisplayName']
 		} as IODataParams<LeisureArticle>);
 
@@ -104,4 +104,4 @@ export default withRouter(connect(
 	(dispatch) => ({
 		getHomeContent: (path: string, options: any) => dispatch(Actions.requestContent<LeisureArticle>(path, options)),
 	})
-)(Reviews as any));
+)(ReviewsAnime as any));

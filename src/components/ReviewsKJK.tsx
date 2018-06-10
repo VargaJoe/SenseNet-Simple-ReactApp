@@ -16,7 +16,7 @@ class LeisureArticle extends Folder {
 	PublishDate: Date;
 }
 
-class Reviews extends React.Component<any, any> {
+class ReviewsKJK extends React.Component<any, any> {
 	constructor(props: any) {
 		super(props);
 		this.state = {
@@ -28,7 +28,7 @@ class Reviews extends React.Component<any, any> {
 
 	componentDidMount() {
 		// let path = PathHelper.joinPaths(DATA.home);
-		let path = DATA.home;
+		let path = DATA.kjk;
 		// get the current user info
 		// let userGet = this.props.getHomeContent(path, {
 		// 	select : ['Publisher', 'Author', 'Description', 'DisplayName', 'Id', 'OriginalAuthor', 'Author', 'PublishDate'],
@@ -38,9 +38,10 @@ class Reviews extends React.Component<any, any> {
 
 		let userGet = this.props.getHomeContent(path, {
 			select: ['Publisher', 'Author', 'Description', 'DisplayName', 'Id', 'OriginalAuthor', 'Author', 'PublishDate', 'Index', 'Actions'],
-			expand: ['CreatedBy', 'Actions'],
-			query: 'TypeIs:(LeisureMangaReview)',
-			orderby: [['PublishDate', 'desc'], ['Index', 'desc'], 'DisplayName']
+			expand: ['CreatedBy', 'Actions/HxHImg'],
+			query: 'TypeIs:LeisureArticle',
+			orderby: [['PublishDate', 'desc'], ['Index', 'desc'], 'DisplayName'],
+			metadata: 'no'
 		} as IODataParams<LeisureArticle>);
 
 		userGet.then((result: any) => {
@@ -104,4 +105,4 @@ export default withRouter(connect(
 	(dispatch) => ({
 		getHomeContent: (path: string, options: any) => dispatch(Actions.requestContent<LeisureArticle>(path, options)),
 	})
-)(Reviews as any));
+)(ReviewsKJK as any));
