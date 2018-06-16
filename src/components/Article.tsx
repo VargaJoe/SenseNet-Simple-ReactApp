@@ -6,8 +6,10 @@ import { Actions } from '@sensenet/redux';
 import Moment from 'react-moment';
 
 const DATA = require('../config.json');
+// const defaultImage = require('../images/logo.png');
 
 class Article extends React.Component<any, any> {
+	img: HTMLImageElement | null;
 	constructor(props: any) {
 		super(props);
 		this.state = {
@@ -15,6 +17,11 @@ class Article extends React.Component<any, any> {
 			article: {}
 		};
 	}
+
+	addDefaultImageUrl(ev: any) {
+		// ev.target.src = defaultImage;
+		ev.target.className = 'hidden';
+	  }
 
 	componentDidMount() {
 		let path = PathHelper.joinPaths(DATA.article);
@@ -44,6 +51,16 @@ class Article extends React.Component<any, any> {
 		}
 
 		let article = this.state.article;
+
+		// const ImageSection = (image: any) => (
+		// 	<div key={image.Id} className="w3-row-padding w3-padding-16">
+		// 		{console.log(image)}
+		// 		<div className="w3-col m6">
+		// 			<img src={DATA.domain + image.Url} className="full-width" />
+		// 		</div>
+		// 	</div>
+		//   );
+
 		const TranslationItem = (tLink: any) => (
 			<div key={ tLink.item.Id }>
 				<div>
@@ -96,9 +113,15 @@ class Article extends React.Component<any, any> {
 					<div className="w3-container w3-padding-large">
 						<h2><b>{article[key].DisplayName}</b></h2>
 					</div>
+					{/* {									
+						(article[key].Actions.find(function (obj: any) { return obj.Name === 'Cover'; }) ? ImageSection(article[key].Actions.find(function (obj: any) { return obj.Name === 'Cover'; })) : '')
+					}	 */}
 					<div className="w3-row-padding w3-padding-16" key={article[key].Id}>
 						<div className="w3-col m6">
-							<img src={DATA.domain + article[key].Actions.find(function (obj: any) { return obj.Name === 'Cover'; }).Url} className="full-width" />
+							<img src={DATA.domain + article[key].Actions.find(function (obj: any) { return obj.Name === 'Cover'; }).Url} 
+							onError={this.addDefaultImageUrl}
+							// defaultImageUrl
+							className="full-width" />
 						</div>
 					</div>
 					<div className="w3-container w3-padding-large w3-bottombar">

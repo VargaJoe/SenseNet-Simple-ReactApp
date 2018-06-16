@@ -8,6 +8,7 @@ import {
 import { Folder } from '@sensenet/default-content-types';
 import { IODataParams } from '@sensenet/client-core';
 import Moment from 'react-moment';
+import { Link } from 'react-router-dom';
 
 const DATA = require('../config.json');
 
@@ -27,7 +28,7 @@ class LatestNews extends React.Component<any, any> {
 		let path1 = PathHelper.joinPaths(DATA.news);
 		
 		let itemGet = this.props.getHomeContent(path1, {
-			select: ['DisplayName', 'Id', 'Body', 'Author', 'PublishDate', 'Index', 'Actions'],
+			select: ['DisplayName', 'Id', 'Lead', 'Author', 'PublishDate', 'Index', 'Actions'],
 			expand: ['Actions'],
 			query: 'TypeIs:LeisureArticle .TOP:3',
 			orderby: [['PublishDate', 'desc'], ['Index', 'desc'], 'DisplayName'],
@@ -57,18 +58,20 @@ class LatestNews extends React.Component<any, any> {
 		let fetchedIds = this.state.ids;
 		const mappedItems = fetchedIds.map((key: number) =>
 			(
-				<p key={key} className="w3-padding-16">
-					<Moment date={fetchedItems[key].PublishDate} format="YYYY.MM.DD. " />:
-					{fetchedItems[key].DisplayName}<br />
-					<div className="small">{fetchedItems[key].Body}</div>
-				</p>
+				<li key={key} className="w3-padding-16">
+				<Link to={'/Article/' + fetchedItems[key].Name} className="no-score">
+						<Moment date={fetchedItems[key].PublishDate} format="YYYY.MM.DD. " />:
+						{fetchedItems[key].DisplayName}<br />
+						<div className="small">{fetchedItems[key].Lead}</div>
+				</Link>
+				</li>
 			)
 		);
 
 		return (
-			<div>
+			<ul className="w3-ul w3-hoverable">
 				{mappedItems}
-			</div>
+			</ul>
 		);
 	}
 }

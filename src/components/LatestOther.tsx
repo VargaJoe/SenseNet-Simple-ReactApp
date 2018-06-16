@@ -59,7 +59,7 @@ class LatestOther extends React.Component<any, any> {
 		const mappedItems = fetchedIds.map((key: number) =>
 			(
 				<li key={key} className="w3-padding-16">
-					<Link to={'/Article/' + fetchedItems[key].Name}>
+					<Link to={'/Article/' + fetchedItems[key].Name} className="no-score">
 						<img src={DATA.domain + fetchedItems[key].Actions.find(function (obj: any) { return obj.Name === 'HxHImg'; }).Url} className="w3-left w3-margin-right news-img" />
 						<span className="w3-large">{fetchedItems[key].DisplayName}</span><br />
 						<span className="hidden">{fetchedItems[key].Description}</span>
