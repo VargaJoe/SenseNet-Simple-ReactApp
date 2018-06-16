@@ -18,7 +18,7 @@ body,h1,h2,h3,h4,h5,h6 {
   width:  100%;
 }
 
-small {
+.small {
   font-size: small;
 }
 
@@ -32,4 +32,8 @@ small {
 
 .left-float{
   float: left;
+}
+
+.news-img {
+  width:  50px!important;
 }
