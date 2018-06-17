@@ -19,7 +19,7 @@ class Intro extends React.Component<any, any> {
 			<div className="w3-container w3-bottombar">	
 				 Az oldal létrejöttének célja kettős. Egyrészt teret enged irományaimnak, ami által bepillantást 
 				 enged főként a mangák, alkotóik, részben pedig egyéb könyvek és sorozatok világába. A másik ok 
-				 személyes, segít felfedezni a React appok rejtelmeit. Utóbbi ok miatt lehet, hogy nem túl 
+				 személyes, segít felfedeznem a React appok rejtelmeit. Utóbbi ok miatt lehet, hogy nem túl 
 				 zökkenőmentes az oldal működése, ezért előre elnézést kívánok.<br/>
 				 Kellemes időtöltést kívánok az ide tévedőknek.
 				<div className="small">
