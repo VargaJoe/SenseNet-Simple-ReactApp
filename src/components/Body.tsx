@@ -10,6 +10,7 @@ import {
 } from 'react-router-dom';
 
 import Home from './Home';
+import Intro from './Intro';
 import Article from './Article';
 import Reviews from './Reviews';
 import ReviewsBio from './ReviewsBio';
@@ -43,6 +44,7 @@ class Body extends React.Component<any, any> {
 				<div className="w3-overlay w3-hide-large w3-animate-opacity" onClick={this.props.openMenu} />
 				<div className="w3-main">
 					<Header />
+					<Intro />
 					<Switch>
 						<Route
 							exact={true}
