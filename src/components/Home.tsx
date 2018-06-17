@@ -7,6 +7,7 @@ import {
 import LatestManganime from './LatestManganime';
 import LatestOther from './LatestOther';
 import LatestNews from './LatestNews';
+import Intro from './Intro';
 
 // import Moment from 'react-moment';
 class Home extends React.Component<any, any> {
@@ -20,6 +21,8 @@ class Home extends React.Component<any, any> {
 
 	public render() {
 		return (
+			<div>
+			<Intro />
 			<div className="w3-row-padding">
 				<div className="w3-container w3-padding-large">
 					<div className="w3-third">
@@ -36,6 +39,7 @@ class Home extends React.Component<any, any> {
 					</div>		
 				</div>
 			</div>
+		</div>
 		);
 	}
 }
