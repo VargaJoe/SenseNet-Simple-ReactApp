@@ -27,8 +27,8 @@ class Article extends React.Component<any, any> {
 		let path = PathHelper.joinPaths(DATA.article);
 		// get the current user info
 		let userGet = this.props.getHomeContent(path, {
-			select: ['CreationDate', 'CreatedBy', 'Description', 'DisplayName', 'Id', 'OriginalAuthor', 'Author', 'Publisher', 'PublishDate', 'Body', 'Translation', 'Actions'],
-			expand: ['CreatedBy', 'Translation', 'Actions'],
+			select: ['CreationDate', 'CreatedBy', 'Description', 'DisplayName', 'Id', 'OriginalAuthor', 'Author', 'Publisher', 'PublishDate', 'Body', 'RelatedContent', 'Translation', 'Actions'],
+			expand: ['CreatedBy', 'Translation', 'RelatedContent', 'Actions'],
 			query: 'TypeIs:LeisureArticle AND Name:\'' + this.props.match.params.articleName + '\'',
 		});
 
@@ -98,6 +98,22 @@ class Article extends React.Component<any, any> {
 				</div>
 			</div>
 		  );
+
+		  const RelatedItem = (tLink: any) => (
+			<div key={ tLink.item.Id }>
+				<div>
+					<h4 className="translation-title">
+						{ 'Kapcsolódó: ' + tLink.item.DisplayName + ' ' }
+						<a href={tLink.item.BrowseUrl} title="Megnyitás" target="_blank">
+							<span className="download-link"><i className="fa fa-external-link"/></span>
+						</a>
+					</h4>					
+				</div>
+				<div>
+					{tLink.item.Description}
+				</div>
+			</div>
+		  );
 		// const TranslationList = (translations = []) => (
 		// <div>
 		// 	<hr/>
@@ -138,7 +154,12 @@ class Article extends React.Component<any, any> {
 					{									
 						(article[key].Translation ? article[key].Translation : []).map((item: any = []) => TranslationItem({ item }))
 					}	
-					</div>				
+					</div>
+					<div className="w3-container w3-padding-large">
+					{									
+						(article[key].RelatedContent ? article[key].RelatedContent : []).map((item: any = []) => RelatedItem({ item }))
+					}	
+					</div>
 				</div>
 			)
 		);
