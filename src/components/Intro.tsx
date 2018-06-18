@@ -21,7 +21,7 @@ class Intro extends React.Component<any, any> {
 				 enged főként a mangák, alkotóik, részben pedig egyéb könyvek és sorozatok világába. A másik ok 
 				 személyes, segít felfedeznem a React appok rejtelmeit. Utóbbi ok miatt lehet, hogy nem túl 
 				 zökkenőmentes az oldal működése, ezért előre elnézést kívánok.<br/>
-				 Kellemes időtöltést kívánok az ide tévedőknek.
+				 Kellemes időtöltést minden ide tévedőnek!
 				<div className="small">
 					PlasticE (2018.)
 				</div>	
