@@ -21,7 +21,7 @@ class Article extends React.Component<any, any> {
 	addDefaultImageUrl(ev: any) {
 		// ev.target.src = defaultImage;
 		ev.target.className = 'hidden';
-	  }
+	}
 
 	componentDidMount() {
 		let path = PathHelper.joinPaths(DATA.article);
@@ -31,7 +31,7 @@ class Article extends React.Component<any, any> {
 			expand: ['CreatedBy', 'Translation', 'RelatedContent', 'Actions'],
 			query: 'TypeIs:LeisureArticle AND Name:\'' + this.props.match.params.articleName + '\'',
 		});
-
+ 
 		userGet.then((result: any) => {
 			console.log(result.value.entities.entities);
 			this.setState({
@@ -62,26 +62,26 @@ class Article extends React.Component<any, any> {
 		//   );
 
 		const TranslationItem = (tLink: any) => (
-			<div key={ tLink.item.Id }>
+ 			<div key={tLink.item.Id}>
 				<div>
 					<h4 className="translation-title">
-						{ 'Fordítás: ' + tLink.item.DisplayName + ' ' }
+						{tLink.item.DisplayName + ' '}
 						<a href={tLink.item.BrowseUrl} title="Letöltés">
-							<span className="download-link"><i className="fa fa-download"/></span>
+							<span className="download-link"><i className="fa fa-download" /></span>
 						</a>
 						{/* <Link key={'download' + tLink.item} to={tLink.item.BrowseUrl}>
 							<span className="download-link">letötés</span>
-						</Link> */}{' '}			
+						</Link> */}{' '}
 						<a href={tLink.item.ReaderUrl} target="_blank" title="Olvasás online">
-							<span className="reader-link"><i className="fa fa-eye"/></span>
+							<span className="reader-link"><i className="fa fa-eye" /></span>
 						</a>
 						{/* <Link key={'reader' + tLink.item} to={tLink.item.BrowseUrl}>
 							<span className="reader-link">olvasás</span>
 						</Link> */}{' '}
 						<span className="reader-link" title="Olvasási irány: eredeti (jobbról balra)">
-							<i className="fa fa-caret-square-o-left"/>
+							<i className="fa fa-caret-square-o-left" />
 						</span>
-					</h4>					
+					</h4>
 				</div>
 				<div>
 					{tLink.item.Description}
@@ -97,32 +97,44 @@ class Article extends React.Component<any, any> {
 					</span>				 */}
 				</div>
 			</div>
-		  );
+		);
+		const TranslationContainer = (itemArr = []): any => (
+			<div className="w3-container w3-padding-large">
+				<h3>Fordítások</h3>
+				<ul>
+					{
+						itemArr.map((item: any = []) => TranslationItem({ item }))
+					}
+				</ul>
+			</div>
+		);
 
-		  const RelatedItem = (tLink: any) => (
-			<div key={ tLink.item.Id }>
+		const RelatedItem = (tLink: any) => (
+			<div key={tLink.item.Id}>
 				<div>
 					<h4 className="translation-title">
-						{ 'Kapcsolódó: ' + tLink.item.DisplayName + ' ' }
+						{tLink.item.DisplayName + ' '}
 						<a href={tLink.item.BrowseUrl} title="Megnyitás" target="_blank">
-							<span className="download-link"><i className="fa fa-external-link"/></span>
+							<span className="download-link"><i className="fa fa-external-link" /></span>
 						</a>
-					</h4>					
+					</h4>
 				</div>
 				<div>
 					{tLink.item.Description}
 				</div>
 			</div>
-		  );
-		// const TranslationList = (translations = []) => (
-		// <div>
-		// 	<hr/>
-		// 	<h3>Fordítások</h3>
-		// 	<ul>
-		// 	{translations.map((item: any) => TranslationItem({ item }))}
-		// 	</ul>
-		// </div>
-		// );
+		);
+		const RelatedContainer = (itemArr = []): any => (
+			<div className="w3-container w3-padding-large">
+				<h3>Kapcsolódó linkek</h3>
+				<ul>
+					{
+						itemArr.map((item: any = []) => RelatedItem({ item }))
+					}
+				</ul>
+			</div>
+		);
+
 		const firstArticle = Object.keys(article).map((key: any) =>
 			(
 				<div key={key}>
@@ -134,10 +146,10 @@ class Article extends React.Component<any, any> {
 					}	 */}
 					<div className="w3-row-padding w3-padding-16" key={article[key].Id}>
 						<div className="w3-col m6">
-							<img src={DATA.domain + article[key].Actions.find(function (obj: any) { return obj.Name === 'Cover'; }).Url} 
-							onError={this.addDefaultImageUrl}
-							// defaultImageUrl
-							className="full-width" />
+							<img src={DATA.domain + article[key].Actions.find(function (obj: any) { return obj.Name === 'Cover'; }).Url}
+								onError={this.addDefaultImageUrl}
+								// defaultImageUrl
+								className="full-width" />
 						</div>
 					</div>
 					<div className="w3-container w3-padding-large w3-bottombar">
@@ -148,18 +160,15 @@ class Article extends React.Component<any, any> {
 							{article[key].Author + ' '}
 							({article[key].Publisher + ', '}
 							<Moment date={article[key].PublishDate} format="YYYY.MM.DD." />)
-						</div>										
-					</div>	
-					<div className="w3-container w3-padding-large">
-					{									
-						(article[key].Translation ? article[key].Translation : []).map((item: any = []) => TranslationItem({ item }))
-					}	
+						</div>
 					</div>
-					<div className="w3-container w3-padding-large">
-					{									
-						(article[key].RelatedContent ? article[key].RelatedContent : []).map((item: any = []) => RelatedItem({ item }))
-					}	
-					</div>
+						{
+							article[key].Translation && article[key].Translation.length > 0 ? TranslationContainer(article[key].Translation) : ''
+						}
+						{
+							// (article[key].RelatedContent ? article[key].RelatedContent : []).map((item: any = []) => RelatedItem({ item }))
+							article[key].RelatedContent && article[key].RelatedContent.length > 0 ? RelatedContainer(article[key].RelatedContent) : ''
+						}
 				</div>
 			)
 		);
