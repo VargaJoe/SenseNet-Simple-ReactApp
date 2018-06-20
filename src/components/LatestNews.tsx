@@ -9,6 +9,7 @@ import { Folder } from '@sensenet/default-content-types';
 import { IODataParams } from '@sensenet/client-core';
 import Moment from 'react-moment';
 import { Link } from 'react-router-dom';
+import Loader from './Loader';
 
 const DATA = require('../config.json');
 
@@ -26,7 +27,7 @@ class LatestNews extends React.Component<any, any> {
 
 	componentDidMount() {
 		let path1 = PathHelper.joinPaths(DATA.news);
-		
+
 		let itemGet = this.props.getHomeContent(path1, {
 			select: ['DisplayName', 'Id', 'Lead', 'Author', 'PublishDate', 'Index', 'Actions'],
 			expand: ['Actions'],
@@ -49,9 +50,8 @@ class LatestNews extends React.Component<any, any> {
 	}
 
 	public render() {
-
 		if (!this.state.isDataFetched) {
-			return null;
+			return (<Loader />);
 		}
 
 		let fetchedItems = this.state.articles;
