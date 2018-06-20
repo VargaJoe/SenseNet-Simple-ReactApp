@@ -11,6 +11,7 @@ import { IODataParams } from '@sensenet/client-core';
 const DATA = require('../config.json');
 
 import Moment from 'react-moment';
+import Loader from './Loader';
 class LeisureArticle extends Folder {
 	PublishDate: Date;
 }
@@ -51,7 +52,7 @@ class LatestOther extends React.Component<any, any> {
 	public render() {
 
 		if (!this.state.isDataFetched) {
-			return null;
+			return (<Loader />);
 		}
 
 		let fetchedItems = this.state.articles;
