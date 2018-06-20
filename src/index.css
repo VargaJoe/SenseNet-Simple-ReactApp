@@ -18,7 +18,7 @@ body,h1,h2,h3,h4,h5,h6 {
   width:  100%;
 }
 
-small {
+.small {
   font-size: small;
 }
 
@@ -37,4 +37,12 @@ small {
 .menu-open {
   left: -300px;
   transition: all 0.4s ease;
+}
+
+.news-img {
+  width:  50px!important;
+}
+
+.no-score {
+  text-decoration: none;
 }

@@ -1,41 +1,42 @@
-import * as React				            from 'react';
-import { connect }                          from 'react-redux';
-import Sidebar                              from './Sidebar';
-import Header                               from './Header';
+import * as React from 'react';
+import { connect } from 'react-redux';
+import Sidebar from './Sidebar';
+import Header from './Header';
+import Footer from './Footer';
 import {
-  	Route,
+	Route,
 	Switch,
 	withRouter
-}                                           from 'react-router-dom';
+} from 'react-router-dom';
 
-import Home                                 from './Home';
-import Article                              from './Article';
-import Reviews                              from './Reviews';
-import ReviewsBio                           from './ReviewsBio';
-import ReviewsAnime                         from './ReviewsAnime';
-import ReviewsKJK                           from './ReviewsKJK';
-import ReviewsOther                         from './ReviewsOther';
-import Missing                              from './Missing';
+import Home from './Home';
+import Article from './Article';
+import Reviews from './Reviews';
+import ReviewsBio from './ReviewsBio';
+import ReviewsAnime from './ReviewsAnime';
+import ReviewsKJK from './ReviewsKJK';
+import ReviewsOther from './ReviewsOther';
+import Missing from './Missing';
 
 class Body extends React.Component<any, any> {
 
 	constructor(props: any) {
 		super(props);
 		this.state = {
-			open : false,
+			open: false,
 		},
 
-		this.openMenu = this.openMenu.bind(this);
+			this.openMenu = this.openMenu.bind(this);
 	}
 
 	openMenu() {
 		let menuState = !this.state.open;
-		this.setState({         
+		this.setState({
 			open: menuState
-		  }); 
-	} 
+		});
+	}
 
-	render() {	
+	render() {
 		return (
 				<div>
 					<Sidebar menuTrigger={this.state.open ? '' : 'w3-collapse '}/>
@@ -46,8 +47,7 @@ class Body extends React.Component<any, any> {
 								<Route 
 									exact={true}
 									path="/Article/:articleName"
-									component={Article}
-									
+									component={Article}									
 								/>
 								<Route 
 									exact={true}
@@ -84,7 +84,8 @@ class Body extends React.Component<any, any> {
 								 />
 							</Switch> 
 					</div>
-				</div>
+				<Footer />
+			</div>
 		);
 	}
 }
@@ -97,4 +98,3 @@ const mapStateToProps = (state: any, match: any) => {
 export default withRouter(connect(
 	mapStateToProps,
 )(Body as any));
- 
