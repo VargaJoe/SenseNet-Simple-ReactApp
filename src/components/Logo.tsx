@@ -2,7 +2,6 @@ import * as React				 	from 'react';
 import { Link } 					from 'react-router-dom';
 
 class Logo extends React.Component<any, any> {
-	
 	public render () {
 		return (
 			<div className="sn_sidebar__logo">

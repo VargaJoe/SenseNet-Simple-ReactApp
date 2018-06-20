@@ -12,15 +12,36 @@ const DATA = require('../config.json');
 const fontImportantClass = ' fi ';
 const logo = require('../images/logo.png');
 
-class Menu extends React.Component<any, any> {
+interface Props {
+    menuTrigger: string;
+    getMenuItems: any;
+}
+
+// interface State {
+//     menuTrigger: string;
+//     isDataFetched: boolean;
+//     menuItems: any;
+//     ids: any;
+// }
+
+class Menu extends React.Component<Props, any> {
     constructor(props: any) {
         super(props);
         this.state = {
+            menuTrigger: this.props.menuTrigger,
             menuItems: null,
             isDataFetched: false
         };
+        this.clickHandler = this.clickHandler.bind(this);
     }
 
+	clickHandler = () => {
+        console.log(this.props.menuTrigger);
+        console.log(this.state.menuTrigger);   
+        // this.forceUpdate(); 
+        // this.setState({ menuTrigger: '' }); 
+    }
+    
     public componentDidMount() {
         const path = DATA.menu;
         // const options = {
@@ -54,6 +75,7 @@ class Menu extends React.Component<any, any> {
             return null;
         }
         console.log(status);
+        
         const menuItems = this.state.menuItems;
 		const menuIds = this.state.ids;
 
@@ -65,10 +87,14 @@ class Menu extends React.Component<any, any> {
             )
         );
         return (
-            <nav className="w3-sidebar w3-collapse w3-white w3-animate-left" id="mySidebar"><br/>
+            <nav className={'w3-sidebar w3-white w3-animate-left ' + this.props.menuTrigger} id="mySidebar"><br/>
                 <Link to={'/'}>
                 <div className="w3-container">
-                    <img src={logo} alt="mangajánló" className="w3-round side-logo" /><br /><br />
+                    <img src={logo} alt="mangajánló" className="w3-round side-logo" />
+                    <span className="w3-hide-large w3-right w3-jumbo w3-padding w3-hover-grey" onClick={this.clickHandler} title="close menu">
+                        <i className="fa fa-remove" />
+                    </span>
+                    <br /><br />
                     {/* <h4><b>MangAjánló</b></h4> */}
                     <p className="w3-text-grey hidden">Template by W3.CSS</p>
                 </div>
@@ -85,7 +111,7 @@ class Menu extends React.Component<any, any> {
 
 const mapStateToProps = (state: any, match: any) => {
     return {
-
+        
     };
 };
 

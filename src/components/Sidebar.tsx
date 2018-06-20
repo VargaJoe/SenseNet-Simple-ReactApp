@@ -1,12 +1,16 @@
 import * as React			from 'react';
 import Menu 				from './Menu';
 
-class Sidebar extends React.Component<any, {}> {
+interface Props {
+	menuTrigger: string;
+}
+
+class Sidebar extends React.Component<Props, {}> {
 	
 	public render () {
 		
 		return (
-				<Menu />
+				<Menu menuTrigger={this.props.menuTrigger} />
 		);
 	}
 }

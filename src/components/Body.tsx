@@ -38,10 +38,10 @@ class Body extends React.Component<any, any> {
 	render() {	
 		return (
 				<div>
-					<Sidebar openMenu={this.props.openMenu}/>
+					<Sidebar menuTrigger={this.state.open ? '' : 'w3-collapse '}/>
 					<div className="w3-overlay w3-hide-large w3-animate-opacity" onClick={this.props.openMenu} />
 					<div className="w3-main">
-							<Header />
+							<Header openMenu={this.openMenu}/>
 							<Switch>
 								<Route 
 									exact={true}
