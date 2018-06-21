@@ -27,7 +27,7 @@ class Article extends React.Component<any, any> {
 		let path = PathHelper.joinPaths(DATA.article);
 		// get the current user info
 		let userGet = this.props.getHomeContent(path, {
-			select: ['CreationDate', 'CreatedBy', 'Description', 'DisplayName', 'Id', 'OriginalAuthor', 'Author', 'Publisher', 'PublishDate', 'Body', 'RelatedContent', 'Translation', 'Actions'],
+			select: ['CreationDate', 'CreatedBy', 'Description', 'DisplayName', 'Id', 'OriginalAuthor', 'Author', 'Publisher', 'PublishDate', 'Lead', 'Body', 'RelatedContent', 'Translation', 'Actions'],
 			expand: ['CreatedBy', 'Translation', 'RelatedContent', 'Actions'],
 			query: 'TypeIs:LeisureArticle AND Name:\'' + this.props.match.params.articleName + '\'',
 		});
@@ -155,6 +155,7 @@ class Article extends React.Component<any, any> {
 					<div className="w3-container w3-padding-large w3-bottombar">
 						{/* <h2><b>{article[key].DisplayName}</b></h2> */}
 						<i>{article[key].Description}</i>
+						<i>{article[key].Lead}</i>
 						<p dangerouslySetInnerHTML={{ __html: article[key].Body }} />
 						<div className="small">
 							{article[key].Author + ' '}
