@@ -15,14 +15,8 @@ const logo = require('../images/logo.png');
 interface Props {
     menuTrigger: string;
     getMenuItems: any;
+    openMenu: Function;
 }
-
-// interface State {
-//     menuTrigger: string;
-//     isDataFetched: boolean;
-//     menuItems: any;
-//     ids: any;
-// }
 
 class Menu extends React.Component<Props, any> {
     constructor(props: any) {
@@ -35,11 +29,8 @@ class Menu extends React.Component<Props, any> {
         this.clickHandler = this.clickHandler.bind(this);
     }
 
-	clickHandler = () => {
-        console.log(this.props.menuTrigger);
-        console.log(this.state.menuTrigger);   
-        // this.forceUpdate(); 
-        // this.setState({ menuTrigger: '' }); 
+    clickHandler = () => {
+        this.props.openMenu();   
     }
     
     public componentDidMount() {
@@ -90,10 +81,10 @@ class Menu extends React.Component<Props, any> {
             <nav className={'w3-sidebar w3-white w3-animate-left ' + this.props.menuTrigger} id="mySidebar"><br/>
                 <Link to={'/'}>
                 <div className="w3-container">
-                    <img src={logo} alt="mangajánló" className="w3-round side-logo" />
-                    <span className="w3-hide-large w3-right w3-jumbo w3-padding w3-hover-grey" onClick={this.clickHandler} title="close menu">
+                    <span className="w3-button w3-hide-large w3-xxlarge w3-hover-text-grey" onClick={this.clickHandler} title="close menu">
                         <i className="fa fa-remove" />
                     </span>
+                    <img src={logo} alt="mangajánló" className="w3-round side-logo" />                    
                     <br /><br />
                     {/* <h4><b>MangAjánló</b></h4> */}
                     <p className="w3-text-grey hidden">Template by W3.CSS</p>

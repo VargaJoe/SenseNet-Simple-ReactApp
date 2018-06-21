@@ -3,6 +3,7 @@ import Menu 				from './Menu';
 
 interface Props {
 	menuTrigger: string;
+	openMenu: Function;
 }
 
 class Sidebar extends React.Component<Props, {}> {
@@ -10,7 +11,7 @@ class Sidebar extends React.Component<Props, {}> {
 	public render () {
 		
 		return (
-				<Menu menuTrigger={this.props.menuTrigger} />
+				<Menu openMenu={this.props.openMenu} menuTrigger={this.props.menuTrigger} />
 		);
 	}
 }
