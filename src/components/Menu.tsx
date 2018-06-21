@@ -93,8 +93,8 @@ class Menu extends React.Component<Props, any> {
                 <div className="w3-bar-block">
                 {menu}
                 </div>
-                <div className="w3-panel w3-large">
-                    <i className="fa fa-facebook-official w3-hover-opacity" />
+                <div className="w3-panel w3-large hidden">
+                    <i className="fa fa-envelope w3-hover-opacity"  />
                 </div>
             </nav>
         );
