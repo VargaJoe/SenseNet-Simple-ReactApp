@@ -43,7 +43,7 @@ class Menu extends React.Component<Props, any> {
 
         let menuitems = this.props.getMenuItems(path, {
 			select: ['Name', 'IconName', 'Id', 'Path', 'Index', 'DisplayName'],
-			query: 'Type:GenericContent AND Hidden:0 .AUTOFILTERS:OFF',
+			query: 'Type:MenuItem AND Hidden:0 .AUTOFILTERS:OFF',
 			orderby: ['Index', 'DisplayName']
 		} as IODataParams<GenericContent>);
 
@@ -92,6 +92,9 @@ class Menu extends React.Component<Props, any> {
                 </Link>
                 <div className="w3-bar-block">
                 {menu}
+                </div>
+                <div className="w3-panel w3-large">
+                    <i className="fa fa-facebook-official w3-hover-opacity" />
                 </div>
             </nav>
         );
