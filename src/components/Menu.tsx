@@ -96,7 +96,7 @@ class Menu extends React.Component<Props, any> {
                 {menu}
                 </div>
                 <div className="w3-panel w3-large">
-                    <a href={'mailto:' + process.env.REACT_APP_SERVICE_URL}>
+                    <a href={'mailto:' + process.env.REACT_APP_SITE_EMAIL}>
                         <i className="fa fa-envelope w3-hover-opacity"  />
                     </a>
                 </div>
