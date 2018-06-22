@@ -40,6 +40,7 @@ class Body extends React.Component<any, any> {
 		return (
 				<div>
 					<Sidebar openMenu={this.openMenu} menuTrigger={this.state.open ? '' : 'w3-collapse '}/>
+					<div className={!this.state.open ? 'sn_overflow hidden' : 'sn_overflow'} onClick={this.openMenu} />
 					<div className="w3-overlay w3-hide-large w3-animate-opacity" onClick={this.props.openMenu} />
 					<div className="w3-main">
 							<Header openMenu={this.openMenu}/>
