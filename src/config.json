@@ -1,5 +1,5 @@
 {
-	"domain" : 		"https://data.mangajanlo.hu",
+	"domain" : 		"http://mangajanlo",
 	"menu" : 		"/(structure)/MainMenu",
 	"home" : 		"/Ismertetők",
 	"kjk" : 		"/Jatekkonyvek",
