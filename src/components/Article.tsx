@@ -79,7 +79,7 @@ class Article extends React.Component<any, any> {
 							<span className="reader-link">olvasás</span>
 						</Link> */}{' '}
 						<span className="reader-link" title="Olvasási irány: eredeti (jobbról balra)">
-							<i className="fa fa-caret-square-o-left" />
+							<i className="fa fa-arrow-alt-circle-left" />
 						</span>
 					</h4>
 				</div>
@@ -115,7 +115,7 @@ class Article extends React.Component<any, any> {
 					<h4 className="translation-title">
 						{tLink.item.DisplayName + ' '}
 						<a href={tLink.item.BrowseUrl} title="Megnyitás" target="_blank">
-							<span className="download-link"><i className="fa fa-external-link" /></span>
+							<span className="download-link"><i className="fa fa-external-link-alt" /></span>
 						</a>
 					</h4>
 				</div>
