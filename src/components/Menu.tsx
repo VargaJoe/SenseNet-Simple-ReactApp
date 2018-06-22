@@ -79,17 +79,19 @@ class Menu extends React.Component<Props, any> {
         );
         return (
             <nav className={'w3-sidebar w3-white w3-animate-left ' + this.props.menuTrigger} id="mySidebar"><br/>
-                <Link to={'/'}>
+                
                 <div className="w3-container">
                     <span className="w3-button w3-hide-large w3-xxlarge w3-hover-text-grey" onClick={this.clickHandler} title="close menu">
                         <i className="fa fa-times" />
                     </span>
+                    <Link to={'/'}>
                     <img src={logo} alt="mangajánló" className="w3-round side-logo" />                    
                     <br /><br />
                     {/* <h4><b>MangAjánló</b></h4> */}
-                    <p className="w3-text-grey hidden">Template by W3.CSS</p>
+                    {/* <p className="w3-text-grey hidden">Template by W3.CSS</p> */}
+                    </Link>
                 </div>
-                </Link>
+                
                 <div className="w3-bar-block">
                 {menu}
                 </div>
