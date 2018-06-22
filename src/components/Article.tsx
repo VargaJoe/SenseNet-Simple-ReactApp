@@ -56,7 +56,7 @@ class Article extends React.Component<any, any> {
 		// 	<div key={image.Id} className="w3-row-padding w3-padding-16">
 		// 		{console.log(image)}
 		// 		<div className="w3-col m6">
-		// 			<img src={DATA.domain + image.Url} className="full-width" />
+		// 			<img src={this.props.repositoryUrl + image.Url} className="full-width" />
 		// 		</div>
 		// 	</div>
 		//   );
@@ -146,7 +146,7 @@ class Article extends React.Component<any, any> {
 					}	 */}
 					<div className="w3-row-padding w3-padding-16" key={article[key].Id}>
 						<div className="w3-col m6">
-							<img src={DATA.domain + article[key].Actions.find(function (obj: any) { return obj.Name === 'Cover'; }).Url}
+							<img src={this.props.repositoryUrl + article[key].Actions.find(function (obj: any) { return obj.Name === 'Cover'; }).Url}
 								onError={this.addDefaultImageUrl}
 								// defaultImageUrl
 								className="full-width" />
@@ -185,6 +185,7 @@ class Article extends React.Component<any, any> {
 const mapStateToProps = (state: any, match: any) => {
 	return {
 		userName: state.sensenet.session.user.userName,
+		repositoryUrl: state.sensenet.session.repository.repositoryUrl,
 	};
 };
 

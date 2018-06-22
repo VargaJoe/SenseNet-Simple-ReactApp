@@ -71,7 +71,7 @@ class ReviewsAnime extends React.Component<any, any> {
 				(
 					<Link key={key} to={'/Article/' + homePageItems[key].Name}>					
 						<div data-id={counter++} className="w3-third w3-container w3-margin-bottom">
-							<img src={DATA.domain + homePageItems[key].Actions.find(function (obj: any) { return obj.Name === 'HxHImg'; }).Url} className="w3-hover-opacity full-width" />
+							<img src={this.props.repositoryUrl + homePageItems[key].Actions.find(function (obj: any) { return obj.Name === 'HxHImg'; }).Url} className="w3-hover-opacity full-width" />
 							<div className="w3-container w3-white">
 								<p><b>{homePageItems[key].DisplayName}</b></p>
 								<p className="hidden">{homePageItems[key].Description}</p>
@@ -96,6 +96,7 @@ class ReviewsAnime extends React.Component<any, any> {
 const mapStateToProps = (state: any, match: any) => {
 	return {
 		userName: state.sensenet.session.user.userName,
+		repositoryUrl: state.sensenet.session.repository.repositoryUrl,
 	};
 };
 

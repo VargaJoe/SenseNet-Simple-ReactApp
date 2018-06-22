@@ -60,7 +60,7 @@ class LatestManganime extends React.Component<any, any> {
 			(
 				<li key={key} className="w3-padding-16">
 					<Link to={'/Article/' + fetchedItems[key].Name} className="no-score">
-						<img src={DATA.domain + fetchedItems[key].Actions.find(function (obj: any) { return obj.Name === 'SOxSOImg'; }).Url} className="w3-left w3-margin-right news-img" />
+						<img src={this.props.repositoryUrl + fetchedItems[key].Actions.find(function (obj: any) { return obj.Name === 'SOxSOImg'; }).Url} className="w3-left w3-margin-right news-img" />
 						<span className="w3-large">{fetchedItems[key].DisplayName}</span><br />
 						<span className="hidden">{fetchedItems[key].Description}</span>
 						<span className="small hidden">{fetchedItems[key].Author}</span>
@@ -81,6 +81,7 @@ class LatestManganime extends React.Component<any, any> {
 const mapStateToProps = (state: any, match: any) => {
 	return {
 		userName: state.sensenet.session.user.userName,
+		repositoryUrl: state.sensenet.session.repository.repositoryUrl,
 	};
 };
 
