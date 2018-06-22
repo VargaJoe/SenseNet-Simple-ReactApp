@@ -82,7 +82,7 @@ class Menu extends React.Component<Props, any> {
                 <Link to={'/'}>
                 <div className="w3-container">
                     <span className="w3-button w3-hide-large w3-xxlarge w3-hover-text-grey" onClick={this.clickHandler} title="close menu">
-                        <i className="fa fa-remove" />
+                        <i className="fa fa-times" />
                     </span>
                     <img src={logo} alt="mangajánló" className="w3-round side-logo" />                    
                     <br /><br />
