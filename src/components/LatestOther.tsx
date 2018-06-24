@@ -25,13 +25,14 @@ class LatestOther extends React.Component<any, any> {
 	}
 
 	componentDidMount() {
-		let path1 = PathHelper.joinPaths(DATA.kjk);
+		let path1 = PathHelper.joinPaths(DATA.site);
+		let except = PathHelper.joinPaths(DATA.news);
 		
 		// get the current user info
 		let itemGet = this.props.getHomeContent(path1, {
 			select: ['CreationDate', 'CreatedBy', 'Description', 'DisplayName', 'Id', 'OriginalAuthor', 'Author', 'PublishDate', 'Index', 'Actions'],
 			expand: ['CreatedBy', 'Actions'],
-			query: 'TypeIs:LeisureArticle .TOP:4',
+			query: '-InTree:(\'*' + except + '*\') +TypeIs:LeisureArticle .TOP:4',
 			orderby: [['PublishDate', 'desc'], ['Index', 'desc'], 'DisplayName'],
 		} as IODataParams<LeisureArticle>);
 
