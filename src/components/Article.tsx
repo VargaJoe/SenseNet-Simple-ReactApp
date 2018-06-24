@@ -24,7 +24,7 @@ class Article extends React.Component<any, any> {
 	}
 
 	componentDidMount() {
-		let path = PathHelper.joinPaths(DATA.article);
+		let path = PathHelper.joinPaths(DATA.site);
 		// get the current user info
 		let userGet = this.props.getHomeContent(path, {
 			select: ['CreationDate', 'CreatedBy', 'Description', 'DisplayName', 'Id', 'OriginalAuthor', 'Author', 'Publisher', 'PublishDate', 'Lead', 'Body', 'RelatedContent', 'Translation', 'Actions'],
