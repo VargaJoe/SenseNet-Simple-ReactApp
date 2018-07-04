@@ -1,3 +1,6 @@
+var Promise = require('es6-promise').Promise;
+require('es6-promise').polyfill();
+
 var gulp = require('gulp');
 var sass = require('gulp-ruby-sass');
 var autoprefixer = require('gulp-autoprefixer');
