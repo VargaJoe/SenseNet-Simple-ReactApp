@@ -6,6 +6,9 @@
       "node_modules/**/*.ts"
     ]
   },
+  "jsRules": {
+    "no-empty": true
+  },
   "rules": {
         "ban": false,
         "class-name": true,
