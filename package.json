@@ -131,9 +131,7 @@
   },
   "babel": {
     "presets": [
-      "es2015",
-      "react",
-      "react-app"
+      "es2015"      
     ]
   },
   "eslintConfig": {

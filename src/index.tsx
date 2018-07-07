@@ -11,7 +11,7 @@ import { Repository }                       from '@sensenet/client-core';
 import { Reducers, Store }                  from '@sensenet/redux';
 
 // custrom  reducers  
-import user                                 from './reducers/users';
+// import user                                 from './reducers/users';
 
 import { 
     BrowserRouter
@@ -22,8 +22,7 @@ const DATA = require('./config.json');
 
 const sensenet = Reducers.sensenet;
 const myReducer = combineReducers({ 
-  sensenet, 
-  user, 
+  sensenet,  
 });
 
 const repository = new Repository ({
