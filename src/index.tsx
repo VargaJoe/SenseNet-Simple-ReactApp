@@ -40,11 +40,14 @@ const store = Store.createSensenetStore(options);
 
 ReactDOM.render(
     (
+        <div>
+            <span className="hidden">hello world!</span>
         <Provider store={store}>
             <BrowserRouter basename="/">
                     <App />
             </BrowserRouter>
         </Provider>
+        </div>
     ),
     document.getElementById('root')
 );

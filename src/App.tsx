@@ -12,12 +12,11 @@ class App extends React.Component<AppProps, any> {
         super(props);       
     }
 
-    public render() {  
-    
-    return (               
-            <Body />      
-    );
-  } 
+    public render() {      
+        return (               
+                <Body />      
+        );
+    } 
 }
 
 export default (App as any);
