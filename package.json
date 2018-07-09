@@ -131,11 +131,11 @@
   },
   "babel": {
     "presets": [
-      "env", {
+      ["env", {
         "targets": {
           "chrome": "41"
         }
-      }
+      }]
     ]
   },
   "eslintConfig": {
