@@ -19,7 +19,6 @@
     "noUnusedLocals": true
   },
   "exclude": [
-    "node_modules",
     "build",
     "scripts",
     "acceptance-tests",
