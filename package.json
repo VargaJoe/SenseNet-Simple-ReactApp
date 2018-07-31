@@ -73,7 +73,7 @@
     "start": "node scripts/start.js",
     "build": "node scripts/build.js",
     "test": "node scripts/test.js --env=jsdom",
-    "buildes5": "babel build -d build"
+    "buildes5": "node_modules/.bin/babel build -d build"
   },
   "devDependencies": {
     "@types/jest": "^22.2.3",
