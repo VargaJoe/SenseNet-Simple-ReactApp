@@ -1,6 +1,4 @@
 import 'babel-polyfill';
-import 'es5-shim';
-import 'es6-shim';
 import * as React                           from 'react';
 import * as ReactDOM                        from 'react-dom';
 import { Provider }                         from 'react-redux';
