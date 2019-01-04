@@ -172,7 +172,7 @@ class Article extends React.Component<any, any> {
 						}
 				</div>
 			)
-		);
+		)[0];
 
 		return (
 			<div>
