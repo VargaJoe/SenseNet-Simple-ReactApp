@@ -1,6 +1,6 @@
 import * as React from 'react';
 import Moment from 'react-moment';
-import { PathHelper }                       from '@sensenet/client-utils';
+// import { PathHelper }                       from '@sensenet/client-utils';
 import { connect } from 'react-redux';
 import { Actions } from '@sensenet/redux';
 import {
@@ -21,11 +21,25 @@ class Category extends React.Component<any, any> {
 		super(props);
 		this.state = {
 			isDataFetched: false,
-			articles: {},
+			articles: Array,
 			ids: {},
 			categoryName: ''			
 		};
 	}
+
+    // byName = () => {
+	// 	this.setState({
+	// 		articles: this.state.articles.map((item: any) => item).sort((a: any, b: any) => a.PublishDate < b.PublishDate)
+	// 	});
+	//  }
+
+	//  byDate = () => {
+		 
+	// 	this.setState({
+	// 		articles: this.state.articles.map((item: any) => item).sort((a: any, b: any) => a.PublishDate < b.PublishDate)
+	// 	});
+	//  }
+
 	componentWillReceiveProps(nextProps: any) {		
 		if (nextProps.match.params.categoryName !== this.props.match.params.categoryName) {
 			this._initializeComponent(nextProps.match.params.categoryName);
@@ -37,8 +51,8 @@ class Category extends React.Component<any, any> {
 	}
 	
 	_initializeComponent(categoryName: string) {
-		let articleType = PathHelper.joinPaths(process.env.REACT_APP_ARTICLE_TYPE || DATA.articleType);
-		let sitePath = PathHelper.joinPaths(process.env.REACT_APP_SITE_PATH || DATA.site);		
+		let articleType = process.env.REACT_APP_ARTICLE_TYPE || DATA.articleType;
+		let sitePath = process.env.REACT_APP_SITE || DATA.site;		
 		let path = sitePath + '/' + categoryName;
 
 		let userGet = this.props.getHomeContent(path, {
@@ -96,6 +110,12 @@ class Category extends React.Component<any, any> {
 
 		return (
 			<div className="w3-row-padding">
+				{/* <div> 
+					<button onClick={this.byName}>byName</button>
+				</div>
+				<div> 
+					<button onClick={this.byDate}>byDate</button>
+				</div> */}
 				{homePage} 
 			</div>
 		);

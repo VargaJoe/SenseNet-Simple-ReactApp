@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { PathHelper } from '@sensenet/client-utils';
+// import { PathHelper } from '@sensenet/client-utils';
 import { connect } from 'react-redux';
 import { Actions } from '@sensenet/redux';
 // import { Link } from 'react-router-dom';
@@ -24,8 +24,8 @@ class Article extends React.Component<any, any> {
 	}
 
 	componentDidMount() {
-		let articleType = PathHelper.joinPaths(process.env.REACT_APP_ARTICLE_TYPE || DATA.articleType);
-		let sitePath = PathHelper.joinPaths(process.env.REACT_APP_SITE_PATH || DATA.site);
+		let articleType = process.env.REACT_APP_ARTICLE_TYPE || DATA.articleType;
+		let sitePath = process.env.REACT_APP || DATA.site;
 		let catName = this.props.match.params.categoryName;
 		// get the current user info
 		let path = sitePath + '/' + catName;

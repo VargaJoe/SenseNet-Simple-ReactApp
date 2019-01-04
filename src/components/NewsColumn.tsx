@@ -3,11 +3,11 @@ import * as React from 'react';
 import { connect } from 'react-redux';
 import { Actions } from '@sensenet/redux';
 import Moment from 'react-moment';
-
+// import { PathHelper }                       from '@sensenet/client-utils';
 import { Folder } from '@sensenet/default-content-types';
 import { IODataParams } from '@sensenet/client-core';
 import { Link } from 'react-router-dom';
-// const DATA = require('../config.json');
+const DATA = require('../config.json');
 
 class LeisureArticle extends Folder {
 	PublishDate: Date;
@@ -96,9 +96,14 @@ class NewsColumn extends React.Component<Props, any> {
 }
 
 function showReview(repoUrl: any, key: any, article: any) {
+	// awful and hopefully temporary workaround to get category name from path
+	let sitePath = process.env.REACT_APP_SITE_PATH || DATA.sitePath;
+	let catName = article.Path.replace(sitePath + '/', '');
+	catName = catName.substr(0, catName.indexOf('/'));
+	
 	return (
 		<li key={key} className="w3-padding-16">
-			<Link className="no-score" to={'/News/' + article.Name}>		
+			<Link className="no-score" to={'/' + catName + '/' + article.Name}>		
 					<img src={repoUrl + article.Actions.find(function (obj: any) { return obj.Name === 'SOxSOImg'; }).Url} className="w3-left w3-margin-right news-img" />
 					<span className="w3-large">{article.DisplayName}</span>
 					<br/>
@@ -111,6 +116,11 @@ function showReview(repoUrl: any, key: any, article: any) {
 }
 
 function showNews(repoUrl: any, key: any, article: any) {
+	// awful and hopefully temporary workaround to get category name from path
+	let sitePath = process.env.REACT_APP_SITE_PATH || DATA.sitePath;
+	let catName = article.Path.replace(sitePath + '/', '');
+	catName = catName.substr(0, catName.indexOf('/'));
+
 	return (
 		<li key={key} className="w3-padding-16">
 			<Link className="no-score"  to={'/News/' + article.Name}>

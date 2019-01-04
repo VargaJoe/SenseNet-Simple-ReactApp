@@ -3,6 +3,7 @@
 	"menuPath" : 	"/",
 	"menuType" :	"LeisureCategory",
 	"articleType" :	"LeisureArticle",
+	"sitePath" :	"/Root/Sites/mangajanlo",
 	"home" : 		"/Ismertetők",
 	"kjk" : 		"/Jatekkonyvek",
 	"other" : 		"/miegymas",
