@@ -25,7 +25,7 @@ class Article extends React.Component<any, any> {
 
 	componentDidMount() {
 		let articleType = process.env.REACT_APP_ARTICLE_TYPE || DATA.articleType;
-		let sitePath = process.env.REACT_APP || DATA.site;
+		let sitePath = process.env.REACT_APP_SITE || DATA.site;
 		let catName = this.props.match.params.categoryName;
 		// get the current user info
 		let path = sitePath + '/' + catName;
