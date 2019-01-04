@@ -24,6 +24,7 @@ class Article extends React.Component<any, any> {
 	}
 
 	componentDidMount() {
+		let articleType = PathHelper.joinPaths(process.env.REACT_APP_ARTICLE_TYPE || DATA.articleType);
 		let sitePath = PathHelper.joinPaths(process.env.REACT_APP_SITE_PATH || DATA.site);
 		let catName = this.props.match.params.categoryName;
 		// get the current user info
@@ -33,7 +34,7 @@ class Article extends React.Component<any, any> {
 		let userGet = this.props.getHomeContent(path, {
 			select: ['CreationDate', 'CreatedBy', 'Description', 'DisplayName', 'Id', 'OriginalAuthor', 'Author', 'Publisher', 'PublishDate', 'Lead', 'Body', 'RelatedContent', 'Translation', 'Actions'],
 			expand: ['CreatedBy', 'Translation', 'RelatedContent', 'Actions'],
-			query: 'TypeIs:LeisureArticle AND Name:\'' + this.props.match.params.articleName + '\'',
+			query: 'TypeIs:' + articleType + ' AND Name:\'' + this.props.match.params.articleName + '\'',
 		});
  
 		userGet.then((result: any) => {

@@ -37,13 +37,14 @@ class Category extends React.Component<any, any> {
 	}
 	
 	_initializeComponent(categoryName: string) {
+		let articleType = PathHelper.joinPaths(process.env.REACT_APP_ARTICLE_TYPE || DATA.articleType);
 		let sitePath = PathHelper.joinPaths(process.env.REACT_APP_SITE_PATH || DATA.site);		
 		let path = sitePath + '/' + categoryName;
 
 		let userGet = this.props.getHomeContent(path, {
 			select: ['Publisher', 'Author', 'Description', 'DisplayName', 'Id', 'OriginalAuthor', 'Author', 'PublishDate', 'Index', 'Actions'],
 			expand: ['CreatedBy', 'Actions/HxHImg'],
-			query: 'TypeIs:LeisureArticle',
+			query: 'TypeIs:' + articleType,
 			orderby: [['PublishDate', 'desc'], ['Index', 'desc'], 'DisplayName'],
 			metadata: 'no'
 		} as IODataParams<LeisureArticle>);

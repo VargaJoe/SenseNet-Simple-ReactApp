@@ -2,6 +2,7 @@
 	"domain" : 		"http://project",
 	"menuPath" : 	"/",
 	"menuType" :	"LeisureCategory",
+	"articleType" :	"LeisureArticle",
 	"home" : 		"/Ismertetők",
 	"kjk" : 		"/Jatekkonyvek",
 	"other" : 		"/miegymas",
