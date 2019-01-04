@@ -1,15 +1,13 @@
 import * as React from 'react';
-// import { PathHelper } from '@sensenet/client-utils';
 import { connect } from 'react-redux';
 import { Actions } from '@sensenet/redux';
 import Moment from 'react-moment';
-// import { PathHelper }                       from '@sensenet/client-utils';
 import { Folder } from '@sensenet/default-content-types';
 import { IODataParams } from '@sensenet/client-core';
 import { Link } from 'react-router-dom';
 const DATA = require('../config.json');
 
-class LeisureArticle extends Folder {
+class CustomArticle extends Folder {
 	PublishDate: Date;
 }
 
@@ -39,8 +37,6 @@ class NewsColumn extends React.Component<Props, any> {
 	}	
 
 	componentDidMount() {
-		// no
-		// alert(this.props.name + '\r\n' + this.props.pathTo);		
 		this._initializeComponent();
 	}
 
@@ -51,7 +47,7 @@ class NewsColumn extends React.Component<Props, any> {
 			select: ['Type', 'CreationDate', 'CreatedBy', 'Description', 'DisplayName', 'Id', 'Lead', 'OriginalAuthor', 'Author', 'PublishDate', 'Index', 'Actions'],
 			expand: ['CreatedBy', 'Actions/SOxSOImg'],
 			orderby: [['PublishDate', 'desc'], ['Index', 'desc'], 'DisplayName'],
-		} as IODataParams<LeisureArticle>);
+		} as IODataParams<CustomArticle>);
 
 		itemGet.then((result: any) => {
 			console.log(result.value.entities.entities);
@@ -138,7 +134,7 @@ function showReview(repoUrl: any, key: any, article: any) {
 		siteName = siteName.substr(0, siteName.indexOf('/'));
 		let catName = article.Path.replace('/Root/Sites/' + siteName + '/', '');
 		catName = catName.substr(0, catName.indexOf('/'));
-		// catName = 'Article';
+
 		return (
 			<li key={key} className="w3-padding-16">		
 				<a className="no-score" href={'https://' + siteName + '.hu/' + catName + '/' + article.Name}>		

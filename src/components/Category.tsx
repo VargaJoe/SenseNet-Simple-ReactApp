@@ -1,6 +1,5 @@
 import * as React from 'react';
 import Moment from 'react-moment';
-// import { PathHelper }                       from '@sensenet/client-utils';
 import { connect } from 'react-redux';
 import { Actions } from '@sensenet/redux';
 import {
@@ -12,7 +11,7 @@ import { IODataParams } from '@sensenet/client-core';
 
 const DATA = require('../config.json');
 
-class LeisureArticle extends Folder {
+class CustomArticle extends Folder {
 	PublishDate: Date;
 }
 
@@ -61,7 +60,7 @@ class Category extends React.Component<any, any> {
 			query: 'TypeIs:' + articleType,
 			orderby: [['PublishDate', 'desc'], ['Index', 'desc'], 'DisplayName'],
 			metadata: 'no'
-		} as IODataParams<LeisureArticle>);
+		} as IODataParams<CustomArticle>);
 
 		userGet.then((result: any) => {
 			console.log(result.value.entities.entities);
@@ -91,7 +90,6 @@ class Category extends React.Component<any, any> {
 		const homePage = homePageIds
 			.map((key: number) =>
 				(
-					// <Link key={key} to={'/Article/' + homePageItems[key].Name}>
 					<Link key={key} to={'/' + categoryName + '/' + homePageItems[key].Name}>					
 						<div data-id={counter++} className="w3-third w3-container w3-margin-bottom">
 							<img src={this.props.repositoryUrl + homePageItems[key].Actions.find(function (obj: any) { return obj.Name === 'HxHImg'; }).Url} className="w3-hover-opacity full-width" />
@@ -132,6 +130,6 @@ const mapStateToProps = (state: any, match: any) => {
 export default withRouter(connect(
 	mapStateToProps,
 	(dispatch) => ({
-		getHomeContent: (path: string, options: any) => dispatch(Actions.requestContent<LeisureArticle>(path, options)),
+		getHomeContent: (path: string, options: any) => dispatch(Actions.requestContent<CustomArticle>(path, options)),
 	})
 )(Category as any));

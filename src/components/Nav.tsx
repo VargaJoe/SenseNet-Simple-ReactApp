@@ -1,12 +1,7 @@
 import Home from './Home';
 import Article from './Article';
-// import Reviews from './Reviews';
-// import ReviewsBio from './ReviewsBio';
-// import ReviewsAnime from './ReviewsAnime';
-// import ReviewsKJK from './ReviewsKJK';
-// import ReviewsOther from './ReviewsOther';
 import Category from './Category';
-import Missing from './Missing';
+import NoMatch from './NoMatch';
 
 const Data  = {
   public : [
@@ -26,7 +21,7 @@ const Data  = {
 									component: Home
 				},
                 {
-									component: Missing
+									component: NoMatch
 				}
       ]
 };

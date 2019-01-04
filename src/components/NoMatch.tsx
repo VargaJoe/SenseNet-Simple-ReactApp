@@ -4,7 +4,7 @@ import { Link } 							from 'react-router-dom';
 class NoMatch extends React.Component<any, any> {
 	public render () {
 		return (
-			<div className="no_mathc">
+			<div>
 				<h1>
                     404 
                 </h1>

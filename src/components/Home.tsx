@@ -10,8 +10,7 @@ import Intro from './Intro';
 import { IODataParams } from '@sensenet/client-core';
 import { GenericContent } from '@sensenet/default-content-types';
 
-// const DATA = require('../config.json');
-// import Moment from 'react-moment';
+const DATA = require('../config.json');
 class Home extends React.Component<any, any> {
 	constructor(props: any) {
 		super(props);
@@ -23,8 +22,8 @@ class Home extends React.Component<any, any> {
 	}
 
 	public componentDidMount() {
-        const colPath = '/'; // process.env.REACT_APP_COL_PATH || DATA.menuPath;
-        let colType = 'SmartFolder'; // process.env.REACT_APP_COL_TYPE || DATA.menuType;
+        const colPath = process.env.REACT_APP_NEWSCOL_PATH || DATA.newsColPath;
+        let colType = process.env.REACT_APP_NEWSCOL_TYPE || DATA.newsColType;
 
         let columns = this.props.getHomeContent(colPath, {
 			select: ['Name', 'Id', 'Path', 'Index', 'DisplayName'],
@@ -55,14 +54,11 @@ class Home extends React.Component<any, any> {
 		const columns = this.state.columns;
 		const colIds = this.state.ids;
 
-        // const menu = Object.keys(menuItems).map((key: any) =>
         const colDOM = colIds
 			.map((key: number) =>
             (      
 				<div>
-				{/* {columns[key].Name} */}
-				{/* <NewsColumn key={key} name={columns[key].DisplayName} pathTo={'/' + columns[key].Name} /> */}
-				<NewsColumn name={columns[key].DisplayName} pathTo={'/' + columns[key].Name}  />
+					<NewsColumn key={key} name={columns[key].DisplayName} pathTo={'/' + columns[key].Name}  />
 				</div>
             )
         );

@@ -66,7 +66,6 @@ class Menu extends React.Component<Props, any> {
         const menuItems = this.state.menuItems;
         const menuIds = this.state.ids;
 
-        // const menu = Object.keys(menuItems).map((key: any) =>
         const menu = menuIds
 			.map((key: number) =>
             (                
@@ -81,10 +80,9 @@ class Menu extends React.Component<Props, any> {
                         <i className="fa fa-times" />
                     </span>
                     <Link to={'/'}>
+                    {/* Logo should come from api server or not? */}
                     <img src={logo} alt="mangajánló" className="w3-round side-logo" />                    
                     <br /><br />
-                    {/* <h4><b>MangAjánló</b></h4> */}
-                    {/* <p className="w3-text-grey hidden">Template by W3.CSS</p> */}
                     </Link>
                 </div>
                 
@@ -92,7 +90,7 @@ class Menu extends React.Component<Props, any> {
                 {menu}
                 </div>
                 <div className="w3-panel w3-large">
-                    <a href={'mailto:' + process.env.REACT_APP_SITE_EMAIL}>
+                    <a href={'mailto:' + (process.env.REACT_APP_SITE_EMAIL || DATA.siteEmail)}>
                         <i className="fa fa-envelope w3-hover-opacity"  />
                     </a>
                 </div>
@@ -100,8 +98,6 @@ class Menu extends React.Component<Props, any> {
         );
     }
 }
-
-// export default Menu;
 
 const mapStateToProps = (state: any, match: any) => {
     return {

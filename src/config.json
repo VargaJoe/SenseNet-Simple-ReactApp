@@ -1,12 +1,11 @@
 {
-	"domain" : 		"http://data.localhost.hu",
+	"apiUrl" : 		"http://data.localhost.hu",
+	"articleType" :	"LeisureArticle",
 	"menuPath" : 	"/",
 	"menuType" :	"LeisureCategory",
-	"articleType" :	"LeisureArticle",
-	"sitePath" :	"/Root/Sites/localhost",
-	"home" : 		"/Ismertetők",
-	"kjk" : 		"/Jatekkonyvek",
-	"other" : 		"/miegymas",
-	"news" : 		"/news",
-	"site" :		"/"
+	"newsColPath" : "/",
+	"newsColType" : "SmartFolder",	
+	"site" :		"/",
+	"siteEmail" :	"no-reply@your.email",
+	"sitePath" :	"/Root/Sites/localhost"	
 } 
