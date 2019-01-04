@@ -34,16 +34,12 @@ class Menu extends React.Component<Props, any> {
     }
     
     public componentDidMount() {
-        const path = DATA.menu;
-        // const options = {
-        //     select: ['Name', 'IconName', 'Id', 'Path', 'Index', 'DisplayName'],
-        //     query: 'Type:GenericContent AND Hidden:0 .AUTOFILTERS:OFF'            
-        // } as IODataParams<IContent>;
-        // const users = this.props.getMenuItems(path, options);
+        const menuPath = process.env.REACT_APP_MENU_PATH || DATA.menuPath;
+        let menutType = process.env.REACT_APP_MENU_TYPE || DATA.menuType;
 
-        let menuitems = this.props.getMenuItems(path, {
+        let menuitems = this.props.getMenuItems(menuPath, {
 			select: ['Name', 'IconName', 'Id', 'Path', 'Index', 'DisplayName'],
-			query: 'Type:MenuItem AND Hidden:0 .AUTOFILTERS:OFF',
+			query: 'Type:' + menutType + ' AND Hidden:0 .AUTOFILTERS:OFF',
 			orderby: ['Index', 'DisplayName']
 		} as IODataParams<GenericContent>);
 
@@ -68,12 +64,12 @@ class Menu extends React.Component<Props, any> {
         console.log(status);
         
         const menuItems = this.state.menuItems;
-		const menuIds = this.state.ids;
+        const menuIds = this.state.ids;
 
         // const menu = Object.keys(menuItems).map((key: any) =>
         const menu = menuIds
 			.map((key: number) =>
-            (
+            (                
                 <MenuItem key={key} name={menuItems[key].DisplayName} icon={fontImportantClass + this.state.menuItems[key].IconName} pathTo={'/' + menuItems[key].Name} />
             )
         );

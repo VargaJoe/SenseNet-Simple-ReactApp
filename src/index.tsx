@@ -25,7 +25,7 @@ const myReducer = combineReducers({
 });
 
 const repository = new Repository ({
-    repositoryUrl: process.env.REACT_APP_SERVICE_URL || DATA.domain
+    repositoryUrl: process.env.REACT_APP_SERVICE_URL || DATA.domain    
 });
 const jwtService = new JwtService(repository);
 jwtService.checkForUpdate();

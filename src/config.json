@@ -1,6 +1,7 @@
 {
-	"domain" : 		"http://mangajanlo",
-	"menu" : 		"/(structure)/MainMenu",
+	"domain" : 		"http://project",
+	"menuPath" : 	"/",
+	"menuType" :	"LeisureCategory",
 	"home" : 		"/Ismertetők",
 	"kjk" : 		"/Jatekkonyvek",
 	"other" : 		"/miegymas",

@@ -24,8 +24,12 @@ class Article extends React.Component<any, any> {
 	}
 
 	componentDidMount() {
-		let path = PathHelper.joinPaths(DATA.site);
+		let sitePath = PathHelper.joinPaths(process.env.REACT_APP_SITE_PATH || DATA.site);
+		let catName = this.props.match.params.categoryName;
 		// get the current user info
+		let path = sitePath + '/' + catName;
+		// should refactor the query to handle tags as well
+
 		let userGet = this.props.getHomeContent(path, {
 			select: ['CreationDate', 'CreatedBy', 'Description', 'DisplayName', 'Id', 'OriginalAuthor', 'Author', 'Publisher', 'PublishDate', 'Lead', 'Body', 'RelatedContent', 'Translation', 'Actions'],
 			expand: ['CreatedBy', 'Translation', 'RelatedContent', 'Actions'],
