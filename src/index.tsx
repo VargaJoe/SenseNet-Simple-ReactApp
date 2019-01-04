@@ -24,8 +24,22 @@ const myReducer = combineReducers({
   sensenet,  
 });
 
+let envUrl = process.env.REACT_APP_API_URL; // 'https://data.%sitename%.hu'; 
+if (envUrl) {
+    var fullWPort = window.location.host.split(':');
+    var full = fullWPort[0];
+    // window.location.host is subdomain.domain.com
+    var parts = full.split('.');
+    // var type = parts[parts.length];
+    var domain = parts[parts.length - 1];
+    // var sub = parts[0];
+    
+    envUrl = envUrl.replace('%sitename%', domain);
+    // alert(envUrl);
+}
+
 const repository = new Repository ({
-    repositoryUrl: process.env.REACT_APP_SERVICE_URL || DATA.domain    
+    repositoryUrl: envUrl || DATA.domain 
 });
 const jwtService = new JwtService(repository);
 jwtService.checkForUpdate();

@@ -79,8 +79,7 @@ class NewsColumn extends React.Component<Props, any> {
 		const column = colIds
 			.map((key: number) =>
 			(   
-				(colItems[key].Type === 'LeisureArticle') ? showNews(this.props.repositoryUrl, key, colItems[key]) : showReview(this.props.repositoryUrl, key, colItems[key])
-				
+				(colItems[key].Path.includes('/News/')) ? showNews(this.props.repositoryUrl, key, colItems[key]) : showReview(this.props.repositoryUrl, key, colItems[key])				
 			)
 		);
 
@@ -95,29 +94,70 @@ class NewsColumn extends React.Component<Props, any> {
 	}
 }
 
+function getSitePath() {
+	let envSitePath = process.env.REACT_APP_SITE_PATH; // 'Root/Sites/%sitename%'; 
+	if (envSitePath) {
+		var fullWPort = window.location.host.split(':');
+		var full = fullWPort[0];
+		// window.location.host is subdomain.domain.com
+		var parts = full.split('.');
+		// var type = parts[parts.length];
+		var domain = parts[parts.length - 1];
+		// var sub = parts[0];
+		
+		envSitePath = envSitePath.replace('%sitename%', domain);
+		// alert(envSitePath);
+	}
+
+	return ( envSitePath || DATA.sitePath );
+}
+
 function showReview(repoUrl: any, key: any, article: any) {
 	// awful and hopefully temporary workaround to get category name from path
-	let sitePath = process.env.REACT_APP_SITE_PATH || DATA.sitePath;
-	let catName = article.Path.replace(sitePath + '/', '');
-	catName = catName.substr(0, catName.indexOf('/'));
+	let sitePath = getSitePath();
 	
-	return (
-		<li key={key} className="w3-padding-16">
-			<Link className="no-score" to={'/' + catName + '/' + article.Name}>		
-					<img src={repoUrl + article.Actions.find(function (obj: any) { return obj.Name === 'SOxSOImg'; }).Url} className="w3-left w3-margin-right news-img" />
-					<span className="w3-large">{article.DisplayName}</span>
-					<br/>
-					<span className="hidden">{article.Description}</span>
-					<span className="small hidden">{article.Author}</span>
-					<span><Moment date={article.PublishDate} format="YYYY.MM.DD." /></span>
-			</Link>
-		</li>
-	);
+	if (article.Path.startsWith(sitePath)) {
+		let catName = article.Path.replace(sitePath + '/', '');
+		catName = catName.substr(0, catName.indexOf('/'));
+	
+		return (
+			<li key={key} className="w3-padding-16">		
+				<Link className="no-score" to={'/' + catName + '/' + article.Name}>		
+						<img src={repoUrl + article.Actions.find(function (obj: any) { return obj.Name === 'SOxSOImg'; }).Url} className="w3-left w3-margin-right news-img" />
+						<span className="w3-large">{article.DisplayName}</span>
+						<br/>
+						<span className="hidden">{article.Description}</span>
+						<span className="small hidden">{article.Author}</span>
+						<span><Moment date={article.PublishDate} format="YYYY.MM.DD." /></span>
+				</Link>
+			</li>
+		);
+	} else {
+		// custom action is required for sibling site url, for now an ugly workaround
+		let siteName = article.Path.replace('/Root/Sites/', '');
+		siteName = siteName.substr(0, siteName.indexOf('/'));
+		let catName = article.Path.replace('/Root/Sites/' + siteName + '/', '');
+		catName = catName.substr(0, catName.indexOf('/'));
+		// catName = 'Article';
+		return (
+			<li key={key} className="w3-padding-16">		
+				<a className="no-score" href={'https://' + siteName + '.hu/' + catName + '/' + article.Name}>		
+						<img src={repoUrl + article.Actions.find(function (obj: any) { return obj.Name === 'SOxSOImg'; }).Url} className="w3-left w3-margin-right news-img" />
+						<span className="w3-large">{article.DisplayName}</span>
+						<br/>
+						<span className="hidden">{article.Description}</span>
+						<span className="small hidden">{article.Author}</span>
+						<span><Moment date={article.PublishDate} format="YYYY.MM.DD." /></span>
+				</a>
+			</li>
+		);
+	}	
+	
 }
 
 function showNews(repoUrl: any, key: any, article: any) {
 	// awful and hopefully temporary workaround to get category name from path
-	let sitePath = process.env.REACT_APP_SITE_PATH || DATA.sitePath;
+	let sitePath = getSitePath();
 	let catName = article.Path.replace(sitePath + '/', '');
 	catName = catName.substr(0, catName.indexOf('/'));
 

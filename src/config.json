@@ -1,9 +1,9 @@
 {
-	"domain" : 		"http://project",
+	"domain" : 		"http://data.localhost.hu",
 	"menuPath" : 	"/",
 	"menuType" :	"LeisureCategory",
 	"articleType" :	"LeisureArticle",
-	"sitePath" :	"/Root/Sites/mangajanlo",
+	"sitePath" :	"/Root/Sites/localhost",
 	"home" : 		"/Ismertetők",
 	"kjk" : 		"/Jatekkonyvek",
 	"other" : 		"/miegymas",
