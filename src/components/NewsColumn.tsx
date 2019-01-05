@@ -146,7 +146,7 @@ function showReview(repoUrl: any, key: any, article: any) {
 		let catName = article.Path.replace(remoteSitePath + '/', '');
 		catName = catName.substr(0, catName.indexOf('/'));
 		let imgRelativeUrl = article.Actions.find(function (obj: any) { return obj.Name === 'SOxSOImg'; }).Url;
-		imgRelativeUrl = imgRelativeUrl.Replace(remoteSitePath, '');
+		imgRelativeUrl = imgRelativeUrl.replace(remoteSitePath, '');
 
 		return (
 			<li key={key} className="w3-padding-16">		
