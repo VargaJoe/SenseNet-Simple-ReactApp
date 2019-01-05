@@ -142,13 +142,16 @@ function showReview(repoUrl: any, key: any, article: any) {
 		// custom action is required for sibling site url, for now an ugly workaround
 		let siteName = article.Path.replace('/Root/Sites/', '');
 		siteName = siteName.substr(0, siteName.indexOf('/'));
-		let catName = article.Path.replace('/Root/Sites/' + siteName + '/', '');
+		let remoteSitePath = '/Root/Sites/' + siteName;
+		let catName = article.Path.replace(remoteSitePath + '/', '');
 		catName = catName.substr(0, catName.indexOf('/'));
+		let imgRelativeUrl = article.Actions.find(function (obj: any) { return obj.Name === 'SOxSOImg'; }).Url;
+		imgRelativeUrl = imgRelativeUrl.Replace(remoteSitePath, '');
 
 		return (
 			<li key={key} className="w3-padding-16">		
 				<a className="no-score" href={'https://' + siteName + '.hu/' + catName + '/' + article.Name}>		
-						<img src={getRemoteApiUrl(siteName) + '/' + article.Actions.find(function (obj: any) { return obj.Name === 'SOxSOImg'; }).Url} className="w3-left w3-margin-right news-img" />
+						<img src={getRemoteApiUrl(siteName) + imgRelativeUrl} className="w3-left w3-margin-right news-img" />
 						<span className="w3-large">{article.DisplayName}</span>
 						<br/>
 						<span className="hidden">{article.Description}</span>
