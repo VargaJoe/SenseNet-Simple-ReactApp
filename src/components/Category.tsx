@@ -1,6 +1,5 @@
 import * as React from 'react';
 import Moment from 'react-moment';
-// import { PathHelper }                       from '@sensenet/client-utils';
 import { connect } from 'react-redux';
 import { Actions } from '@sensenet/redux';
 import {
@@ -12,43 +11,64 @@ import { IODataParams } from '@sensenet/client-core';
 
 const DATA = require('../config.json');
 
-class LeisureArticle extends Folder {
+class CustomArticle extends Folder {
 	PublishDate: Date;
 }
 
-class ReviewsBio extends React.Component<any, any> {
+class Category extends React.Component<any, any> {
 	constructor(props: any) {
 		super(props);
 		this.state = {
 			isDataFetched: false,
-			articles: {},
-			ids: {}
+			articles: Array,
+			ids: {},
+			categoryName: ''			
 		};
 	}
 
+    // byName = () => {
+	// 	this.setState({
+	// 		articles: this.state.articles.map((item: any) => item).sort((a: any, b: any) => a.PublishDate < b.PublishDate)
+	// 	});
+	//  }
+
+	//  byDate = () => {
+		 
+	// 	this.setState({
+	// 		articles: this.state.articles.map((item: any) => item).sort((a: any, b: any) => a.PublishDate < b.PublishDate)
+	// 	});
+	//  }
+
+	componentWillReceiveProps(nextProps: any) {		
+		if (nextProps.match.params.categoryName !== this.props.match.params.categoryName) {
+			this._initializeComponent(nextProps.match.params.categoryName);
+		}						
+	}	
+
 	componentDidMount() {
-		// let path = PathHelper.joinPaths(DATA.home);
-		let path = DATA.home;
-		// get the current user info
-		// let userGet = this.props.getHomeContent(path, {
-		// 	select : ['Publisher', 'Author', 'Description', 'DisplayName', 'Id', 'OriginalAuthor', 'Author', 'PublishDate'],
-		// 	filter : 'isof(\'LeisureArticle\')',
-		// 	orderby : ['PublishDate', 'desc']
-		// } as IODataParams<LeisureArticle>);
+		this._initializeComponent(this.props.match.params.categoryName);
+	}
+	
+	_initializeComponent(categoryName: string) {
+		let articleType = process.env.REACT_APP_ARTICLE_TYPE || DATA.articleType;
+		let sitePath = process.env.REACT_APP_SITE || DATA.site;		
+		let path = sitePath + '/' + categoryName;
 
 		let userGet = this.props.getHomeContent(path, {
 			select: ['Publisher', 'Author', 'Description', 'DisplayName', 'Id', 'OriginalAuthor', 'Author', 'PublishDate', 'Index', 'Actions'],
-			expand: ['CreatedBy', 'Actions'],
-			query: 'TypeIs:(LeisureMangakaBio)',
-			orderby: [['PublishDate', 'desc'], ['Index', 'desc'], 'DisplayName']
-		} as IODataParams<LeisureArticle>);
+			expand: ['CreatedBy', 'Actions/HxHImg'],
+			query: 'TypeIs:' + articleType,
+			orderby: [['PublishDate', 'desc'], ['Index', 'desc'], 'DisplayName'],
+			metadata: 'no'
+		} as IODataParams<CustomArticle>);
 
 		userGet.then((result: any) => {
 			console.log(result.value.entities.entities);
 			this.setState({
 				isDataFetched: true,
 				articles: result.value.entities.entities,
-				ids: result.value.result
+				ids: result.value.result,
+				categoryName: categoryName
 			});
 		});
 
@@ -65,11 +85,12 @@ class ReviewsBio extends React.Component<any, any> {
 
 		let homePageItems = this.state.articles;
 		let homePageIds = this.state.ids;
+		let categoryName = this.state.categoryName;
 		let counter = 1;
 		const homePage = homePageIds
 			.map((key: number) =>
 				(
-					<Link key={key} to={'/Article/' + homePageItems[key].Name}>					
+					<Link key={key} to={'/' + categoryName + '/' + homePageItems[key].Name}>					
 						<div data-id={counter++} className="w3-third w3-container w3-margin-bottom">
 							<img src={this.props.repositoryUrl + homePageItems[key].Actions.find(function (obj: any) { return obj.Name === 'HxHImg'; }).Url} className="w3-hover-opacity full-width" />
 							<div className="w3-container w3-white">
@@ -87,7 +108,13 @@ class ReviewsBio extends React.Component<any, any> {
 
 		return (
 			<div className="w3-row-padding">
-				{homePage}
+				{/* <div> 
+					<button onClick={this.byName}>byName</button>
+				</div>
+				<div> 
+					<button onClick={this.byDate}>byDate</button>
+				</div> */}
+				{homePage} 
 			</div>
 		);
 	}
@@ -103,6 +130,6 @@ const mapStateToProps = (state: any, match: any) => {
 export default withRouter(connect(
 	mapStateToProps,
 	(dispatch) => ({
-		getHomeContent: (path: string, options: any) => dispatch(Actions.requestContent<LeisureArticle>(path, options)),
+		getHomeContent: (path: string, options: any) => dispatch(Actions.requestContent<CustomArticle>(path, options)),
 	})
-)(ReviewsBio as any));
+)(Category as any));

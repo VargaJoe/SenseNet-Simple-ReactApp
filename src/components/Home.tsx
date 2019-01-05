@@ -4,39 +4,71 @@ import { Actions } from '@sensenet/redux';
 import {
 	withRouter
 } from 'react-router-dom';
-import LatestManganime from './LatestManganime';
-import LatestOther from './LatestOther';
-import LatestNews from './LatestNews';
-import Intro from './Intro';
 
-// import Moment from 'react-moment';
+import NewsColumn from './NewsColumn';
+import Intro from './Intro';
+import { IODataParams } from '@sensenet/client-core';
+import { GenericContent } from '@sensenet/default-content-types';
+
+const DATA = require('../config.json');
 class Home extends React.Component<any, any> {
 	constructor(props: any) {
 		super(props);
 		this.state = {
 			isDataFetched: false,
-			articles: {}
+			columns: {},
+			ids: {}		
 		};
 	}
 
+	public componentDidMount() {
+        const colPath = process.env.REACT_APP_NEWSCOL_PATH || DATA.newsColPath;
+        let colType = process.env.REACT_APP_NEWSCOL_TYPE || DATA.newsColType;
+
+        let columns = this.props.getHomeContent(colPath, {
+			select: ['Name', 'Id', 'Path', 'Index', 'DisplayName'],
+			query: 'Type:' + colType + ' AND Hidden:0 .AUTOFILTERS:OFF',
+			orderby: ['Index', 'DisplayName']
+		} as IODataParams<GenericContent>);
+
+        columns.then((result: any) => {
+            console.log(result.value.entities.entities);
+            this.setState({
+                isDataFetched: true,
+				columns: result.value.entities.entities,
+				ids: result.value.result
+            });
+        });
+
+        columns.catch((err: any) => {
+            console.log(err);
+        });
+    }
+
 	public render() {
+		if (!this.state.isDataFetched) {
+            return null;
+        }
+		console.log(status);
+		
+		const columns = this.state.columns;
+		const colIds = this.state.ids;
+
+        const colDOM = colIds
+			.map((key: number) =>
+            (      
+				<div>
+					<NewsColumn key={key} name={columns[key].DisplayName} pathTo={'/' + columns[key].Name}  />
+				</div>
+            )
+        );
+
 		return (
 			<div>
 			<Intro />
 			<div className="w3-row-padding">
 				<div className="w3-container w3-padding-large">
-					<div className="w3-third">
-					<h3>LEGFRISSEBB MANGA/ANIME</h3>					
-						<LatestManganime />
-					</div>
-					<div className="w3-third">
-						<h3>HÍREK</h3>
-						<LatestNews />
-					</div>
-					<div className="w3-third">
-						<h3>LEGFRISSEBB MIEGYMÁS</h3>
-						<LatestOther />
-					</div>		
+					{colDOM}
 				</div>
 			</div>
 		</div>

@@ -1,9 +1,11 @@
 {
-	"domain" : 		"http://mangajanlo",
-	"menu" : 		"/(structure)/MainMenu",
-	"home" : 		"/Ismertetők",
-	"kjk" : 		"/Jatekkonyvek",
-	"other" : 		"/miegymas",
-	"news" : 		"/news",
-	"site" :		"/"
+	"apiUrl" : 		"http://data.localhost.hu",
+	"articleType" :	"LeisureArticle",
+	"menuPath" : 	"/",
+	"menuType" :	"LeisureCategory",
+	"newsColPath" : "/",
+	"newsColType" : "SmartFolder",	
+	"site" :		"/",
+	"siteEmail" :	"no-reply@your.email",
+	"sitePath" :	"/Root/Sites/localhost"	
 } 

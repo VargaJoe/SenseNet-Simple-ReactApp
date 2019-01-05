@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { PathHelper } from '@sensenet/client-utils';
+// import { PathHelper } from '@sensenet/client-utils';
 import { connect } from 'react-redux';
 import { Actions } from '@sensenet/redux';
 // import { Link } from 'react-router-dom';
@@ -24,12 +24,17 @@ class Article extends React.Component<any, any> {
 	}
 
 	componentDidMount() {
-		let path = PathHelper.joinPaths(DATA.site);
+		let articleType = process.env.REACT_APP_ARTICLE_TYPE || DATA.articleType;
+		let sitePath = process.env.REACT_APP_SITE || DATA.site;
+		let catName = this.props.match.params.categoryName;
 		// get the current user info
+		let path = sitePath + '/' + catName;
+		// should refactor the query to handle tags as well
+
 		let userGet = this.props.getHomeContent(path, {
 			select: ['CreationDate', 'CreatedBy', 'Description', 'DisplayName', 'Id', 'OriginalAuthor', 'Author', 'Publisher', 'PublishDate', 'Lead', 'Body', 'RelatedContent', 'Translation', 'Actions'],
 			expand: ['CreatedBy', 'Translation', 'RelatedContent', 'Actions'],
-			query: 'TypeIs:LeisureArticle AND Name:\'' + this.props.match.params.articleName + '\'',
+			query: 'TypeIs:' + articleType + ' AND Name:\'' + this.props.match.params.articleName + '\'',
 		});
  
 		userGet.then((result: any) => {

@@ -10,12 +10,13 @@ import { GenericContent } from '@sensenet/default-content-types';
 
 const DATA = require('../config.json');
 const fontImportantClass = ' fi ';
-const logo = require('../images/logo.png');
+// const logo = require('../images/logo.png');
 
 interface Props {
     menuTrigger: string;
     getMenuItems: any;
     openMenu: Function;
+    repositoryUrl: string;    
 }
 
 class Menu extends React.Component<Props, any> {
@@ -34,16 +35,12 @@ class Menu extends React.Component<Props, any> {
     }
     
     public componentDidMount() {
-        const path = DATA.menu;
-        // const options = {
-        //     select: ['Name', 'IconName', 'Id', 'Path', 'Index', 'DisplayName'],
-        //     query: 'Type:GenericContent AND Hidden:0 .AUTOFILTERS:OFF'            
-        // } as IODataParams<IContent>;
-        // const users = this.props.getMenuItems(path, options);
+        const menuPath = process.env.REACT_APP_MENU_PATH || DATA.menuPath;
+        let menutType = process.env.REACT_APP_MENU_TYPE || DATA.menuType;
 
-        let menuitems = this.props.getMenuItems(path, {
+        let menuitems = this.props.getMenuItems(menuPath, {
 			select: ['Name', 'IconName', 'Id', 'Path', 'Index', 'DisplayName'],
-			query: 'Type:MenuItem AND Hidden:0 .AUTOFILTERS:OFF',
+			query: 'Type:' + menutType + ' AND Hidden:0 .AUTOFILTERS:OFF',
 			orderby: ['Index', 'DisplayName']
 		} as IODataParams<GenericContent>);
 
@@ -68,15 +65,15 @@ class Menu extends React.Component<Props, any> {
         console.log(status);
         
         const menuItems = this.state.menuItems;
-		const menuIds = this.state.ids;
+        const menuIds = this.state.ids;
 
-        // const menu = Object.keys(menuItems).map((key: any) =>
         const menu = menuIds
 			.map((key: number) =>
-            (
+            (                
                 <MenuItem key={key} name={menuItems[key].DisplayName} icon={fontImportantClass + this.state.menuItems[key].IconName} pathTo={'/' + menuItems[key].Name} />
             )
         );
+        
         return (
             <nav className={'w3-sidebar w3-white w3-animate-left ' + this.props.menuTrigger} id="mySidebar"><br/>
                 
@@ -85,10 +82,9 @@ class Menu extends React.Component<Props, any> {
                         <i className="fa fa-times" />
                     </span>
                     <Link to={'/'}>
-                    <img src={logo} alt="mangajánló" className="w3-round side-logo" />                    
+                    {/* Logo should come from api server or not? */}
+                    <img src={this.props.repositoryUrl + '/(structure)/Site/logo.png'} alt="mangajánló" className="w3-round side-logo"/>
                     <br /><br />
-                    {/* <h4><b>MangAjánló</b></h4> */}
-                    {/* <p className="w3-text-grey hidden">Template by W3.CSS</p> */}
                     </Link>
                 </div>
                 
@@ -96,7 +92,7 @@ class Menu extends React.Component<Props, any> {
                 {menu}
                 </div>
                 <div className="w3-panel w3-large">
-                    <a href={'mailto:' + process.env.REACT_APP_SITE_EMAIL}>
+                    <a href={'mailto:' + (process.env.REACT_APP_SITE_EMAIL || DATA.siteEmail)}>
                         <i className="fa fa-envelope w3-hover-opacity"  />
                     </a>
                 </div>
@@ -105,12 +101,11 @@ class Menu extends React.Component<Props, any> {
     }
 }
 
-// export default Menu;
-
 const mapStateToProps = (state: any, match: any) => {
-    return {
-        
-    };
+	return {
+		userName: state.sensenet.session.user.userName,
+		repositoryUrl: state.sensenet.session.repository.repositoryUrl,
+	};
 };
 
 export default connect(
