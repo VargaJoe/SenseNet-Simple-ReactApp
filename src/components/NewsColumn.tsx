@@ -108,6 +108,16 @@ function getSitePath() {
 	return ( envSitePath || DATA.sitePath );
 }
 
+function getRemoteApiUrl(siteName: string) {
+	let envApiUrl = process.env.REACT_APP_API_URL; // 'https://data.%sitename%.hu'; 
+	
+	if (envApiUrl) {
+		envApiUrl = envApiUrl.replace('%sitename%', siteName);
+	}
+	
+	return envApiUrl || DATA.apiUrl;
+}
+
 function showReview(repoUrl: any, key: any, article: any) {
 	// awful and hopefully temporary workaround to get category name from path
 	let sitePath = getSitePath();
@@ -138,7 +148,7 @@ function showReview(repoUrl: any, key: any, article: any) {
 		return (
 			<li key={key} className="w3-padding-16">		
 				<a className="no-score" href={'https://' + siteName + '.hu/' + catName + '/' + article.Name}>		
-						<img src={repoUrl + article.Actions.find(function (obj: any) { return obj.Name === 'SOxSOImg'; }).Url} className="w3-left w3-margin-right news-img" />
+						<img src={getRemoteApiUrl(siteName) + '/' + article.Actions.find(function (obj: any) { return obj.Name === 'SOxSOImg'; }).Url} className="w3-left w3-margin-right news-img" />
 						<span className="w3-large">{article.DisplayName}</span>
 						<br/>
 						<span className="hidden">{article.Description}</span>
