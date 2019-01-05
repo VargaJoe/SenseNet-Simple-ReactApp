@@ -10,12 +10,13 @@ import { GenericContent } from '@sensenet/default-content-types';
 
 const DATA = require('../config.json');
 const fontImportantClass = ' fi ';
-const logo = require('../images/logo.png');
+// const logo = require('../images/logo.png');
 
 interface Props {
     menuTrigger: string;
     getMenuItems: any;
     openMenu: Function;
+    repositoryUrl: string;    
 }
 
 class Menu extends React.Component<Props, any> {
@@ -72,6 +73,7 @@ class Menu extends React.Component<Props, any> {
                 <MenuItem key={key} name={menuItems[key].DisplayName} icon={fontImportantClass + this.state.menuItems[key].IconName} pathTo={'/' + menuItems[key].Name} />
             )
         );
+        
         return (
             <nav className={'w3-sidebar w3-white w3-animate-left ' + this.props.menuTrigger} id="mySidebar"><br/>
                 
@@ -81,7 +83,7 @@ class Menu extends React.Component<Props, any> {
                     </span>
                     <Link to={'/'}>
                     {/* Logo should come from api server or not? */}
-                    <img src={logo} alt="mangajánló" className="w3-round side-logo" />                    
+                    <img src={this.props.repositoryUrl + '/(structure)/Site/logo.png'} alt="mangajánló" className="w3-round side-logo"/>
                     <br /><br />
                     </Link>
                 </div>
@@ -100,9 +102,10 @@ class Menu extends React.Component<Props, any> {
 }
 
 const mapStateToProps = (state: any, match: any) => {
-    return {
-        
-    };
+	return {
+		userName: state.sensenet.session.user.userName,
+		repositoryUrl: state.sensenet.session.repository.repositoryUrl,
+	};
 };
 
 export default connect(
