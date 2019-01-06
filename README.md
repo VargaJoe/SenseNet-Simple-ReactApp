@@ -27,6 +27,8 @@ The app will query "menuType" items from sensenet repository under and show them
 
 # Config
 
+under .\src\config.json
+
 	apiUrl : give your sensenet site url here
 	articleType :	this is the content type of your Content to show as "article"
 	menuPath : 	relative path of the container Content of menu items (aka Category)
