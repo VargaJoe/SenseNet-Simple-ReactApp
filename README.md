@@ -14,6 +14,7 @@ There is no user handling and login.
 - you create your "articles" under the categories 
 - category/menu items has these fields: 
 - article type has these fields: Lead, Body, Author, Publisher, PublishDate and a sensenet actions called as Cover, HxHImg and SOxSOImg to show images (these can be created easily with ImgResizeApplication)
+- you have to put your site logo as "logo.png" in sensenet repoitory under your site, eg /Root/Sites/yoursite/(structure)/Site/logo.png
 
 # How to test
 
