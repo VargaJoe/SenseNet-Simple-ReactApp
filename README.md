@@ -13,7 +13,7 @@ There is no user handling and login.
 - you create categories in your repository with the type you set in the config (all items with this type will show on the menu)
 - you create your "articles" under the categories 
 - category/menu items has these fields: 
-- article type has these fields: Lead, Body, Author, Publisher, PublishDate and a sensenet action called as Cover, HxHImg and SOxSOImg (these can be created easily with ImgResizeApplication)
+- article type has these fields: Lead, Body, Author, Publisher, PublishDate and a sensenet actions called as Cover, HxHImg and SOxSOImg to show images (these can be created easily with ImgResizeApplication)
 
 # How to test
 
