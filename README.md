@@ -15,7 +15,7 @@ There is no user handling and login.
 - category/menu items has these fields: 
 - article type has these fields: Lead, Body, Author, Publisher, PublishDate and a sensenet action called as Cover, HxHImg and SOxSOImg (these can be created easily with ImgResizeApplication)
 
-# How it works
+# How to test
 
 - Download the package to a folder
 - set the config according your sensenet repository
