@@ -52,7 +52,8 @@ class Category extends React.Component<any, any> {
 	_initializeComponent(categoryName: string) {
 		let articleType = process.env.REACT_APP_ARTICLE_TYPE || DATA.articleType;
 		let sitePath = process.env.REACT_APP_SITE || DATA.site;		
-		let path = sitePath + '/' + categoryName;
+		let baseCatcontainerPath = 'infos/';
+		let path = sitePath + '/' + baseCatcontainerPath + categoryName;
 
 		let userGet = this.props.getHomeContent(path, {
 			select: ['Publisher', 'Author', 'Description', 'DisplayName', 'Id', 'OriginalAuthor', 'Author', 'PublishDate', 'Index', 'Actions'],
@@ -87,12 +88,13 @@ class Category extends React.Component<any, any> {
 		let homePageIds = this.state.ids;
 		let categoryName = this.state.categoryName;
 		let counter = 1;
+
 		const homePage = homePageIds
 			.map((key: number) =>
 				(
 					<Link key={key} to={'/' + categoryName + '/' + homePageItems[key].Name}>					
 						<div data-id={counter++} className="w3-third w3-container w3-margin-bottom">
-							<img src={this.props.repositoryUrl + homePageItems[key].Actions.find(function (obj: any) { return obj.Name === 'HxHImg'; }).Url} className="w3-hover-opacity full-width" />
+							<img src={this.props.repositoryUrl + this.getArticleImage(homePageItems[key])} className="w3-hover-opacity full-width" />
 							<div className="w3-container w3-white">
 								<p><b>{homePageItems[key].DisplayName}</b></p>
 								<p className="hidden">{homePageItems[key].Description}</p>
@@ -117,6 +119,14 @@ class Category extends React.Component<any, any> {
 				{homePage} 
 			</div>
 		);
+	}
+	getArticleImage(article: any): any {
+		let articleImageObj = article.Actions.find(function (obj: any) { return obj.Name === 'HxHImg'; });
+		let articleImage = '';
+		if (articleImageObj) {
+			articleImage = articleImageObj.Url;
+		}
+		return articleImage;
 	}
 }
 

@@ -1,11 +1,16 @@
 {
-	"apiUrl" : 		"http://data.localhost.hu",
-	"articleType" :	"LeisureArticle",
-	"menuPath" : 	"/",
-	"menuType" :	"LeisureCategory",
+	"apiUrl" : 		"https://manatee.sensenet.com",
+	"articleType" :	"Article",
+	"menuPath" : 	"/infos",
+	"menuType" :	"Folder",
 	"newsColPath" : "/",
 	"newsColType" : "SmartFolder",	
 	"site" :		"/",
 	"siteEmail" :	"no-reply@your.email",
-	"sitePath" :	"/Root/Sites/localhost"	
+	"sitePath" :	"/Root/Sites/Default_Site",
+	"siteTitle": "Your title",
+	"siteLogo": "logo Path",
+	"siteCaption": "intro title",
+	"siteLead": "introduction text or path?",
+	"dateField": "fieldname"
 } 

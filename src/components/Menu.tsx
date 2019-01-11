@@ -83,7 +83,7 @@ class Menu extends React.Component<Props, any> {
                     </span>
                     <Link to={'/'}>
                     {/* Logo should come from api server or not? */}
-                    <img src={this.props.repositoryUrl + '/(structure)/Site/logo.png'} alt="mangajánló" className="w3-round side-logo"/>
+                    <img src={this.props.repositoryUrl + '/(structure)/Site/logo.png'} alt="site title" className="w3-round side-logo"/>
                     <br /><br />
                     </Link>
                 </div>

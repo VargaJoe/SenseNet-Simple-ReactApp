@@ -34,7 +34,7 @@ class Header extends React.Component<Props, any> {
 				{/* <a href="#"><img src="/w3images/avatar_g2.jpg" className="w3-circle w3-right w3-margin w3-hide-large w3-hover-opacity" /></a> */}
 				<span className="w3-button w3-hide-large w3-xxlarge w3-hover-text-grey" onClick={this.clickHandler} ><i className="fa fa-bars" /></span>
 				<div className="w3-container">
-					<h1><b>PlasticE manga ismertetői... és miegymás</b></h1>
+					<h1><b>Title</b></h1>
 					{/* <div className="w3-section w3-bottombar w3-padding-16">
 						<span className="w3-margin-right">Filter:</span>
 						<AllButton/>
