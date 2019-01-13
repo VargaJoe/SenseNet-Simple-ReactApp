@@ -1,5 +1,6 @@
 import * as React from 'react';
 // import { Route } from 'react-router-dom';
+const DATA = require('../config.json');
 
 // const AllButton = () => (
 // 	<Route render={({ history}) => (
@@ -27,14 +28,16 @@ class Header extends React.Component<Props, any> {
 	clickHandler = () => {
 		this.props.openMenu();
 	}
-	
+
 	public render() {
+		let siteTitle = process.env.REACT_APP_SITE_TITLE || DATA.siteTitle;
+
 		return (
 			<header id="portfolio">
 				{/* <a href="#"><img src="/w3images/avatar_g2.jpg" className="w3-circle w3-right w3-margin w3-hide-large w3-hover-opacity" /></a> */}
 				<span className="w3-button w3-hide-large w3-xxlarge w3-hover-text-grey" onClick={this.clickHandler} ><i className="fa fa-bars" /></span>
 				<div className="w3-container">
-					<h1><b>Title</b></h1>
+					<h1><b>{siteTitle}</b></h1>
 					{/* <div className="w3-section w3-bottombar w3-padding-16">
 						<span className="w3-margin-right">Filter:</span>
 						<AllButton/>

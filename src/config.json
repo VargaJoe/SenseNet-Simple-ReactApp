@@ -8,9 +8,10 @@
 	"site" :		"/",
 	"siteEmail" :	"no-reply@your.email",
 	"sitePath" :	"/Root/Sites/Default_Site",
-	"siteTitle": "Your title",
-	"siteLogo": "logo Path",
-	"siteCaption": "intro title",
-	"siteLead": "introduction text or path?",
-	"dateField": "fieldname"
+	"siteTitle": 	"sensenet features",
+	"siteLogo": 	"/Root/Skins/sensenet/images/snlogo.png",
+	"siteWelcome": 	"/infos/features/workspacesinfo",
+	"siteCaption": 	"intro title",
+	"siteLead": 	"Your introduction text.",
+	"dateField": 	"fieldname"
 } 

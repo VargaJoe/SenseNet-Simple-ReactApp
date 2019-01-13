@@ -6,7 +6,6 @@ import { Actions } from '@sensenet/redux';
 import Moment from 'react-moment';
 
 const DATA = require('../config.json');
-// const defaultImage = require('../images/logo.png');
 
 class Article extends React.Component<any, any> {
 	img: HTMLImageElement | null;

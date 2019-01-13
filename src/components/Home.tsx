@@ -58,10 +58,12 @@ class Home extends React.Component<any, any> {
 			.map((key: number) =>
             (      
 				<div>
-					<NewsColumn key={key} name={columns[key].DisplayName} pathTo={'/' + columns[key].Name}  />
+					<NewsColumn key={'menu' + key} name={columns[key].DisplayName} pathTo={'/' + columns[key].Name}  />
 				</div>
             )
-        );
+		);
+		
+		document.title = process.env.REACT_APP_SITE_TITLE || DATA.siteTitle;
 
 		return (
 			<div>
