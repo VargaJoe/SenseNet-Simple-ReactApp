@@ -75,7 +75,7 @@ class NewsColumn extends React.Component<Props, any> {
 		const column = colIds
 			.map((key: number) =>
 			(   
-				(colItems[key].Path.includes('/News/')) ? showNews(this.props.repositoryUrl, key, colItems[key]) : showReview(this.props.repositoryUrl, key, colItems[key])				
+				(false && colItems[key].Path.includes('/News/')) ? showNews(this.props.repositoryUrl, key, colItems[key]) : showReview(this.props.repositoryUrl, key, colItems[key])
 			)
 		);
 
@@ -90,7 +90,7 @@ class NewsColumn extends React.Component<Props, any> {
 	}
 }
 
-function getSitePath() {
+function getDefaultSitePath() {
 	let envSitePath = process.env.REACT_APP_SITE_PATH; // 'Root/Sites/%sitename%'; 
 	if (envSitePath) {
 		var fullWPort = window.location.host.split(':');
@@ -108,55 +108,89 @@ function getSitePath() {
 	return ( envSitePath || DATA.sitePath );
 }
 
-function getRemoteApiUrl(siteName: string) {
-	let envApiUrl = process.env.REACT_APP_API_URL; // 'https://data.%sitename%.hu'; 
+function getRemoteApiUrl(sitePath: string) {
+	let envApiUrl = process.env.REACT_APP_API_URL || DATA.apiUrl; // 'https://data.%sitename%.hu'; 
 	
+	let siteName = sitePath.substring(sitePath.lastIndexOf('/') + 1);
+
 	if (envApiUrl) {
 		envApiUrl = envApiUrl.replace('%sitename%', siteName);
 	}
 	
-	return envApiUrl || DATA.apiUrl;
+	return envApiUrl ;
 }
+
+function getCategoryName(articlePath: string, sitePath: string): string {
+	let catName = articlePath.replace(sitePath + '/', '');
+	catName = catName.substr(0, catName.indexOf('/'));
+	return catName;
+}
+
+function getSitePath(articlePath: string): string {
+	let siteName = articlePath.replace('/Root/Sites/', '');
+	siteName = siteName.substr(0, siteName.indexOf('/'));
+	let remoteSitePath = '/Root/Sites/' + siteName;
+	return remoteSitePath;
+}
+
+function getImage(sitePath: string, article: any) {
+	let imageAction = article.Actions.find(function (obj: any) { return obj.Name === 'SOxSOImg'; });
+	console.log(imageAction);
+	if (imageAction === undefined) {
+		return '';
+	}
+
+	let imagePath = imageAction.Url;
+	if (imagePath.startsWith(sitePath)) {
+		imagePath = imagePath.replace(sitePath, '');		
+	}
+
+	imagePath = getRemoteApiUrl(sitePath) + imagePath;
+
+	let image = (
+		<img src={imagePath} className="w3-left w3-margin-right news-img" onError={hideBrokenImg} />
+	);
+
+	return image;
+}
+
+function hideBrokenImg(ev: any) {
+	ev.target.className = 'hidden';
+  }
 
 function showReview(repoUrl: any, key: any, article: any) {
 	// awful and hopefully temporary workaround to get category name from path
-	let sitePath = getSitePath();
-	
-	if (article.Path.startsWith(sitePath)) {
-		let catName = article.Path.replace(sitePath + '/', '');
-		catName = catName.substr(0, catName.indexOf('/'));
-	
+	let defaultSitePath = getDefaultSitePath();
+	let articleSitePath = getSitePath(article.Path);
+	let catName = getCategoryName(article.Path, articleSitePath);
+	let articleSiteName = articleSitePath.substring(articleSitePath.lastIndexOf('/') + 1);
+	let image = getImage(articleSitePath, article);
+
+	let innerHtml = (
+		<div>
+			{image}
+			<span className="w3-large">{article.DisplayName}</span>
+			<br/>
+			<span className="hidden">{article.Description}</span>
+			<div className="small">{article.Lead}</div>
+			<span className="small hidden">{article.Author}</span>
+			<span><Moment date={article.PublishDate} format="YYYY.MM.DD." /></span>
+		</div>
+	);
+
+	if (article.Path.startsWith(defaultSitePath)) {
 		return (
 			<li key={key} className="w3-padding-16">		
-				<Link className="no-score" to={'/' + catName + '/' + article.Name}>		
-						<img src={repoUrl + article.Actions.find(function (obj: any) { return obj.Name === 'SOxSOImg'; }).Url} className="w3-left w3-margin-right news-img" />
-						<span className="w3-large">{article.DisplayName}</span>
-						<br/>
-						<span className="hidden">{article.Description}</span>
-						<span className="small hidden">{article.Author}</span>
-						<span><Moment date={article.PublishDate} format="YYYY.MM.DD." /></span>
+				<Link className="no-score" to={'/' + catName + '/' + article.Name}>	
+						{innerHtml}
 				</Link>
 			</li>
 		);
 	} else {
-		// custom action is required for sibling site url, for now an ugly workaround
-		let siteName = article.Path.replace('/Root/Sites/', '');
-		siteName = siteName.substr(0, siteName.indexOf('/'));
-		let remoteSitePath = '/Root/Sites/' + siteName;
-		let catName = article.Path.replace(remoteSitePath + '/', '');
-		catName = catName.substr(0, catName.indexOf('/'));
-		let imgRelativeUrl = article.Actions.find(function (obj: any) { return obj.Name === 'SOxSOImg'; }).Url;
-		imgRelativeUrl = imgRelativeUrl.replace(remoteSitePath, '');
-
 		return (
 			<li key={key} className="w3-padding-16">		
-				<a className="no-score" href={'https://' + siteName + '.hu/' + catName + '/' + article.Name}>		
-						<img src={getRemoteApiUrl(siteName) + imgRelativeUrl} className="w3-left w3-margin-right news-img" />
-						<span className="w3-large">{article.DisplayName}</span>
-						<br/>
-						<span className="hidden">{article.Description}</span>
-						<span className="small hidden">{article.Author}</span>
-						<span><Moment date={article.PublishDate} format="YYYY.MM.DD." /></span>
+				<a className="no-score" href={'https://' + articleSiteName + '.hu/' + catName + '/' + article.Name}>		
+						{innerHtml}
 				</a>
 			</li>
 		);
@@ -166,7 +200,7 @@ function showReview(repoUrl: any, key: any, article: any) {
 
 function showNews(repoUrl: any, key: any, article: any) {
 	// awful and hopefully temporary workaround to get category name from path
-	let sitePath = getSitePath();
+	let sitePath = getSitePath(article.Path);
 	let catName = article.Path.replace(sitePath + '/', '');
 	catName = catName.substr(0, catName.indexOf('/'));
 
