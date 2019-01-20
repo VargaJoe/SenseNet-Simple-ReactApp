@@ -57,11 +57,11 @@ class Home extends React.Component<any, any> {
         const colDOM = colIds
 			.map((key: number) =>
             (      
-				<div>
-					<NewsColumn key={key} name={columns[key].DisplayName} pathTo={'/' + columns[key].Name}  />
-				</div>
+					<NewsColumn key={'menu' + key} name={columns[key].DisplayName} pathTo={'/' + columns[key].Name}  />
             )
-        );
+		);
+		
+		document.title = process.env.REACT_APP_SITE_TITLE || DATA.siteTitle;
 
 		return (
 			<div>
@@ -77,6 +77,7 @@ class Home extends React.Component<any, any> {
 }
 
 const mapStateToProps = (state: any, match: any) => {
+	// console.log(state.sensenet);
 	return {
 		userName: state.sensenet.session.user.userName,
 	};

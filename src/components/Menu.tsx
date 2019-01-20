@@ -4,9 +4,10 @@ import {
 import * as React from 'react';
 import { connect } from 'react-redux';
 import MenuItem from './MenuItem';
-import { Link } from 'react-router-dom';
+
 import { IODataParams } from '@sensenet/client-core';
 import { GenericContent } from '@sensenet/default-content-types';
+import Logo 				from './Logo';
 
 const DATA = require('../config.json');
 const fontImportantClass = ' fi ';
@@ -81,11 +82,8 @@ class Menu extends React.Component<Props, any> {
                     <span className="w3-button w3-hide-large w3-xxlarge w3-hover-text-grey" onClick={this.clickHandler} title="close menu">
                         <i className="fa fa-times" />
                     </span>
-                    <Link to={'/'}>
-                    {/* Logo should come from api server or not? */}
-                    <img src={this.props.repositoryUrl + '/(structure)/Site/logo.png'} alt="mangajánló" className="w3-round side-logo"/>
-                    <br /><br />
-                    </Link>
+                   <Logo/>
+                   <br /><br />
                 </div>
                 
                 <div className="w3-bar-block">

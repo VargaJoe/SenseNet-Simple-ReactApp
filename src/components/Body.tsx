@@ -28,7 +28,7 @@ class Body extends React.Component<any, any> {
 			open: menuState
 		});
 	}
-
+	
 	render() {
 		return (
 				<div>

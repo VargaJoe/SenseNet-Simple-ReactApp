@@ -6,7 +6,6 @@ import { Actions } from '@sensenet/redux';
 import Moment from 'react-moment';
 
 const DATA = require('../config.json');
-// const defaultImage = require('../images/logo.png');
 
 class Article extends React.Component<any, any> {
 	img: HTMLImageElement | null;
@@ -24,7 +23,7 @@ class Article extends React.Component<any, any> {
 	}
 
 	componentDidMount() {
-		let articleType = process.env.REACT_APP_ARTICLE_TYPE || DATA.articleType;
+		// let articleType = process.env.REACT_APP_ARTICLE_TYPE || DATA.articleType;
 		let sitePath = process.env.REACT_APP_SITE || DATA.site;
 		let catName = this.props.match.params.categoryName;
 		// get the current user info
@@ -34,7 +33,8 @@ class Article extends React.Component<any, any> {
 		let userGet = this.props.getHomeContent(path, {
 			select: ['CreationDate', 'CreatedBy', 'Description', 'DisplayName', 'Id', 'OriginalAuthor', 'Author', 'Publisher', 'PublishDate', 'Lead', 'Body', 'RelatedContent', 'Translation', 'Actions'],
 			expand: ['CreatedBy', 'Translation', 'RelatedContent', 'Actions'],
-			query: 'TypeIs:' + articleType + ' AND Name:\'' + this.props.match.params.articleName + '\'',
+			// query: 'TypeIs:' + articleType + ' AND Name:\'' + this.props.match.params.articleName + '\'',
+			query: 'Name:\'' + this.props.match.params.articleName + '\'',
 		});
  
 		userGet.then((result: any) => {
@@ -151,7 +151,7 @@ class Article extends React.Component<any, any> {
 					}	 */}
 					<div className="w3-row-padding w3-padding-16" key={article[key].Id}>
 						<div className="w3-col m6">
-							<img src={this.props.repositoryUrl + article[key].Actions.find(function (obj: any) { return obj.Name === 'Cover'; }).Url}
+							<img src={this.getArticleImage(article[key])}
 								onError={this.addDefaultImageUrl}
 								// defaultImageUrl
 								className="full-width" />
@@ -185,9 +185,18 @@ class Article extends React.Component<any, any> {
 			</div>
 		);
 	}
+	getArticleImage(article: any): string | undefined {
+		let articleImageObj = article.Actions.find(function (obj: any) { return obj.Name === 'Cover'; });
+		let articleImage = '';
+		if (articleImageObj !== undefined) {
+			articleImage = articleImageObj.Url;
+		}
+		return articleImage;
+	}
 }
 
 const mapStateToProps = (state: any, match: any) => {
+	// console.log(state.sensenet);
 	return {
 		userName: state.sensenet.session.user.userName,
 		repositoryUrl: state.sensenet.session.repository.repositoryUrl,
