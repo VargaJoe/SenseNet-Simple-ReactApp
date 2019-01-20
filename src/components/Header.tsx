@@ -30,7 +30,7 @@ class Header extends React.Component<Props, any> {
 	}
 
 	public render() {
-		let siteTitle = process.env.REACT_APP_SITE_TITLE || DATA.siteTitle;
+		let siteTitle = process.env.REACT_APP_SITE_CAPTION || DATA.siteTitle;
 
 		return (
 			<header id="portfolio">

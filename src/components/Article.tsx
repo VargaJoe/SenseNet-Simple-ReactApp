@@ -23,18 +23,18 @@ class Article extends React.Component<any, any> {
 	}
 
 	componentDidMount() {
-		let articleType = process.env.REACT_APP_ARTICLE_TYPE || DATA.articleType;
+		// let articleType = process.env.REACT_APP_ARTICLE_TYPE || DATA.articleType;
 		let sitePath = process.env.REACT_APP_SITE || DATA.site;
 		let catName = this.props.match.params.categoryName;
-		let baseCatcontainerPath = 'infos/';
 		// get the current user info
-		let path = sitePath + '/' + baseCatcontainerPath + catName;
+		let path = sitePath + '/' + catName;
 		// should refactor the query to handle tags as well
 
 		let userGet = this.props.getHomeContent(path, {
 			select: ['CreationDate', 'CreatedBy', 'Description', 'DisplayName', 'Id', 'OriginalAuthor', 'Author', 'Publisher', 'PublishDate', 'Lead', 'Body', 'RelatedContent', 'Translation', 'Actions'],
 			expand: ['CreatedBy', 'Translation', 'RelatedContent', 'Actions'],
-			query: 'TypeIs:' + articleType + ' AND Name:\'' + this.props.match.params.articleName + '\'',
+			// query: 'TypeIs:' + articleType + ' AND Name:\'' + this.props.match.params.articleName + '\'',
+			query: 'Name:\'' + this.props.match.params.articleName + '\'',
 		});
  
 		userGet.then((result: any) => {
@@ -188,7 +188,7 @@ class Article extends React.Component<any, any> {
 	getArticleImage(article: any): string | undefined {
 		let articleImageObj = article.Actions.find(function (obj: any) { return obj.Name === 'Cover'; });
 		let articleImage = '';
-		if (articleImageObj) {
+		if (articleImageObj !== undefined) {
 			articleImage = articleImageObj.Url;
 		}
 		return articleImage;
@@ -196,6 +196,7 @@ class Article extends React.Component<any, any> {
 }
 
 const mapStateToProps = (state: any, match: any) => {
+	// console.log(state.sensenet);
 	return {
 		userName: state.sensenet.session.user.userName,
 		repositoryUrl: state.sensenet.session.repository.repositoryUrl,
