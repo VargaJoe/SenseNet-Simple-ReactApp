@@ -67,7 +67,7 @@ class NewsColumn extends React.Component<Props, any> {
 		if (!this.state.isDataFetched) {
             return null;
         }
-        console.log(status);
+        // console.log(status);
         
         const colItems = this.state.colItems;
         const colIds = this.state.ids;
@@ -135,7 +135,7 @@ function getSitePath(articlePath: string): string {
 
 function getImage(sitePath: string, article: any) {
 	let imageAction = article.Actions.find(function (obj: any) { return obj.Name === 'SOxSOImg'; });
-	console.log(imageAction);
+	// console.log(imageAction);
 	if (imageAction === undefined) {
 		return '';
 	}

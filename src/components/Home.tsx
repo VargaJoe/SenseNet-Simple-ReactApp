@@ -57,9 +57,7 @@ class Home extends React.Component<any, any> {
         const colDOM = colIds
 			.map((key: number) =>
             (      
-				<div>
 					<NewsColumn key={'menu' + key} name={columns[key].DisplayName} pathTo={'/' + columns[key].Name}  />
-				</div>
             )
 		);
 		
