@@ -18,6 +18,7 @@ import {
 
 import App                                  from './App';
 const DATA = require('./config.json');
+document.title = process.env.REACT_APP_SITE_TITLE || DATA.siteTitle;
 
 const sensenet = Reducers.sensenet;
 const myReducer = combineReducers({ 
