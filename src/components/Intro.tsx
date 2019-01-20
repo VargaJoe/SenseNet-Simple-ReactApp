@@ -25,7 +25,7 @@ class Intro extends React.Component<any, any> {
 		let path = process.env.REACT_APP_SITE_WELCOME || DATA.siteWelcome;		
 
 		if (path !== undefined) {
-			let userGet = this.props.getWelcomeContent(path, {
+			let userGet = this.props.loadInfo(path, {
 				select: ['DisplayName', 'Id', 'Author', 'PublishDate',  'Lead', 'Actions'],
 				expand: ['CreatedBy', 'Actions/HxHImg'],
 				query: 'TypeIs:' + articleType,
@@ -37,7 +37,7 @@ class Intro extends React.Component<any, any> {
 				console.log(result.value.d);
 				this.setState({
 					isDataFetched: true,
-					article: result.value.d
+					welcome: result.value.d
 				});
 			});
 
@@ -75,12 +75,17 @@ const mapStateToProps = (state: any, match: any) => {
 	return {
 		userName: state.sensenet.session.user.userName,
 		repositoryUrl: state.sensenet.session.repository.repositoryUrl,
+		welcome: state.siteInfo.welcome
 	};
+};
+
+const mapDispatchToProps = (dispatch: any) => {
+	return {
+		loadInfo: (path: string, options: any) => dispatch(Actions.loadContent(path, options)),
+    };
 };
 
 export default (connect(
 	mapStateToProps,
-	(dispatch) => ({
-		getWelcomeContent: (path: string, options: any) => dispatch(Actions.loadContent(path, options)),
-	})
+	mapDispatchToProps
 )(Intro as any));

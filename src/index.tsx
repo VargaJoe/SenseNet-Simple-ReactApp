@@ -8,6 +8,7 @@ import './index.css';
 import { JwtService }                       from '@sensenet/authentication-jwt';
 import { Repository }                       from '@sensenet/client-core';
 import { Reducers, Store }                  from '@sensenet/redux';
+import { siteInfo }                         from './reducers/siteinfo';
 
 // custrom  reducers  
 // import user                                 from './reducers/users';
@@ -21,7 +22,8 @@ const DATA = require('./config.json');
 
 const sensenet = Reducers.sensenet;
 const myReducer = combineReducers({ 
-  sensenet,  
+  sensenet, 
+  siteInfo 
 });
 
 let envApiUrl = process.env.REACT_APP_API_URL || DATA.apiUrl; // 'https://data.%sitename%.hu'; 
