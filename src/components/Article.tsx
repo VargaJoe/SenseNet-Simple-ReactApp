@@ -142,21 +142,22 @@ class Article extends React.Component<any, any> {
 
 		const firstArticle = Object.keys(article).map((key: any) =>
 			(
-				<div key={key}>
+				<div key={article[key].Id}>
 					<div className="w3-container w3-padding-large">
 						<h2><b>{article[key].DisplayName}</b></h2>
 					</div>
 					{/* {									
 						(article[key].Actions.find(function (obj: any) { return obj.Name === 'Cover'; }) ? ImageSection(article[key].Actions.find(function (obj: any) { return obj.Name === 'Cover'; })) : '')
 					}	 */}
-					<div className="w3-row-padding w3-padding-16" key={article[key].Id}>
+					{this.getArticleImage(this.props.repositoryUrl, article[key])}
+					{/* <div className="w3-row-padding w3-padding-16" key={article[key].Id}>
 						<div className="w3-col m6">
 							<img src={this.getArticleImage(article[key])}
 								onError={this.addDefaultImageUrl}
 								// defaultImageUrl
 								className="full-width" />
 						</div>
-					</div>
+					</div> */}
 					<div className="w3-container w3-padding-large w3-bottombar">
 						{/* <h2><b>{article[key].DisplayName}</b></h2> */}
 						<i>{article[key].Description}</i>
@@ -185,13 +186,28 @@ class Article extends React.Component<any, any> {
 			</div>
 		);
 	}
-	getArticleImage(article: any): string | undefined {
-		let articleImageObj = article.Actions.find(function (obj: any) { return obj.Name === 'Cover'; });
-		let articleImage = '';
-		if (articleImageObj !== undefined) {
-			articleImage = articleImageObj.Url;
-		}
-		return articleImage;
+	getArticleImage(apiUrl: string, article: any) {
+		let articleImageAction = article.Actions.find(function (obj: any) { return obj.Name === 'Cover'; });
+		
+		if (articleImageAction === undefined) {
+			return;
+		}		
+		
+		let imagePath = articleImageAction.Url;
+		imagePath = apiUrl + imagePath;
+
+		let image = (
+			<div className="w3-row-padding w3-padding-16">
+				<div className="w3-col m6">
+					<img src={imagePath}
+						onError={this.addDefaultImageUrl}
+						// defaultImageUrl
+						className="full-width" />
+				</div>
+			</div>			
+		);
+	
+		return image;
 	}
 }
 
