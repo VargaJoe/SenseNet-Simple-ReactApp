@@ -189,7 +189,7 @@ function showReview(repoUrl: any, key: any, article: any) {
 	} else {
 		return (
 			<li key={key} className="w3-padding-16">		
-				<a className="no-score" href={'https://' + articleSiteName + '.hu/' + catName + '/' + article.Name}>		
+				<a className="no-score" href={'https://' + articleSiteName + '.hu/' + catName + '/' + article.Name} target={articleSiteName} >		
 						{innerHtml}
 				</a>
 			</li>
