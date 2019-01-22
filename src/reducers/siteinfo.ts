@@ -6,11 +6,11 @@ export const loadInfo = (path: string, options: IODataParams<any> = {}) => ({
     type: 'LOAD_INFO',
     // tslint:disable:completed-docs
     async payload(repository: Repository) {
-        const data = await repository.loadCollection({
-            path,
+        const data = await repository.load({
+            idOrPath: path,
             oDataOptions: options,
         });
-        return data.d.results;
+        return data.d;
     },
 });
 
@@ -18,13 +18,13 @@ export const siteInfo = (
     state: {
         isLoading: boolean, 
         isDataFetched: boolean,
-        info: any, 
+        // info: any, 
         siteName: string,
         welcome: any
     } = {
         isLoading: true, 
         isDataFetched: false,
-        info: {} as any, 
+        // info: {} as any, 
         siteName: '',
         welcome: {}
     }, action: any) => {
@@ -41,7 +41,7 @@ export const siteInfo = (
                 ...state,
                 isLoading: false,
                 isDataFetched: true,
-                siteInfo: action.payload.info
+                welcome: action.payload
             };
         }
         case 'LOAD_INFO_FAILURE': {

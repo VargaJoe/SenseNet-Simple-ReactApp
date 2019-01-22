@@ -2,7 +2,7 @@ import * as React from 'react';
 // import { Route } from 'react-router-dom';
 
 import { connect } from 'react-redux';
-import { Actions } from '@sensenet/redux';
+import { loadInfo } from '../reducers/siteinfo';
 import Moment from 'react-moment';
 
 const DATA = require('../config.json');
@@ -34,10 +34,9 @@ class Intro extends React.Component<any, any> {
 			} as any);
 
 			userGet.then((result: any) => {
-				console.log(result.value.d);
 				this.setState({
 					isDataFetched: true,
-					welcome: result.value.d
+					// welcome: result.value.d
 				});
 			});
 
@@ -48,11 +47,11 @@ class Intro extends React.Component<any, any> {
 	}
 
 	public render() {
-		if (!this.state.isDataFetched) {
+		if (!this.props.isWelcomeFetched) {
 			return null;
 		}
 
-		let introItem = this.state.article;
+		let introItem = this.props.welcome;
 
 		const welcomeMessage = introItem ? (
 					<div>
@@ -75,13 +74,14 @@ const mapStateToProps = (state: any, match: any) => {
 	return {
 		userName: state.sensenet.session.user.userName,
 		repositoryUrl: state.sensenet.session.repository.repositoryUrl,
-		welcome: state.siteInfo.welcome
+		welcome: state.siteInfo.welcome,
+		isWelcomeFetched: state.siteInfo.isDataFetched,
 	};
 };
 
 const mapDispatchToProps = (dispatch: any) => {
 	return {
-		loadInfo: (path: string, options: any) => dispatch(Actions.loadContent(path, options)),
+		loadInfo: (path: string, options: any) => dispatch(loadInfo(path, options)),
     };
 };
 

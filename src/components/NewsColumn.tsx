@@ -135,7 +135,7 @@ function getSitePath(articlePath: string): string {
 
 function getImage(sitePath: string, article: any) {
 	let imageAction = article.Actions.find(function (obj: any) { return obj.Name === 'SOxSOImg'; });
-	console.log(imageAction);
+	// console.log(imageAction);
 	if (imageAction === undefined) {
 		return '';
 	}
