@@ -1,8 +1,6 @@
-import {
-    Actions
-} from '@sensenet/redux';
 import * as React from 'react';
 import { connect } from 'react-redux';
+import { loadCategories } from '../reducers/categories';
 import MenuItem from './MenuItem';
 
 import { IODataParams } from '@sensenet/client-core';
@@ -17,7 +15,10 @@ interface Props {
     menuTrigger: string;
     getMenuItems: any;
     openMenu: Function;
-    repositoryUrl: string;    
+    repositoryUrl: string;
+    loadMenuItems: Function;   
+    isMenuFetched: boolean; 
+    menuItems: any;
 }
 
 class Menu extends React.Component<Props, any> {
@@ -39,19 +40,18 @@ class Menu extends React.Component<Props, any> {
         const menuPath = process.env.REACT_APP_MENU_PATH || DATA.menuPath;
         let menutType = process.env.REACT_APP_MENU_TYPE || DATA.menuType;
 
-        let menuitems = this.props.getMenuItems(menuPath, {
+        let menuitems = this.props.loadMenuItems(menuPath, {
 			select: ['Name', 'IconName', 'Id', 'Path', 'Index', 'DisplayName'],
 			query: 'Type:' + menutType + ' AND Hidden:0 .AUTOFILTERS:OFF',
 			orderby: ['Index', 'DisplayName']
 		} as IODataParams<GenericContent>);
 
         menuitems.then((result: any) => {
-            console.log(result.value.entities.entities);
-            this.setState({
-                isDataFetched: true,
-                menuItems: result.value.entities.entities,
-                ids: result.value.result
-            });
+            // this.setState({
+            //     isDataFetched: true,
+            //     menuItems: result.value.entities.entities,
+            //     ids: result.value.result
+            // });
         });
 
         menuitems.catch((err: any) => {
@@ -60,19 +60,29 @@ class Menu extends React.Component<Props, any> {
     }
 
     public render() {
-        if (!this.state.isDataFetched) {
-            return null;
-        }
-        console.log(status);
+        if (!this.props.isMenuFetched) {
+			return null;
+		}
         
-        const menuItems = this.state.menuItems;
-        const menuIds = this.state.ids;
+        const menuItems = this.props.menuItems;
+        console.log('menuItems');
+        console.log(menuItems);
 
-        const menu = menuIds
-			.map((key: number) =>
-            (                
-                <MenuItem key={key} name={menuItems[key].DisplayName} icon={fontImportantClass + this.state.menuItems[key].IconName} pathTo={'/' + menuItems[key].Name} />
-            )
+        // const menuIds = this.props.menuItems.map((item: any) => (item.Id));
+        
+        // console.log('menuitems:');
+        // console.log(menuItems);
+        // console.log('menuitems end');
+        // console.log(menuIds);
+
+        // const menu = (
+        //     <MenuItem key="2134" name="test" icon={fontImportantClass + 'fa-question'} pathTo="/" />
+        // );
+
+        const menu = Object.keys(menuItems)
+			.map((key: any) => (
+                    <MenuItem key={key} name={menuItems[key].DisplayName} icon={fontImportantClass + menuItems[key].IconName} pathTo={'/' + menuItems[key].Name} />
+                )
         );
         
         return (
@@ -100,15 +110,21 @@ class Menu extends React.Component<Props, any> {
 }
 
 const mapStateToProps = (state: any, match: any) => {
-	return {
+  	return {
 		userName: state.sensenet.session.user.userName,
-		repositoryUrl: state.sensenet.session.repository.repositoryUrl,
+        repositoryUrl: state.sensenet.session.repository.repositoryUrl,
+        isMenuFetched: state.site.categories.isDataFetched,
+        menuItems: state.site.categories.categories,
 	};
+};
+
+const mapDispatchToProps = (dispatch: any) => {
+	return {
+		loadMenuItems: (path: string, options: any) => dispatch(loadCategories(path, options)),
+    };
 };
 
 export default connect(
     mapStateToProps,
-    (dispatch) => ({
-        getMenuItems: (path: string, options: any) => dispatch(Actions.requestContent(path, options)),
-    })
+    mapDispatchToProps
 )(Menu as any);

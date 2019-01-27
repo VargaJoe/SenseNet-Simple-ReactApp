@@ -1,10 +1,8 @@
 // import { Folder } from '@sensenet/default-content-types';
 import { IODataParams, Repository } from '@sensenet/client-core';
 
-// export const loadInfo = (path: string, options: IODataParams<Folder> = {}) => ({
-export const loadInfo = (path: string, options: IODataParams<any> = {}) => ({    
-    type: 'LOAD_INFO',
-    // tslint:disable:completed-docs
+export const LoadArticle = (path: string, options: IODataParams<any> = {}) => ({    
+    type: 'LOAD_ARTICLE',
     async payload(repository: Repository) {
         const data = await repository.load({
             idOrPath: path,
@@ -14,37 +12,33 @@ export const loadInfo = (path: string, options: IODataParams<any> = {}) => ({
     },
 });
 
-export const siteInfo = (
-    state: {
-        isLoading: boolean, 
-        isDataFetched: boolean,
-        // info: any, 
-        siteName: string,
-        welcome: any
+export const siteArticle = (
+    state: {   
+        articles: any
+        translations: any
+        loadedTags: Array<string>
     } = {
-        isLoading: true, 
-        isDataFetched: false,
-        // info: {} as any, 
-        siteName: '',
-        welcome: {}
+        articles: [],
+        translations: [],
+        loadedTags: []
     }, action: any) => {
 
     switch (action.type) {
-        case 'LOAD_INFO': {
+        case 'LOAD_ARTICLE': {
             return {
                 ...state,
                 isLoading: true,
             };
         }
-        case 'LOAD_INFO_SUCCESS': {
+        case 'LOAD_ARTICLE_SUCCESS': {
             return {
                 ...state,
                 isLoading: false,
                 isDataFetched: true,
-                welcome: action.payload
+                articles: [...state.articles, action.payload]
             };
         }
-        case 'LOAD_INFO_FAILURE': {
+        case 'LOAD_ARTICLE_FAILURE': {
             return {
                 ...state,
                 isLoading: false,

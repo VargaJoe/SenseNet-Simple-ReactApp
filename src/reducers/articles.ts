@@ -1,0 +1,71 @@
+// import { Folder } from '@sensenet/default-content-types';
+import { IODataParams, Repository } from '@sensenet/client-core';
+// import { category } from './category';
+
+export const loadArticles = (path: string, options: IODataParams<any> = {}) => ({
+    type: 'LOAD_ARTICLES',
+    // tslint:disable:completed-docs
+    async payload(repository: Repository) {
+        const data = await repository.loadCollection({
+            path,
+            oDataOptions: options,
+        });
+        console.log('load articles action');
+        console.log(data.d);
+        return { tag: path.substring(path.lastIndexOf('/') + 1), articles: data.d };
+    },
+});
+
+export const articles = (
+    state: {
+        isDataLoading: boolean,
+        isDataFetched: boolean,
+        articles: Array<any>,
+        loadedTags: Array<string>
+    } = {
+        isDataLoading: true, 
+        isDataFetched: false,
+        articles: [],
+        loadedTags: []
+    }, action: any) => {
+
+    switch (action.type) {
+        case 'LOAD_ARTICLES': {
+            return {
+                ...state,
+                isDataLoading: true,
+                isDataFetched: false
+            };
+        }
+        case 'LOAD_ARTICLE_SUCCESS': {
+            return {
+                ...state,
+                // articles: [...state.articles, articles(undefined, action)]
+            };
+        }
+        case 'LOAD_ARTICLES_SUCCESS': {
+            // console.log('articles load');
+            // console.log(action.payload);
+            
+            return {
+                ...state,
+                isDataLoading: false,
+                isDataFetched: true,
+                // articles: [...state.articles, action.payload.results.map()]
+                articles: Array.from(new Set([...state.articles, ...action.payload.articles.results])),
+                // articles: action.payload.articles.results,
+                loadedTags: Array.from(new Set([...state.loadedTags, action.payload.tag]))
+            };
+        }
+        case 'LOAD_ARTICLES_FAILURE': {
+            return {
+                ...state,
+                isDataLoading: false,
+                isDataFetched: false
+            };
+        }   
+        default: {
+            return state;
+        }
+    }
+};

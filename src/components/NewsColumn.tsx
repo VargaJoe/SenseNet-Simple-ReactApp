@@ -50,7 +50,7 @@ class NewsColumn extends React.Component<Props, any> {
 		} as IODataParams<CustomArticle>);
 
 		itemGet.then((result: any) => {
-			console.log(result.value.entities.entities);
+			// console.log(result.value.entities.entities);
 			this.setState({
 				isDataFetched: true,
 				colItems: result.value.entities.entities,

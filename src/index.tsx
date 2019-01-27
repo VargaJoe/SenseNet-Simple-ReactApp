@@ -8,7 +8,10 @@ import './index.css';
 import { JwtService }                       from '@sensenet/authentication-jwt';
 import { Repository }                       from '@sensenet/client-core';
 import { Reducers, Store }                  from '@sensenet/redux';
-import { siteInfo }                         from './reducers/siteinfo';
+import { welcome }                         from './reducers/welcome';
+// import { site }                         from './reducers/site';
+import { categories }                         from './reducers/categories';
+import { articles }                         from './reducers/articles';
 
 // custrom  reducers  
 // import user                                 from './reducers/users';
@@ -23,7 +26,11 @@ const DATA = require('./config.json');
 const sensenet = Reducers.sensenet;
 const myReducer = combineReducers({ 
   sensenet, 
-  siteInfo 
+  site: combineReducers({ 
+        welcome,
+        categories,
+        articles
+  })
 });
 
 let envApiUrl = process.env.REACT_APP_API_URL || DATA.apiUrl; // 'https://data.%sitename%.hu'; 

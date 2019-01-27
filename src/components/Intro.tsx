@@ -2,7 +2,7 @@ import * as React from 'react';
 // import { Route } from 'react-router-dom';
 
 import { connect } from 'react-redux';
-import { loadInfo } from '../reducers/siteinfo';
+import { loadWelcome } from '../reducers/welcome';
 import Moment from 'react-moment';
 
 const DATA = require('../config.json');
@@ -10,10 +10,10 @@ const DATA = require('../config.json');
 class Intro extends React.Component<any, any> {
 	constructor(props: any) {
 		super(props);
-		this.state = {
-			isDataFetched: false,
-			article: {}
-		};
+		// this.state = {
+		// 	isDataFetched: false,
+		// 	article: {}
+		// };
 	}
 
 	componentDidMount() {
@@ -25,7 +25,7 @@ class Intro extends React.Component<any, any> {
 		let path = process.env.REACT_APP_SITE_WELCOME || DATA.siteWelcome;		
 
 		if (path !== undefined) {
-			let userGet = this.props.loadInfo(path, {
+			let welcomeGet = this.props.loadIntro(path, {
 				select: ['DisplayName', 'Id', 'Author', 'PublishDate',  'Lead', 'Actions'],
 				expand: ['CreatedBy', 'Actions/HxHImg'],
 				query: 'TypeIs:' + articleType,
@@ -33,14 +33,14 @@ class Intro extends React.Component<any, any> {
 
 			} as any);
 
-			userGet.then((result: any) => {
-				this.setState({
-					isDataFetched: true,
-					// welcome: result.value.d
-				});
-			});
+			// welcomeGet.then((result: any) => {
+			// 	this.setState({
+			// 		isDataFetched: true,
+			// 		// welcome: result.value.d
+			// 	});
+			// });
 
-			userGet.catch((err: any) => {
+			welcomeGet.catch((err: any) => {
 				console.log(err);
 			});
 		}
@@ -74,14 +74,14 @@ const mapStateToProps = (state: any, match: any) => {
 	return {
 		userName: state.sensenet.session.user.userName,
 		repositoryUrl: state.sensenet.session.repository.repositoryUrl,
-		welcome: state.siteInfo.welcome,
-		isWelcomeFetched: state.siteInfo.isDataFetched,
+		welcome: state.site.welcome.welcome,
+		isWelcomeFetched: state.site.welcome.isDataFetched,
 	};
 };
 
 const mapDispatchToProps = (dispatch: any) => {
 	return {
-		loadInfo: (path: string, options: any) => dispatch(loadInfo(path, options)),
+		loadIntro: (path: string, options: any) => dispatch(loadWelcome(path, options)),
     };
 };
 

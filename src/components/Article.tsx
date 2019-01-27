@@ -26,9 +26,8 @@ class Article extends React.Component<any, any> {
 		let articleType = process.env.REACT_APP_ARTICLE_TYPE || DATA.articleType;
 		let sitePath = process.env.REACT_APP_SITE || DATA.site;
 		let catName = this.props.match.params.categoryName;
-		let baseCatcontainerPath = 'infos/';
 		// get the current user info
-		let path = sitePath + '/' + baseCatcontainerPath + catName;
+		let path = sitePath + '/' + catName;
 		// should refactor the query to handle tags as well
 
 		let userGet = this.props.getHomeContent(path, {
@@ -151,7 +150,7 @@ class Article extends React.Component<any, any> {
 					}	 */}
 					<div className="w3-row-padding w3-padding-16" key={article[key].Id}>
 						<div className="w3-col m6">
-							<img src={this.getArticleImage(article[key])}
+							<img src={this.props.repositoryUrl + this.getArticleImage(article[key])}
 								onError={this.addDefaultImageUrl}
 								// defaultImageUrl
 								className="full-width" />
