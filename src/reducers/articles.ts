@@ -1,6 +1,6 @@
 // import { Folder } from '@sensenet/default-content-types';
 import { IODataParams, Repository } from '@sensenet/client-core';
-// import { category } from './category';
+import { article } from './article';
 
 export const loadArticles = (path: string, options: IODataParams<any> = {}) => ({
     type: 'LOAD_ARTICLES',
@@ -38,9 +38,10 @@ export const articles = (
             };
         }
         case 'LOAD_ARTICLE_SUCCESS': {
+            let newArt = article({}, action);
             return {
                 ...state,
-                // articles: [...state.articles, articles(undefined, action)]
+                articles: state.articles.findIndex(c => c.Id === newArt.Id) > -1 ? state.articles : [...state.articles, newArt]
             };
         }
         case 'LOAD_ARTICLES_SUCCESS': {

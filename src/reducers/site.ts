@@ -1,5 +1,6 @@
 // import { welcome } from './welcome';
 import { categories } from './categories';
+import { articles } from './articles';
 
 // reducer
 export const site = (
@@ -14,6 +15,7 @@ export const site = (
                 // console.log('sitereducer');
                 return {
                     ...state,
+                    articles,
                     categories
                 };
             }
@@ -21,6 +23,7 @@ export const site = (
                 return {
                     ...state,
                     // welcome,
+                    articles,
                     categories
                 };
             }

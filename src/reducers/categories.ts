@@ -42,7 +42,7 @@ export const categories = (
                 // categories: Array.from(new Set([...state.categories, category({}, action)]))
                 // categories: [...state.categories.filter(cat => cat.Id !== newCat.Id), newCat]
                 // categories: Array.from(new Set([...state.categories, newCat]))
-                categories: state.categories.findIndex(c => c.Id === newCat.Id > -1) ? state.categories : [...state.categories, newCat]
+                categories: state.categories.findIndex(c => c.Id === newCat.Id) > -1 ? state.categories : [...state.categories, newCat]
             };
         }
         case 'LOAD_CATEGORIES_SUCCESS': {

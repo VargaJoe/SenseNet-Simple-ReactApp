@@ -1,50 +1,36 @@
 // import { Folder } from '@sensenet/default-content-types';
 import { IODataParams, Repository } from '@sensenet/client-core';
 
-export const LoadArticle = (path: string, options: IODataParams<any> = {}) => ({    
+// export const loadArticle = (path: string, options: IODataParams<any> = {}) => ({    
+//     type: 'LOAD_ARTICLE',
+//     async payload(repository: Repository) {
+//         const data = await repository.load({
+//             idOrPath: path,
+//             oDataOptions: options,
+//         });
+//         return data.d;
+//     },
+// });
+
+export const loadArticle = (path: string, options: IODataParams<any> = {}) => ({
     type: 'LOAD_ARTICLE',
+    // tslint:disable:completed-docs
     async payload(repository: Repository) {
-        const data = await repository.load({
-            idOrPath: path,
+        const data = await repository.loadCollection({
+            path,
             oDataOptions: options,
         });
-        return data.d;
+        console.log('load article action');
+        console.log(data.d.results[0]);
+        return data.d.results[0];
     },
 });
 
-export const siteArticle = (
-    state: {   
-        articles: any
-        translations: any
-        loadedTags: Array<string>
-    } = {
-        articles: [],
-        translations: [],
-        loadedTags: []
-    }, action: any) => {
-
+export const article = (state: {}, action: any) => {
     switch (action.type) {
-        case 'LOAD_ARTICLE': {
-            return {
-                ...state,
-                isLoading: true,
-            };
-        }
         case 'LOAD_ARTICLE_SUCCESS': {
-            return {
-                ...state,
-                isLoading: false,
-                isDataFetched: true,
-                articles: [...state.articles, action.payload]
-            };
+            return action.payload;
         }
-        case 'LOAD_ARTICLE_FAILURE': {
-            return {
-                ...state,
-                isLoading: false,
-                isDataFetched: false
-            };
-        }   
         default: {
             return state;
         }

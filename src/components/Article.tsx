@@ -1,7 +1,8 @@
 import * as React from 'react';
 // import { PathHelper } from '@sensenet/client-utils';
 import { connect } from 'react-redux';
-import { Actions } from '@sensenet/redux';
+import { loadArticle } from '../reducers/article';
+
 // import { Link } from 'react-router-dom';
 import Moment from 'react-moment';
 
@@ -22,39 +23,70 @@ class Article extends React.Component<any, any> {
 		ev.target.className = 'hidden';
 	}
 
+	componentWillReceiveProps(nextProps: any) {	
+		console.log('nextProps');
+		console.log(nextProps);
+		this._initializeComponent();
+	}	
+
 	componentDidMount() {
+		this._initializeComponent();
+	}
+	
+	_initializeComponent() {
+		// let menutType = process.env.REACT_APP_MENU_TYPE || DATA.menuType;
 		let articleType = process.env.REACT_APP_ARTICLE_TYPE || DATA.articleType;
-		let sitePath = process.env.REACT_APP_SITE || DATA.site;
-		let catName = this.props.match.params.categoryName;
+		let sitePath = process.env.REACT_APP_SITE || DATA.site;		
+		let categoryName = this.props.match.params.categoryName;
 		// get the current user info
-		let path = sitePath + '/' + catName;
+		let path = sitePath + '/' + categoryName;
 		// should refactor the query to handle tags as well
 
-		let userGet = this.props.getHomeContent(path, {
-			select: ['CreationDate', 'CreatedBy', 'Description', 'DisplayName', 'Id', 'OriginalAuthor', 'Author', 'Publisher', 'PublishDate', 'Lead', 'Body', 'RelatedContent', 'Translation', 'Actions'],
-			expand: ['CreatedBy', 'Translation', 'RelatedContent', 'Actions'],
-			query: 'TypeIs:' + articleType + ' AND Name:\'' + this.props.match.params.articleName + '\'',
-		});
- 
-		userGet.then((result: any) => {
-			console.log(result.value.entities.entities);
-			this.setState({
-				isDataFetched: true,
-				article: result.value.entities.entities
-			});
+		let articleName = this.props.match.params.articleName;
+		this.setState({
+			articleName: articleName
 		});
 
-		userGet.catch((err: any) => {
-			console.log(err);
-		});
+		let article = this.props.articles.find((obj: any) => obj.Name === articleName );
+
+		if (article === undefined) {
+			let articleGet = this.props.loadArticleContent(path, {
+				select: ['CreationDate', 'CreatedBy', 'Description', 'DisplayName', 'Id', 'OriginalAuthor', 'Author', 'Publisher', 'PublishDate', 'Lead', 'Body', 'RelatedContent', 'Translation', 'Actions'],
+				expand: ['CreatedBy', 'Translation', 'RelatedContent', 'Actions'],
+				query: 'TypeIs:' + articleType + ' AND Name:\'' + articleName + '\'',
+			});
+	
+			articleGet.then((result: any) => {
+				console.log(result);
+				this.setState({
+					isDataFetched: true,
+				});
+			});
+
+			articleGet.catch((err: any) => {
+				console.log(err);
+			});
+		}
 	}
 
 	public render() {
-		if (!this.state.isDataFetched) {
+		// if (!this.state.isDataFetched) {
+		// 	return null;
+		// }
+		console.log('Props');
+		console.log(this.props);
+
+		let articles = this.props.articles;
+		let articleName = this.state.articleName;
+		let article = articles.find(function (obj: any) { return obj.Name === articleName; });
+		console.log('wtfart');
+		console.log(articles);
+        if (article === undefined) {
 			return null;
 		}
-
-		let article = this.state.article;
+		
+		console.log(article);
+		console.log('wtfart end');
 
 		// const ImageSection = (image: any) => (
 		// 	<div key={image.Id} className="w3-row-padding w3-padding-16">
@@ -139,44 +171,42 @@ class Article extends React.Component<any, any> {
 			</div>
 		);
 
-		const firstArticle = Object.keys(article).map((key: any) =>
-			(
-				<div key={key}>
+		const firstArticle = (
+				<div key={article.Id}>
 					<div className="w3-container w3-padding-large">
-						<h2><b>{article[key].DisplayName}</b></h2>
+						<h2><b>{article.DisplayName}</b></h2>
 					</div>
 					{/* {									
-						(article[key].Actions.find(function (obj: any) { return obj.Name === 'Cover'; }) ? ImageSection(article[key].Actions.find(function (obj: any) { return obj.Name === 'Cover'; })) : '')
+						(article.Actions.find(function (obj: any) { return obj.Name === 'Cover'; }) ? ImageSection(article.Actions.find(function (obj: any) { return obj.Name === 'Cover'; })) : '')
 					}	 */}
-					<div className="w3-row-padding w3-padding-16" key={article[key].Id}>
+					<div className="w3-row-padding w3-padding-16" key={article.Id}>
 						<div className="w3-col m6">
-							<img src={this.props.repositoryUrl + this.getArticleImage(article[key])}
+							<img src={this.props.repositoryUrl + this.getArticleImage(article)}
 								onError={this.addDefaultImageUrl}
 								// defaultImageUrl
 								className="full-width" />
 						</div>
 					</div>
 					<div className="w3-container w3-padding-large w3-bottombar">
-						{/* <h2><b>{article[key].DisplayName}</b></h2> */}
-						<i>{article[key].Description}</i>
-						<i>{article[key].Lead}</i>
-						<p dangerouslySetInnerHTML={{ __html: article[key].Body }} />
+						{/* <h2><b>{article.DisplayName}</b></h2> */}
+						<i>{article.Description}</i>
+						<i>{article.Lead}</i>
+						<p dangerouslySetInnerHTML={{ __html: article.Body }} />
 						<div className="small">
-							{article[key].Author + ' '}
-							({article[key].Publisher + ', '}
-							<Moment date={article[key].PublishDate} format="YYYY.MM.DD." />)
+							{article.Author + ' '}
+							({article.Publisher + ', '}
+							<Moment date={article.PublishDate} format="YYYY.MM.DD." />)
 						</div>
 					</div>
 						{
-							article[key].Translation && article[key].Translation.length > 0 ? TranslationContainer(article[key].Translation) : ''
+							article.Translation && article.Translation.length > 0 ? TranslationContainer(article.Translation) : ''
 						}
 						{
-							// (article[key].RelatedContent ? article[key].RelatedContent : []).map((item: any = []) => RelatedItem({ item }))
-							article[key].RelatedContent && article[key].RelatedContent.length > 0 ? RelatedContainer(article[key].RelatedContent) : ''
+							// (article.RelatedContent ? article.RelatedContent : []).map((item: any = []) => RelatedItem({ item }))
+							article.RelatedContent && article.RelatedContent.length > 0 ? RelatedContainer(article.RelatedContent) : ''
 						}
 				</div>
-			)
-		)[0];
+		);
 
 		return (
 			<div>
@@ -198,12 +228,18 @@ const mapStateToProps = (state: any, match: any) => {
 	return {
 		userName: state.sensenet.session.user.userName,
 		repositoryUrl: state.sensenet.session.repository.repositoryUrl,
+		articles: state.site.articles.articles,
 	};
 };
 
-export default (connect(
+const mapDispatchToProps = (dispatch: any) => {
+	return {
+		loadArticleContent: (path: string, options: any) => dispatch(loadArticle(path, options)),
+    };
+};
+
+export default connect(
 	mapStateToProps,
-	(dispatch) => ({
-		getHomeContent: (path: string, options: any) => dispatch(Actions.requestContent(path, options)),
-	})
-)(Article as any));
+	mapDispatchToProps
+)(Article as any);
+	
