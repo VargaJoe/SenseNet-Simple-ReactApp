@@ -98,7 +98,7 @@ function getDefaultSitePath() {
 		// window.location.host is subdomain.domain.com
 		var parts = full.split('.');
 		// var type = parts[parts.length];
-		var domain = parts[parts.length - 1];
+		var domain = (parts.length > 1) ? parts[parts.length - 2] : parts[parts.length - 1];
 		// var sub = parts[0];
 		
 		envSitePath = envSitePath.replace('%sitename%', domain);
