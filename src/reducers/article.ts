@@ -20,8 +20,8 @@ export const loadArticle = (path: string, options: IODataParams<any> = {}) => ({
             path,
             oDataOptions: options,
         });
-        console.log('load article action');
-        console.log(data.d.results[0]);
+        console.log('LOAD_ARTICLE');
+        // console.log(data.d.results[0]);
         return data.d.results[0];
     },
 });

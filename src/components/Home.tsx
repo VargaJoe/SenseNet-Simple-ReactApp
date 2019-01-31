@@ -61,8 +61,6 @@ class Home extends React.Component<any, any> {
             )
 		);
 		
-		document.title = process.env.REACT_APP_SITE_TITLE || DATA.siteTitle;
-
 		return (
 			<div>
 			<Intro />

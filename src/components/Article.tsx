@@ -23,11 +23,14 @@ class Article extends React.Component<any, any> {
 		ev.target.className = 'hidden';
 	}
 
-	componentWillReceiveProps(nextProps: any) {	
-		console.log('nextProps');
-		console.log(nextProps);
-		this._initializeComponent();
-	}	
+	// componentWillReceiveProps(nextProps: any) {	
+	// 	// console.log('nextProps');
+	// 	console.log(nextProps);
+	// 	console.log(this.props);
+	// 	if (nextProps.articles !== this.props.articles) {
+	// 	this._initializeComponent();
+	// 	}
+	// }	
 
 	componentDidMount() {
 		this._initializeComponent();
@@ -50,20 +53,16 @@ class Article extends React.Component<any, any> {
 		let article = this.props.articles.find((obj: any) => obj.Name === articleName );
 
 		if (article === undefined) {
-			let articleGet = this.props.loadArticleContent(path, {
+			this.props.loadArticleContent(path, {
 				select: ['CreationDate', 'CreatedBy', 'Description', 'DisplayName', 'Id', 'OriginalAuthor', 'Author', 'Publisher', 'PublishDate', 'Lead', 'Body', 'RelatedContent', 'Translation', 'Actions'],
 				expand: ['CreatedBy', 'Translation', 'RelatedContent', 'Actions'],
 				query: 'TypeIs:' + articleType + ' AND Name:\'' + articleName + '\'',
-			});
-	
-			articleGet.then((result: any) => {
+			}).then((result: any) => {
 				console.log(result);
 				this.setState({
 					isDataFetched: true,
 				});
-			});
-
-			articleGet.catch((err: any) => {
+			}).catch((err: any) => {
 				console.log(err);
 			});
 		}
@@ -73,20 +72,20 @@ class Article extends React.Component<any, any> {
 		// if (!this.state.isDataFetched) {
 		// 	return null;
 		// }
-		console.log('Props');
-		console.log(this.props);
+		// console.log('Props');
+		// console.log(this.props);
 
 		let articles = this.props.articles;
 		let articleName = this.state.articleName;
 		let article = articles.find(function (obj: any) { return obj.Name === articleName; });
-		console.log('wtfart');
-		console.log(articles);
+		// console.log('wtfart');
+		// console.log(articles);
         if (article === undefined) {
 			return null;
 		}
 		
-		console.log(article);
-		console.log('wtfart end');
+		// console.log(article);
+		// console.log('wtfart end');
 
 		// const ImageSection = (image: any) => (
 		// 	<div key={image.Id} className="w3-row-padding w3-padding-16">

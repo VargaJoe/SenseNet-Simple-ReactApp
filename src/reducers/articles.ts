@@ -10,8 +10,8 @@ export const loadArticles = (path: string, options: IODataParams<any> = {}) => (
             path,
             oDataOptions: options,
         });
-        console.log('load articles action');
-        console.log(data.d);
+        console.log('LOAD_ARTICLES');
+        // console.log(data.d);
         return { tag: path.substring(path.lastIndexOf('/') + 1), articles: data.d };
     },
 });
@@ -53,7 +53,8 @@ export const articles = (
                 isDataLoading: false,
                 isDataFetched: true,
                 // articles: [...state.articles, action.payload.results.map()]
-                articles: Array.from(new Set([...state.articles, ...action.payload.articles.results])),
+                // articles: Array.from(new Set([...state.articles, ...action.payload.articles.results])),
+                articles: [...action.payload.articles.results, ...state.articles].filter((s1, pos, arr) => arr.findIndex((s2) => s2.Id === s1.Id) === pos),
                 // articles: action.payload.articles.results,
                 loadedTags: Array.from(new Set([...state.loadedTags, action.payload.tag]))
             };

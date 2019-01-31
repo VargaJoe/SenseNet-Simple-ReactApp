@@ -11,7 +11,7 @@ export const loadCategories = (path: string, options: IODataParams<any> = {}) =>
             oDataOptions: options,
         });
         console.log('LOAD_CATEGORIES');
-        console.log(data.d);
+        // console.log(data.d);
         return data.d;
     },
 });

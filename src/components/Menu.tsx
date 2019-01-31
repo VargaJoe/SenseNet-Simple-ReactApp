@@ -36,7 +36,7 @@ class Menu extends React.Component<Props, any> {
         this.props.openMenu();   
     }
 
-    addComponent = async (type: string) => {
+    addComponent = (type: string) => {
         if (this.state.components.findIndex((c: any) => c.name === `${type}Item`) === -1) {
             console.log(`Loading ${type}Item component...`);
         
@@ -44,14 +44,12 @@ class Menu extends React.Component<Props, any> {
             import(`./leftmenu/${type}Item`)
             .then((component: any) => {
                 this.setState({
-                    components: [...this.state.components, component.default]
-                  });               
+                    components: (this.state.components.findIndex((c: any) => c.name === `${type}Item`) > -1) ? this.state.components : [...this.state.components, component.default]
+                  });
             })
             .catch(error => {
                 console.error(`"${type}Item" not yet supported: ${error}`);
             });
-        } else {
-            console.log(`${type}Item component already loaded...`);
         }
     }
 
@@ -71,16 +69,18 @@ class Menu extends React.Component<Props, any> {
             //     menuItems: result.value.entities.entities,
             //     ids: result.value.result
             // });
-            console.log('result');
+            // console.log('result');
             console.log(result);
-            result.value.results.map(async (item: any) => await this.addComponent(item.Type));
+
+            // Technical Debt: one type should be loaded once
+            result.value.results.map((item: any) => this.addComponent(item.Type));
         });
 
         menuitems.catch((err: any) => {
             console.log(err);
         });
 
-        console.log(this.state.components);
+        // console.log(this.state.components);
     }
 
     public render() {
@@ -94,8 +94,8 @@ class Menu extends React.Component<Props, any> {
         }
         
         const menuItems = this.props.menuItems;
-        console.log('menuItems');
-        console.log(menuItems);
+        // console.log('menuItems');
+        // console.log(menuItems);
 
         // const menuIds = this.props.menuItems.map((item: any) => (item.Id));
         
@@ -108,20 +108,20 @@ class Menu extends React.Component<Props, any> {
         //     <MenuItem key="2134" name="test" icon={fontImportantClass + 'fa-question'} pathTo="/" />
         // );
 
-        console.log('this.state.components');
-        console.log(this.state.components);
+        // console.log('this.state.components');
+        // console.log(this.state.components);
         const menu = Object.keys(menuItems)
 			.map((key: any) => {
                 let Compo = this.state.components.find((DynCom: any)  => {
-                    console.log(DynCom);
-                    console.log(DynCom.name);
-                    console.log(menuItems[key]);
-                    console.log(menuItems[key].Type);
-                    console.log(`${menuItems[key].Type}Item`);
+                    // console.log(DynCom);
+                    // console.log(DynCom.name);
+                    // console.log(menuItems[key]);
+                    // console.log(menuItems[key].Type);
+                    // console.log(`${menuItems[key].Type}Item`);
                 return (DynCom.name === `${menuItems[key].Type}Item`);
                 });
-                console.log('Compo');
-                console.log(Compo);
+                // console.log('Compo');
+                // console.log(Compo);
                 return (
                         <Compo key={key} name={menuItems[key].DisplayName} icon={fontImportantClass + menuItems[key].IconName} pathTo={'/' + menuItems[key].Name} />
                 );

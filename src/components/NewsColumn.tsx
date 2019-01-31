@@ -67,7 +67,7 @@ class NewsColumn extends React.Component<Props, any> {
 		if (!this.state.isDataFetched) {
             return null;
         }
-        console.log(status);
+        // console.log(status);
         
         const colItems = this.state.colItems;
         const colIds = this.state.ids;

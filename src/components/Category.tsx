@@ -48,37 +48,53 @@ class Category extends React.Component<any, any> {
 		});
 
 		let category = this.props.categories.find((obj: any) => obj.Name === categoryName );
-
-		if (category === undefined) {
-				let categoryGet = this.props.loadCategoryContent(path, {
-					select: ['Name', 'IconName', 'Id', 'Path', 'Index', 'DisplayName'],
-					query: 'Type:' + menutType + ' AND Hidden:0 .AUTOFILTERS:OFF',
-					orderby: ['Index', 'DisplayName']
-				} as IODataParams<GenericContent>);
-
-				categoryGet.catch((err: any) => {
-					console.log(err);
-				});
-			} 
-		
 		let articles = this.props.articles;
 		let loadedTags = this.props.loadedTags;
-		if (articles === undefined || articles === [] || articles.length === 0 || !loadedTags.includes(categoryName)) {
-			// console.log('props articles');
-			// console.log(articles);
-			// console.log('props articles inner');
-			let articlesGet = this.props.loadCategoryArticles(path, {
-					select: ['Publisher', 'Author', 'Description', 'DisplayName', 'Id', 'OriginalAuthor', 'Author', 'PublishDate', 'Index', 'Actions'],
-					expand: ['CreatedBy', 'Actions/HxHImg'],
+
+		if (category === undefined && (articles === undefined || articles === [] || articles.length === 0 || !loadedTags.includes(categoryName))) {
+			console.log('category + articles');
+
+			let categoryGet = this.props.loadCategoryContent(path, {
+				select: ['Name', 'IconName', 'Id', 'Path', 'Index', 'DisplayName'],
+				query: 'Type:' + menutType + ' AND Hidden:0 .AUTOFILTERS:OFF',
+				orderby: ['Index', 'DisplayName']
+			} as IODataParams<GenericContent>);
+	
+			categoryGet.then(() => {
+				let articlesGet = this.props.loadCategoryArticles(path, {
+					// select: ['Publisher', 'Author', 'Description', 'DisplayName', 'Id', 'OriginalAuthor', 'Author', 'PublishDate', 'Index', 'Actions'],
+					select: ['CreationDate', 'CreatedBy', 'Description', 'DisplayName', 'Id', 'OriginalAuthor', 'Author', 'Publisher', 'PublishDate', 'Lead', 'Body', 'RelatedContent', 'Translation', 'Actions'],
+					expand: ['CreatedBy', 'Actions/HxHImg'],					
 					query: 'TypeIs:' + articleType,
 					orderby: [['PublishDate', 'desc'], ['Index', 'desc'], 'DisplayName'],
 					metadata: 'no'
 				} as IODataParams<CustomArticle>);
 
-			articlesGet.catch((err: any) => {
+				articlesGet.then((err: any) => {
+					console.log('Load category + articles');
+				}).catch((err: any) => {
+					console.log(err);
+				});
+			}).catch((err: any) => {
 				console.log(err);
 			});
-		}
+		} else if (articles === undefined || articles === [] || articles.length === 0 || !loadedTags.includes(categoryName)) {
+			console.log('only articles');
+			let articlesGet = this.props.loadCategoryArticles(path, {
+				// select: ['Publisher', 'Author', 'Description', 'DisplayName', 'Id', 'OriginalAuthor', 'Author', 'PublishDate', 'Index', 'Actions'],
+				select: ['CreationDate', 'CreatedBy', 'Description', 'DisplayName', 'Id', 'OriginalAuthor', 'Author', 'Publisher', 'PublishDate', 'Lead', 'Body', 'RelatedContent', 'Translation', 'Actions'],
+				expand: ['CreatedBy', 'Actions/HxHImg'],					
+				query: 'TypeIs:' + articleType,
+				orderby: [['PublishDate', 'desc'], ['Index', 'desc'], 'DisplayName'],
+				metadata: 'no'
+			} as IODataParams<CustomArticle>);
+
+			articlesGet.then((err: any) => {
+				console.log('Load only articles');
+			}).catch((err: any) => {
+				console.log(err);
+			});
+		}		
 	}
 
 	public render() {
@@ -87,7 +103,7 @@ class Category extends React.Component<any, any> {
 		let category = categories.find(function (obj: any) { return obj.Name === categoryName; });
 		let articles = this.props.articles;
 		let loadedTags = this.props.loadedTags;
-		console.log('wtf');
+		// console.log('wtf');
 		// console.log(category);
 		// console.log(articles);
 		// console.log(articles.length);
@@ -109,11 +125,11 @@ class Category extends React.Component<any, any> {
 		// let categories = this.props.categories;
 		// let category = categories.filter((c: any) => c.Name === categoryName);
 		// let category = categories.find(function (obj: any) { return obj.Name === categoryName; });
-		console.log(categoryName);
-		console.log(categories);
-		console.log(category);
-		console.log(articles);
-		console.log('end');
+		// console.log(categoryName);
+		// console.log(categories);
+		// console.log(category);
+		// console.log(articles);
+		// console.log('end');
 
 		// const homePage = '';
 		const categoryArticles = articles
