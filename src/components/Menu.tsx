@@ -1,7 +1,6 @@
 import * as React from 'react';
 import { connect } from 'react-redux';
 import { loadCategories } from '../reducers/categories';
-import MenuItem from './MenuItem';
 
 import { IODataParams } from '@sensenet/client-core';
 import { GenericContent } from '@sensenet/default-content-types';
@@ -27,7 +26,8 @@ class Menu extends React.Component<Props, any> {
         this.state = {
             menuTrigger: this.props.menuTrigger,
             menuItems: null,
-            isDataFetched: false
+            isDataFetched: false,
+            components: []
         };
         this.clickHandler = this.clickHandler.bind(this);
     }
@@ -35,7 +35,26 @@ class Menu extends React.Component<Props, any> {
     clickHandler = () => {
         this.props.openMenu();   
     }
-    
+
+    addComponent = async (type: string) => {
+        if (this.state.components.findIndex((c: any) => c.name === `${type}Item`) === -1) {
+            console.log(`Loading ${type}Item component...`);
+        
+            // import(`./leftmenu/${type}Item.js`)
+            import(`./leftmenu/${type}Item`)
+            .then((component: any) => {
+                this.setState({
+                    components: [...this.state.components, component.default]
+                  });               
+            })
+            .catch(error => {
+                console.error(`"${type}Item" not yet supported: ${error}`);
+            });
+        } else {
+            console.log(`${type}Item component already loaded...`);
+        }
+    }
+
     public componentDidMount() {
         const menuPath = process.env.REACT_APP_MENU_PATH || DATA.menuPath;
         let menutType = process.env.REACT_APP_MENU_TYPE || DATA.menuType;
@@ -52,17 +71,27 @@ class Menu extends React.Component<Props, any> {
             //     menuItems: result.value.entities.entities,
             //     ids: result.value.result
             // });
+            console.log('result');
+            console.log(result);
+            result.value.results.map(async (item: any) => await this.addComponent(item.Type));
         });
 
         menuitems.catch((err: any) => {
             console.log(err);
         });
+
+        console.log(this.state.components);
     }
 
     public render() {
         if (!this.props.isMenuFetched) {
 			return null;
-		}
+        }
+        
+        const { components } = this.state;
+        if (components.length === 0) {
+            return <div>Loading...</div>;
+        }
         
         const menuItems = this.props.menuItems;
         console.log('menuItems');
@@ -79,10 +108,29 @@ class Menu extends React.Component<Props, any> {
         //     <MenuItem key="2134" name="test" icon={fontImportantClass + 'fa-question'} pathTo="/" />
         // );
 
+        console.log('this.state.components');
+        console.log(this.state.components);
         const menu = Object.keys(menuItems)
-			.map((key: any) => (
-                    <MenuItem key={key} name={menuItems[key].DisplayName} icon={fontImportantClass + menuItems[key].IconName} pathTo={'/' + menuItems[key].Name} />
-                )
+			.map((key: any) => {
+                let Compo = this.state.components.find((DynCom: any)  => {
+                    console.log(DynCom);
+                    console.log(DynCom.name);
+                    console.log(menuItems[key]);
+                    console.log(menuItems[key].Type);
+                    console.log(`${menuItems[key].Type}Item`);
+                return (DynCom.name === `${menuItems[key].Type}Item`);
+                });
+                console.log('Compo');
+                console.log(Compo);
+                return (
+                        <Compo key={key} name={menuItems[key].DisplayName} icon={fontImportantClass + menuItems[key].IconName} pathTo={'/' + menuItems[key].Name} />
+                );
+            }
+                // return (
+                //     // <MenuItem key={key} name={menuItems[key].DisplayName} icon={fontImportantClass + menuItems[key].IconName} pathTo={'/' + menuItems[key].Name} />
+                //     <MenuItem key={key} name={menuItems[key].DisplayName} icon={fontImportantClass + menuItems[key].IconName} pathTo={'/' + menuItems[key].Name} />
+                // );
+            
         );
         
         return (
