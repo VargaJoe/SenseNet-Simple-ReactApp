@@ -175,19 +175,18 @@ class Article extends React.Component<any, any> {
 					<div className="w3-container w3-padding-large">
 						<h2><b>{article.DisplayName}</b></h2>
 					</div>
-					<div className="w3-row-padding w3-padding-16" key={article.Id}>
-					{this.getArticleImage(this.props.repositoryUrl, article[key])}
-					<div className="w3-container w3-padding-large w3-bottombar">
-						{/* <h2><b>{article.DisplayName}</b></h2> */}
-						<i>{article.Description}</i>
-						<i>{article.Lead}</i>
-						<p dangerouslySetInnerHTML={{ __html: article.Body }} />
-						<div className="small">
-							{article.Author + ' '}
-							({article.Publisher + ', '}
-							<Moment date={article.PublishDate} format="YYYY.MM.DD." />)
+						{this.getArticleImage(this.props.repositoryUrl, article)}
+						<div className="w3-container w3-padding-large w3-bottombar">
+							{/* <h2><b>{article.DisplayName}</b></h2> */}
+							<i>{article.Description}</i>
+							<i>{article.Lead}</i>
+							<p dangerouslySetInnerHTML={{ __html: article.Body }} />
+							<div className="small">
+								{article.Author + ' '}
+								({article.Publisher + ', '}
+								<Moment date={article.PublishDate} format="YYYY.MM.DD." />)
+							</div>
 						</div>
-					</div>
 						{
 							article.Translation && article.Translation.length > 0 ? TranslationContainer(article.Translation) : ''
 						}
