@@ -2,7 +2,7 @@ import * as React from 'react';
 // import { Route } from 'react-router-dom';
 
 import { connect } from 'react-redux';
-import { Actions } from '@sensenet/redux';
+import { loadWelcome } from '../reducers/welcome';
 import Moment from 'react-moment';
 
 const DATA = require('../config.json');
@@ -10,10 +10,10 @@ const DATA = require('../config.json');
 class Intro extends React.Component<any, any> {
 	constructor(props: any) {
 		super(props);
-		this.state = {
-			isDataFetched: false,
-			article: {}
-		};
+		// this.state = {
+		// 	isDataFetched: false,
+		// 	article: {}
+		// };
 	}
 
 	componentDidMount() {
@@ -25,7 +25,7 @@ class Intro extends React.Component<any, any> {
 		let path = process.env.REACT_APP_SITE_WELCOME || DATA.siteWelcome;		
 
 		if (path !== undefined) {
-			let userGet = this.props.getWelcomeContent(path, {
+			let welcomeGet = this.props.loadIntro(path, {
 				select: ['DisplayName', 'Id', 'Author', 'PublishDate',  'Lead', 'Actions'],
 				expand: ['CreatedBy', 'Actions/HxHImg'],
 				query: 'TypeIs:' + articleType,
@@ -33,26 +33,25 @@ class Intro extends React.Component<any, any> {
 
 			} as any);
 
-			userGet.then((result: any) => {
-				console.log(result.value.d);
-				this.setState({
-					isDataFetched: true,
-					article: result.value.d
-				});
-			});
+			// welcomeGet.then((result: any) => {
+			// 	this.setState({
+			// 		isDataFetched: true,
+			// 		// welcome: result.value.d
+			// 	});
+			// });
 
-			userGet.catch((err: any) => {
+			welcomeGet.catch((err: any) => {
 				console.log(err);
 			});
 		}
 	}
 
 	public render() {
-		if (!this.state.isDataFetched) {
+		if (!this.props.isWelcomeFetched) {
 			return null;
 		}
 
-		let introItem = this.state.article;
+		let introItem = this.props.welcome;
 
 		const welcomeMessage = introItem ? (
 					<div>
@@ -75,12 +74,18 @@ const mapStateToProps = (state: any, match: any) => {
 	return {
 		userName: state.sensenet.session.user.userName,
 		repositoryUrl: state.sensenet.session.repository.repositoryUrl,
+		welcome: state.site.welcome.welcome,
+		isWelcomeFetched: state.site.welcome.isDataFetched,
 	};
+};
+
+const mapDispatchToProps = (dispatch: any) => {
+	return {
+		loadIntro: (path: string, options: any) => dispatch(loadWelcome(path, options)),
+    };
 };
 
 export default (connect(
 	mapStateToProps,
-	(dispatch) => ({
-		getWelcomeContent: (path: string, options: any) => dispatch(Actions.loadContent(path, options)),
-	})
+	mapDispatchToProps
 )(Intro as any));

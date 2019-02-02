@@ -8,6 +8,10 @@ import './index.css';
 import { JwtService }                       from '@sensenet/authentication-jwt';
 import { Repository }                       from '@sensenet/client-core';
 import { Reducers, Store }                  from '@sensenet/redux';
+import { welcome }                         from './reducers/welcome';
+// import { site }                         from './reducers/site';
+import { categories }                         from './reducers/categories';
+import { articles }                         from './reducers/articles';
 
 // custrom  reducers  
 // import user                                 from './reducers/users';
@@ -22,7 +26,12 @@ document.title = process.env.REACT_APP_SITE_TITLE || DATA.siteTitle;
 
 const sensenet = Reducers.sensenet;
 const myReducer = combineReducers({ 
-  sensenet,  
+  sensenet, 
+  site: combineReducers({ 
+        welcome,
+        categories,
+        articles
+  })
 });
 
 let envApiUrl = process.env.REACT_APP_API_URL || DATA.apiUrl; // 'https://data.%sitename%.hu'; 
@@ -39,6 +48,7 @@ if (envApiUrl) {
     
     envApiUrl = envApiUrl.replace('%sitename%', domain);
     // alert(envUrl);
+    window.name = domain;
 }
 
 const repository = new Repository ({
