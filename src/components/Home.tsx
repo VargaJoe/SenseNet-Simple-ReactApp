@@ -75,6 +75,7 @@ class Home extends React.Component<any, any> {
 }
 
 const mapStateToProps = (state: any, match: any) => {
+	// console.log(state.sensenet);
 	return {
 		userName: state.sensenet.session.user.userName,
 	};

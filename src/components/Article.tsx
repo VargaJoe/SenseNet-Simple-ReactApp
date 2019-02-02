@@ -175,17 +175,8 @@ class Article extends React.Component<any, any> {
 					<div className="w3-container w3-padding-large">
 						<h2><b>{article.DisplayName}</b></h2>
 					</div>
-					{/* {									
-						(article.Actions.find(function (obj: any) { return obj.Name === 'Cover'; }) ? ImageSection(article.Actions.find(function (obj: any) { return obj.Name === 'Cover'; })) : '')
-					}	 */}
 					<div className="w3-row-padding w3-padding-16" key={article.Id}>
-						<div className="w3-col m6">
-							<img src={this.props.repositoryUrl + this.getArticleImage(article)}
-								onError={this.addDefaultImageUrl}
-								// defaultImageUrl
-								className="full-width" />
-						</div>
-					</div>
+					{this.getArticleImage(this.props.repositoryUrl, article[key])}
 					<div className="w3-container w3-padding-large w3-bottombar">
 						{/* <h2><b>{article.DisplayName}</b></h2> */}
 						<i>{article.Description}</i>
@@ -213,17 +204,33 @@ class Article extends React.Component<any, any> {
 			</div>
 		);
 	}
-	getArticleImage(article: any): string | undefined {
-		let articleImageObj = article.Actions.find(function (obj: any) { return obj.Name === 'Cover'; });
-		let articleImage = '';
-		if (articleImageObj) {
-			articleImage = articleImageObj.Url;
-		}
-		return articleImage;
+	getArticleImage(apiUrl: string, article: any) {
+		let articleImageAction = article.Actions.find(function (obj: any) { return obj.Name === 'Cover'; });
+		
+		if (articleImageAction === undefined) {
+			return;
+		}		
+		
+		let imagePath = articleImageAction.Url;
+		imagePath = apiUrl + imagePath;
+
+		let image = (
+			<div className="w3-row-padding w3-padding-16">
+				<div className="w3-col m6">
+					<img src={imagePath}
+						onError={this.addDefaultImageUrl}
+						// defaultImageUrl
+						className="full-width" />
+				</div>
+			</div>			
+		);
+	
+		return image;
 	}
 }
 
 const mapStateToProps = (state: any, match: any) => {
+	// console.log(state.sensenet);
 	return {
 		userName: state.sensenet.session.user.userName,
 		repositoryUrl: state.sensenet.session.repository.repositoryUrl,

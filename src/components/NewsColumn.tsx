@@ -98,7 +98,7 @@ function getDefaultSitePath() {
 		// window.location.host is subdomain.domain.com
 		var parts = full.split('.');
 		// var type = parts[parts.length];
-		var domain = parts[parts.length - 1];
+		var domain = (parts.length > 1) ? parts[parts.length - 2] : parts[parts.length - 1];
 		// var sub = parts[0];
 		
 		envSitePath = envSitePath.replace('%sitename%', domain);
@@ -189,7 +189,7 @@ function showReview(repoUrl: any, key: any, article: any) {
 	} else {
 		return (
 			<li key={key} className="w3-padding-16">		
-				<a className="no-score" href={'https://' + articleSiteName + '.hu/' + catName + '/' + article.Name}>		
+				<a className="no-score" href={'https://' + articleSiteName + '.hu/' + catName + '/' + article.Name} target={articleSiteName} >		
 						{innerHtml}
 				</a>
 			</li>
