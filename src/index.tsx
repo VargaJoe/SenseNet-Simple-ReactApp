@@ -3,6 +3,8 @@ import * as React                           from 'react';
 import * as ReactDOM                        from 'react-dom';
 import { Provider }                         from 'react-redux';
 import { combineReducers }                  from 'redux';
+import { Helmet } from 'react-helmet';
+
 import './index.css';
 
 import { JwtService }                       from '@sensenet/authentication-jwt';
@@ -22,7 +24,7 @@ import {
 
 import App                                  from './App';
 const DATA = require('./config.json');
-document.title = process.env.REACT_APP_SITE_TITLE || DATA.siteTitle;
+let siteTitle = process.env.REACT_APP_SITE_TITLE || DATA.siteTitle;
 
 const sensenet = Reducers.sensenet;
 const myReducer = combineReducers({ 
@@ -30,7 +32,7 @@ const myReducer = combineReducers({
   site: combineReducers({ 
         welcome,
         categories,
-        articles
+        articles,
   })
 });
 
@@ -68,12 +70,16 @@ const store = Store.createSensenetStore(options);
 ReactDOM.render(
     ( 
         <div>
-            <span className="hidden">hello world!</span>
-        <Provider store={store}>
-            <BrowserRouter basename="/">
-                    <App />
-            </BrowserRouter>
-        </Provider>
+            <Helmet>
+                <meta charSet="utf-8" />
+                <title>{siteTitle}</title>
+                <link rel="canonical" href="https://maindomain" />
+            </Helmet>
+            <Provider store={store}>
+                <BrowserRouter basename="/">
+                        <App />
+                </BrowserRouter>
+            </Provider>
         </div>
     ),
     document.getElementById('root')

@@ -35,13 +35,16 @@ export const categories = (
                 isDataFetched: false
             };
         }
+        // case 'LOAD_CATEGORY_ARTICLES_SUCCESS': {
+        //     return {
+        //         ...state,
+        //         categories: [...action.payload.articles.results.filter((c: any) => c.Type === 'LeisureCategory'), ...state.categories].filter((s1, pos, arr) => arr.findIndex((s2) => s2.Id === s1.Id) === pos),
+        //     };
+        // }
         case 'LOAD_CATEGORY_SUCCESS': {
             let newCat = category({}, action);
             return {
                 ...state,
-                // categories: Array.from(new Set([...state.categories, category({}, action)]))
-                // categories: [...state.categories.filter(cat => cat.Id !== newCat.Id), newCat]
-                // categories: Array.from(new Set([...state.categories, newCat]))
                 categories: state.categories.findIndex(c => c.Id === newCat.Id) > -1 ? state.categories : [...state.categories, newCat]
             };
         }

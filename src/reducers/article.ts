@@ -1,16 +1,4 @@
-// import { Folder } from '@sensenet/default-content-types';
 import { IODataParams, Repository } from '@sensenet/client-core';
-
-// export const loadArticle = (path: string, options: IODataParams<any> = {}) => ({    
-//     type: 'LOAD_ARTICLE',
-//     async payload(repository: Repository) {
-//         const data = await repository.load({
-//             idOrPath: path,
-//             oDataOptions: options,
-//         });
-//         return data.d;
-//     },
-// });
 
 export const loadArticle = (path: string, options: IODataParams<any> = {}) => ({
     type: 'LOAD_ARTICLE',
@@ -21,7 +9,6 @@ export const loadArticle = (path: string, options: IODataParams<any> = {}) => ({
             oDataOptions: options,
         });
         console.log('LOAD_ARTICLE');
-        // console.log(data.d.results[0]);
         return data.d.results[0];
     },
 });

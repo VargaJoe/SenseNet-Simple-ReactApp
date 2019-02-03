@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { connect } from 'react-redux';
-import { loadCategory } from '../reducers/category';
-import { loadArticles } from '../reducers/articles';
+import { loadCategory } from '../../reducers/category';
+import { loadArticles } from '../../reducers/articles';
 import {
 	withRouter
 } from 'react-router-dom';
@@ -21,7 +21,9 @@ class Category extends React.Component<any, any> {
 		super(props);
 		this.state = {
 			isDataFetched: false,
-			categoryName: '',
+			articles: Array,
+			ids: {},
+			categoryName: ''
 		};
 	}
 
@@ -50,7 +52,8 @@ class Category extends React.Component<any, any> {
 		let loadedTags = this.props.loadedTags;
 
 		if (category === undefined && (articles === undefined || articles === [] || articles.length === 0 || !loadedTags.includes(categoryName))) {
-			console.log('load category + articles');
+			console.log('category + articles');
+
 			let categoryGet = this.props.loadCategoryContent(path, {
 				select: ['Name', 'IconName', 'Id', 'Path', 'Index', 'DisplayName'],
 				query: 'Type:' + menutType + ' AND Hidden:0 .AUTOFILTERS:OFF',
@@ -58,17 +61,17 @@ class Category extends React.Component<any, any> {
 			} as IODataParams<GenericContent>);
 	
 			categoryGet.then(() => {
-				console.log('category loaded');
 				let articlesGet = this.props.loadCategoryArticles(path, {
+					// select: ['Publisher', 'Author', 'Description', 'DisplayName', 'Id', 'OriginalAuthor', 'Author', 'PublishDate', 'Index', 'Actions'],
 					select: ['CreationDate', 'CreatedBy', 'Description', 'DisplayName', 'Id', 'OriginalAuthor', 'Author', 'Publisher', 'PublishDate', 'Lead', 'Body', 'RelatedContent', 'Translation', 'Actions'],
-					expand: ['CreatedBy', 'Translation', 'RelatedContent', 'Actions'],
+					expand: ['CreatedBy', 'Actions/HxHImg'],					
 					query: 'TypeIs:' + articleType,
 					orderby: [['PublishDate', 'desc'], ['Index', 'desc'], 'DisplayName'],
 					metadata: 'no'
 				} as IODataParams<CustomArticle>);
 
-				articlesGet.then((result: any) => {
-					console.log('articles loaded');
+				articlesGet.then((err: any) => {
+					console.log('Load category + articles');
 				}).catch((err: any) => {
 					console.log(err);
 				});
@@ -76,17 +79,18 @@ class Category extends React.Component<any, any> {
 				console.log(err);
 			});
 		} else if (articles === undefined || articles === [] || articles.length === 0 || !loadedTags.includes(categoryName)) {
-			console.log('load only articles');
+			console.log('only articles');
 			let articlesGet = this.props.loadCategoryArticles(path, {
+				// select: ['Publisher', 'Author', 'Description', 'DisplayName', 'Id', 'OriginalAuthor', 'Author', 'PublishDate', 'Index', 'Actions'],
 				select: ['CreationDate', 'CreatedBy', 'Description', 'DisplayName', 'Id', 'OriginalAuthor', 'Author', 'Publisher', 'PublishDate', 'Lead', 'Body', 'RelatedContent', 'Translation', 'Actions'],
-				expand: ['CreatedBy', 'Translation', 'RelatedContent', 'Actions'],
+				expand: ['CreatedBy', 'Actions/HxHImg'],					
 				query: 'TypeIs:' + articleType,
 				orderby: [['PublishDate', 'desc'], ['Index', 'desc'], 'DisplayName'],
 				metadata: 'no'
 			} as IODataParams<CustomArticle>);
 
-			articlesGet.then((result: any) => {
-				console.log('articles loaded');
+			articlesGet.then((err: any) => {
+				console.log('Load only articles');
 			}).catch((err: any) => {
 				console.log(err);
 			});
@@ -99,11 +103,35 @@ class Category extends React.Component<any, any> {
 		let category = categories.find(function (obj: any) { return obj.Name === categoryName; });
 		let articles = this.props.articles;
 		let loadedTags = this.props.loadedTags;
+		// console.log('wtf');
+		// console.log(category);
+		// console.log(articles);
+		// console.log(articles.length);
+		// console.log(loadedTags);
         if (category === undefined || articles === undefined || articles.length === 0 || !loadedTags.includes(categoryName)) {
 			return null;
 		}
 		
 		articles = articles.filter((obj: any) => obj.Path.startsWith(category.Path));
+		// console.log('category articles');
+		// console.log(articles);
+		// console.log(this.props.articles);
+
+		// let homePageItems = this.state.articles;
+		// let homePageIds = this.state.ids;
+		// let categoryName = this.state.categoryName;
+		// let counter = 1;
+
+		// let categories = this.props.categories;
+		// let category = categories.filter((c: any) => c.Name === categoryName);
+		// let category = categories.find(function (obj: any) { return obj.Name === categoryName; });
+		// console.log(categoryName);
+		// console.log(categories);
+		// console.log(category);
+		// console.log(articles);
+		// console.log('end');
+
+		// const homePage = '';
 		const categoryArticles = articles
 			.map((article: any) =>
 				(
@@ -125,6 +153,12 @@ class Category extends React.Component<any, any> {
 
 		return (
 			<div className="w3-row-padding">
+				{/* <div> 
+					<button onClick={this.byName}>byName</button>
+				</div>
+				<div> 
+					<button onClick={this.byDate}>byDate</button>
+				</div> */}
 				{categoryArticles} 
 			</div>
 		);

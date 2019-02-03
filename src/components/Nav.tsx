@@ -1,5 +1,5 @@
 import Home from './Home';
-import Article from './Article';
+import Content from './Content';
 import Category from './Category';
 import NoMatch from './NoMatch';
 
@@ -8,7 +8,7 @@ const Data  = {
 				{
 									exact: true,
 									path: '/:categoryName/:articleName',
-									component: Article
+									component: Content
 				},
                 {
 									exact: true,
