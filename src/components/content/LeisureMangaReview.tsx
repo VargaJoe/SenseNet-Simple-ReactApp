@@ -1,7 +1,5 @@
 import * as React from 'react';
 import { connect } from 'react-redux';
-import { Helmet } from 'react-helmet';
-
 import Moment from 'react-moment';
 
 interface Props {
@@ -97,15 +95,6 @@ class LeisureMangaReview extends React.Component<Props, {}> {
 
 		const firstArticle = (
 				<div key={article.Id}>
-					<Helmet>
-						<meta charSet="utf-8" />
-						<title>{article.DisplayName}</title>
-						{/* concat title from site name + article name */}
-						<link rel="canonical" href={`${window.location.href}`} />
-						{/* concat url from article domain + article category + article name */}
-						{/* ${window.location.host}/${this.state.categoryName}/${this.state.articleName} */}
-					</Helmet>
-
 					<div className="w3-container w3-padding-large">
 						<h2><b>{article.DisplayName}</b></h2>
 					</div>

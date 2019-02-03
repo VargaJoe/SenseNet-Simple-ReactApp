@@ -1,16 +1,20 @@
-import * as React from 'react';
-import { connect } from 'react-redux';
+import * as React 		from 'react';
+import { connect } 		from 'react-redux';
 import { loadCategory } from '../reducers/category';
 import { loadArticles } from '../reducers/articles';
 import {
 	withRouter
-} from 'react-router-dom';
-import Moment from 'react-moment';
-import { Link } from 'react-router-dom';
-import { GenericContent, Folder } from '@sensenet/default-content-types';
+} 						from 'react-router-dom';
+import Moment 			from 'react-moment';
+import { Link } 		from 'react-router-dom';
+import { 
+	GenericContent, 
+	Folder } 			from '@sensenet/default-content-types';
 import { IODataParams } from '@sensenet/client-core';
+import { Helmet } 		from 'react-helmet';
 
 const DATA = require('../config.json');
+let siteTitle = process.env.REACT_APP_SITE_TITLE || DATA.siteTitle;
 
 class CustomArticle extends Folder {
 	PublishDate: Date;
@@ -124,8 +128,19 @@ class Category extends React.Component<any, any> {
 			);
 
 		return (
-			<div className="w3-row-padding">
-				{categoryArticles} 
+			<div>
+				<Helmet>
+					<meta charSet="utf-8" />
+					<title>{siteTitle} - {category.DisplayName}</title>
+					{/* concat title from site name + article name */}
+					<link rel="canonical" href={`${window.location.href}`} />
+					{/* concat url from article domain + article category + article name */}
+					{/* ${window.location.host}/${this.state.categoryName}/${this.state.articleName} */}
+				</Helmet>
+				<div className="w3-container"><h1><b>{category.DisplayName}</b></h1></div>
+				<div className="w3-row-padding">
+					{categoryArticles} 
+				</div>
 			</div>
 		);
 	}

@@ -1,8 +1,9 @@
 import * as React 		from 'react';
 import { connect } 		from 'react-redux';
 import { loadArticle } 	from '../reducers/article';
-
+import { Helmet } 		from 'react-helmet';
 const DATA = require('../config.json');
+let siteTitle = process.env.REACT_APP_SITE_TITLE || DATA.siteTitle;
 
 class Content extends React.Component<any, any> {
 	img: HTMLImageElement | null;
@@ -108,7 +109,17 @@ class Content extends React.Component<any, any> {
 		}
 
 		return (
+			<div>
+				<Helmet>
+					<meta charSet="utf-8" />
+					<title>{siteTitle} - {article.DisplayName}</title>
+					{/* concat title from site name + article name */}
+					<link rel="canonical" href={`${window.location.href}`} />
+					{/* concat url from article domain + article category + article name */}
+					{/* ${window.location.host}/${this.state.categoryName}/${this.state.articleName} */}
+				</Helmet>
 				<Compo key={article.Id} article={article} repositoryUrl={this.props.repositoryUrl} />
+			</div>
 		);
 	}
 }

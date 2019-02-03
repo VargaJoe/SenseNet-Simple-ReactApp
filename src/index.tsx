@@ -73,7 +73,7 @@ ReactDOM.render(
             <Helmet>
                 <meta charSet="utf-8" />
                 <title>{siteTitle}</title>
-                <link rel="canonical" href="https://maindomain" />
+                <link rel="canonical" href={window.location.href} />
             </Helmet>
             <Provider store={store}>
                 <BrowserRouter basename="/">

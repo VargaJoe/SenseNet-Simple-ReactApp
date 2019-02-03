@@ -63,8 +63,11 @@ class Intro extends React.Component<any, any> {
 			) : '';
 
 		return (
-			<div className="w3-container w3-bottombar">
-				 {welcomeMessage ? welcomeMessage : DATA.siteLead}
+			<div>
+				<div className="w3-container"><h1><b>{introItem.DisplayName}</b></h1></div>
+				<div className="w3-container w3-bottombar">
+					{welcomeMessage ? welcomeMessage : DATA.siteLead}
+				</div>
 			</div>
 		);
 	}
