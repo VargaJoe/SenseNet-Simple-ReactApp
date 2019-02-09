@@ -107,7 +107,7 @@ class Category extends React.Component<any, any> {
 			return null;
 		}
 		
-		articles = articles.filter((obj: any) => obj.Path.startsWith(category.Path));
+		articles = articles.filter((obj: any) => obj.Path.startsWith(`${category.Path}/`));
 		const categoryArticles = articles
 			.map((article: any) =>
 				(
