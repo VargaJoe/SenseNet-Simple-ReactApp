@@ -1,6 +1,7 @@
 // import { Folder } from '@sensenet/default-content-types';
 import { IODataParams, Repository } from '@sensenet/client-core';
 import { article } from './article';
+import { PathHelper } from '@sensenet/client-utils';
 
 export const loadArticles = (path: string, options: IODataParams<any> = {}) => ({
     type: 'LOAD_ARTICLES',
@@ -11,6 +12,24 @@ export const loadArticles = (path: string, options: IODataParams<any> = {}) => (
             oDataOptions: options,
         });
         console.log('LOAD_ARTICLES');
+        return { tag: path.substring(path.lastIndexOf('/') + 1), articles: data.d };
+    },
+});
+
+export const loadTranslatedManga = (path: string, options: IODataParams<any> = {}) => ({
+    type: 'LOAD_ARTICLES',
+    // tslint:disable:completed-docs
+    async payload(repository: Repository) {
+        const contentPath = PathHelper.getContentUrl(path);
+        let actionPath = contentPath + '/GetTranslatedManga';
+        console.log(path);
+        console.log(contentPath);
+        console.log(actionPath);
+        const data = await repository.loadCollection({
+            path: actionPath,
+            oDataOptions: options,
+        });
+        console.log('LOAD_TRANSLATEDS');
         return { tag: path.substring(path.lastIndexOf('/') + 1), articles: data.d };
     },
 });

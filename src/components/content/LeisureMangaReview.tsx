@@ -31,7 +31,7 @@ class LeisureMangaReview extends React.Component<Props, {}> {
 		const TranslationItem = (tLink: any) => (
  			<div key={tLink.item.Id}>
 				<div>
-					<h4 className="translation-title">
+					<h4 className="related-title">
 						{tLink.item.DisplayName + ' '}
 						<a href={tLink.item.BrowseUrl} title="Letöltés">
 							<span className="download-link"><i className="fa fa-download" /></span>
@@ -70,7 +70,7 @@ class LeisureMangaReview extends React.Component<Props, {}> {
 		const RelatedItem = (tLink: any) => (
 			<div key={tLink.item.Id}>
 				<div>
-					<h4 className="translation-title">
+					<h4 className="related-title">
 						{tLink.item.DisplayName + ' '}
 						<a href={tLink.item.BrowseUrl} title="Megnyitás" target="_blank">
 							<span className="download-link"><i className="fa fa-external-link-alt" /></span>

@@ -1,14 +1,13 @@
 import * as React 		from 'react';
 import { connect } 		from 'react-redux';
 import { loadCategory } from '../reducers/category';
-import { loadArticles } from '../reducers/articles';
+import { loadTranslatedManga } from '../reducers/articles';
 import {
 	withRouter
 } 						from 'react-router-dom';
 import Moment 			from 'react-moment';
 import { Link } 		from 'react-router-dom';
 import { 
-	GenericContent, 
 	Folder } 			from '@sensenet/default-content-types';
 import { IODataParams } from '@sensenet/client-core';
 import { Helmet } 		from 'react-helmet';
@@ -20,7 +19,7 @@ class CustomArticle extends Folder {
 	PublishDate: Date;
 }
 
-class Category extends React.Component<any, any> {
+class Translateds extends React.Component<any, any> {
 	constructor(props: any) {
 		super(props);
 		this.state = {
@@ -40,49 +39,19 @@ class Category extends React.Component<any, any> {
 	}
 	
 	_initializeComponent(categoryName: string) {
-		let menutType = process.env.REACT_APP_MENU_TYPE || DATA.menuType;
 		let articleType = process.env.REACT_APP_ARTICLE_TYPE || DATA.articleType;
 		let sitePath = process.env.REACT_APP_SITE || DATA.site;		
-		let path = sitePath + '/' + categoryName;
+		let path = sitePath + '/Manga';
 
 		this.setState({
-				categoryName: categoryName
+				categoryName: 'Manga'
 		});
 
-		let category = this.props.categories.find((obj: any) => obj.Name === categoryName );
 		let articles = this.props.articles;
-		let loadedTags = this.props.loadedTags;
 
-		if (category === undefined && (articles === undefined || articles === [] || articles.length === 0 || !loadedTags.includes(categoryName))) {
-			console.log('load category + articles');
-			let categoryGet = this.props.loadCategoryContent(path, {
-				select: ['Name', 'IconName', 'Id', 'Path', 'Index', 'DisplayName'],
-				query: 'Type:' + menutType + ' AND Hidden:0 .AUTOFILTERS:OFF',
-				orderby: ['Index', 'DisplayName']
-			} as IODataParams<GenericContent>);
-	
-			categoryGet.then((catResult: any) => {			
-				console.log('category loaded');
-				category = catResult.value;
-				let articlesGet = this.props.loadCategoryArticles(category.Path, {
-					select: ['CreationDate', 'CreatedBy', 'Description', 'DisplayName', 'Id', 'OriginalAuthor', 'Author', 'Publisher', 'PublishDate', 'Lead', 'Body', 'RelatedContent', 'Translation', 'Actions'],
-					expand: ['CreatedBy', 'Translation', 'RelatedContent', 'Actions'],
-					query: 'TypeIs:' + articleType,
-					orderby: [['PublishDate', 'desc'], ['Index', 'desc'], 'DisplayName'],
-					metadata: 'no'
-				} as IODataParams<CustomArticle>);
-
-				articlesGet.then((result: any) => {
-					console.log('articles loaded');
-				}).catch((err: any) => {
-					console.log(err);
-				});
-			}).catch((err: any) => {
-				console.log(err);
-			});
-		} else if (articles === undefined || articles === [] || articles.length === 0 || !loadedTags.includes(categoryName)) {
+		if (articles === undefined || articles === [] || articles.length === 0) {
 			console.log('load only articles');
-			let articlesGet = this.props.loadCategoryArticles(category.Path, {
+			let articlesGet = this.props.loadCategoryArticles(path, {
 				select: ['CreationDate', 'CreatedBy', 'Description', 'DisplayName', 'Id', 'OriginalAuthor', 'Author', 'Publisher', 'PublishDate', 'Lead', 'Body', 'RelatedContent', 'Translation', 'Actions'],
 				expand: ['CreatedBy', 'Translation', 'RelatedContent', 'Actions'],
 				query: 'TypeIs:' + articleType,
@@ -92,6 +61,7 @@ class Category extends React.Component<any, any> {
 
 			articlesGet.then((result: any) => {
 				console.log('articles loaded');
+				console.log(result.value);
 			}).catch((err: any) => {
 				console.log(err);
 			});
@@ -169,11 +139,11 @@ const mapStateToProps = (state: any, match: any) => {
 const mapDispatchToProps = (dispatch: any) => {
 	return {
 		loadCategoryContent: (path: string, options: any) => dispatch(loadCategory(path, options)),
-		loadCategoryArticles: (path: string, options: any) => dispatch(loadArticles(path, options)),
+		loadCategoryArticles: (path: string, options: any) => dispatch(loadTranslatedManga(path, options)),
     };
 };
 
 export default withRouter(connect(
 	mapStateToProps,
 	mapDispatchToProps
-)(Category as any));
+)(Translateds as any));
