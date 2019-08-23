@@ -14,6 +14,7 @@ class Content extends React.Component<any, any> {
 			isDataFetched: false,
 			article: {},
 			components: [],
+			defaultCompName: ''
 		};
 	}
 
@@ -22,18 +23,26 @@ class Content extends React.Component<any, any> {
 		ev.target.className = 'hidden';
 	}
 
-	addComponent = async (type: string) => {
+	addComponent = async (type: string, setDef: boolean = false) => {
         let compoName = `${type}`;
         if (this.state.components.findIndex((c: any) => c.name === compoName) === -1) {
             console.log(`Loading ${compoName} component...`);
         
             import(`./content/${compoName}`)
             .then((component: any) => {
+				const loadedComp = component.default.WrappedComponent;
                 this.setState({
-                    components: (this.state.components.findIndex((c: any) => c.name === `${compoName}`) > -1) ? this.state.components : [...this.state.components, component.default.WrappedComponent]
+                    components: (this.state.components.findIndex((c: any) => c.name === `${loadedComp.name}`) > -1) ? this.state.components : [...this.state.components, loadedComp]
 				  });
 				console.log(`${compoName} loaded! State should be updated:`);
 				console.log(this.state.components);
+				console.log(loadedComp);
+				if (setDef) {
+					this.setState({
+						defaultComponent: `${loadedComp.name}`
+					});
+					console.log(`${loadedComp.name} has been set as default component`);
+				}
             })
             .catch(error => {
 				console.error(`"${compoName}" not yet supported: ${error}`);
@@ -42,7 +51,7 @@ class Content extends React.Component<any, any> {
     }
 
 	componentDidMount() {
-		this.addComponent(defaultComponent);
+		this.addComponent(defaultComponent, true);
 		console.log('Default component should be loaded in state:');
 		console.log(this.state.components);
 		this._initializeComponent();
