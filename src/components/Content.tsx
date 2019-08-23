@@ -108,7 +108,7 @@ class Content extends React.Component<any, any> {
 		}
 
 		if (Compo === undefined) {
-			console.log(Compo.name + ' not found');
+			console.log('Dynamic component not found');
 			return ( 
 				<div />				
 			);
