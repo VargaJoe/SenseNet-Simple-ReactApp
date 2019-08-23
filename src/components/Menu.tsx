@@ -1,6 +1,10 @@
+import {
+    Actions
+} from '@sensenet/redux';
 import * as React from 'react';
 import { connect } from 'react-redux';
-import { loadCategories } from '../reducers/categories';
+import MenuItem from './MenuItem';
+import LinkItem from './LinkItem';
 
 import { IODataParams } from '@sensenet/client-core';
 import { GenericContent } from '@sensenet/default-content-types';
@@ -14,10 +18,7 @@ interface Props {
     menuTrigger: string;
     getMenuItems: any;
     openMenu: Function;
-    repositoryUrl: string;
-    loadMenuItems: Function;   
-    isMenuFetched: boolean; 
-    menuItems: any;
+    repositoryUrl: string;    
 }
 
 class Menu extends React.Component<Props, any> {
@@ -26,8 +27,7 @@ class Menu extends React.Component<Props, any> {
         this.state = {
             menuTrigger: this.props.menuTrigger,
             menuItems: null,
-            isDataFetched: false,
-            components: []
+            isDataFetched: false
         };
         this.clickHandler = this.clickHandler.bind(this);
     }
@@ -35,38 +35,25 @@ class Menu extends React.Component<Props, any> {
     clickHandler = () => {
         this.props.openMenu();   
     }
-
-    addComponent = async (type: string) => {
-        let compoName = `${type}Item`;
-        if (this.state.components.findIndex((c: any) => c.name === compoName) === -1) {
-            console.log(`Loading ${compoName} component...`);
-        
-            import(`./leftmenu/${compoName}`)
-            .then((component: any) => {
-                this.setState({
-                    components: (this.state.components.findIndex((c: any) => c.name === `${compoName}`) > -1) ? this.state.components : [...this.state.components, component.default]
-                  });
-            })
-            .catch(error => {
-                console.error(`"${compoName}" not yet supported: ${error}`);
-            });
-        }
-    }
-
+    
     public componentDidMount() {
         const menuPath = process.env.REACT_APP_MENU_PATH || DATA.menuPath;
+        const sitePath = process.env.REACT_APP_SITE_PATH || DATA.sitePath;
         let menutType = process.env.REACT_APP_MENU_TYPE || DATA.menuType;
 
-        let menuitems = this.props.loadMenuItems(menuPath, {
-			select: ['Name', 'IconName', 'Id', 'Path', 'Index', 'DisplayName'],
-			query: 'Type:' + menutType + ' AND Hidden:0 .AUTOFILTERS:OFF',
+        let menuitems = this.props.getMenuItems(menuPath, {
+            select: ['Name', 'IconName', 'Id', 'Path', 'Index', 'DisplayName', 'Type', 'Actions'],
+            expand: ['Actions'],
+			query: 'InFolder:"' + sitePath + '" AND Type:' + menutType + ' AND Hidden:0 .AUTOFILTERS:OFF',
 			orderby: ['Index', 'DisplayName']
 		} as IODataParams<GenericContent>);
 
         menuitems.then((result: any) => {
-            // Technical Debt: one type should be loaded once
-            result.value.results.map(async (item: any) => {
-                await this.addComponent(item.Type);
+            console.log(result.value.entities.entities);
+            this.setState({
+                isDataFetched: true,
+                menuItems: result.value.entities.entities,
+                ids: result.value.result
             });
         });
 
@@ -76,28 +63,33 @@ class Menu extends React.Component<Props, any> {
     }
 
     public render() {
-        if (!this.props.isMenuFetched) {
-			return null;
+        if (!this.state.isDataFetched) {
+            return null;
         }
+        console.log(status);
         
-        const { components } = this.state;
-        if (components.length === 0) {
-            return <div>Loading...</div>;
-        }
-        
-        const menuItems = this.props.menuItems;
-        const menu = Object.keys(menuItems)
-			.map((key: any) => {
-                let Compo = this.state.components.find((DynCom: any)  => {
-                return (DynCom.name === `${menuItems[key].Type}Item`);
-                });
+        const menuItems = this.state.menuItems;
+        const menuIds = this.state.ids;
 
-                if (Compo === undefined) {
-                    return;
+        const menu = menuIds
+			.map((key: number) => {
+                let itemType = menuItems[key].Type;
+                // console.log(itemType);
+                switch (itemType) {
+                    case 'SoftLink': {
+                        let browseAction = menuItems[key].Actions.find(function (obj: any) { return obj.Name === 'Browse'; });
+                        let browseUrl = '';
+                        if (browseAction !== undefined) {
+                            browseUrl = browseAction.Url;                            
+                        }		
+                        return (
+                            <LinkItem key={key} name={menuItems[key].DisplayName} icon={fontImportantClass + this.state.menuItems[key].IconName} pathTo={browseUrl} />
+                        );
+                    }
+                    default: return (                
+                        <MenuItem key={key} name={menuItems[key].DisplayName} icon={fontImportantClass + this.state.menuItems[key].IconName} pathTo={'/' + menuItems[key].Name} />
+                    );
                 }
-                return (
-                        <Compo key={key} name={menuItems[key].DisplayName} icon={fontImportantClass + menuItems[key].IconName} pathTo={'/' + menuItems[key].Name} />
-                );
             }
         );
         
@@ -126,21 +118,15 @@ class Menu extends React.Component<Props, any> {
 }
 
 const mapStateToProps = (state: any, match: any) => {
-  	return {
-		userName: state.sensenet.session.user.userName,
-        repositoryUrl: state.sensenet.session.repository.repositoryUrl,
-        isMenuFetched: state.site.categories.isDataFetched,
-        menuItems: state.site.categories.categories,
-	};
-};
-
-const mapDispatchToProps = (dispatch: any) => {
 	return {
-		loadMenuItems: (path: string, options: any) => dispatch(loadCategories(path, options)),
-    };
+		userName: state.sensenet.session.user.userName,
+		repositoryUrl: state.sensenet.session.repository.repositoryUrl,
+	};
 };
 
 export default connect(
     mapStateToProps,
-    mapDispatchToProps
+    (dispatch) => ({
+        getMenuItems: (path: string, options: any) => dispatch(Actions.requestContent(path, options)),
+    })
 )(Menu as any);
