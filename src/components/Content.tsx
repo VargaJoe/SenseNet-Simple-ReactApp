@@ -31,18 +31,21 @@ class Content extends React.Component<any, any> {
             await import(`./content/${compoName}`)
             .then((component: any) => {
 				const loadedComp = component.default.WrappedComponent;
-                this.setState({
-                    components: (this.state.components.findIndex((c: any) => c.name === `${loadedComp.name}`) > -1) ? this.state.components : [...this.state.components, loadedComp]
-				  });
-				console.log(`${compoName} loaded! State should be updated:`);
-				console.log(this.state.components);
-				console.log(loadedComp);
+				let defaultCompName = this.state.defaultCompName;
+
 				if (setDef) {
-					this.setState({
-						defaultCompName: `${loadedComp.name}`
-					});
-					console.log(`${loadedComp.name} has been set as default component`);
+					console.log(`${loadedComp.name} has been set as default component.`);
+					defaultCompName = `${loadedComp.name}`;
 				}
+
+				console.log(`${compoName} loaded! State should be updated. Newly loaded component:`);
+				console.log(loadedComp);
+				console.log('State will be saved now!');
+                this.setState({
+					components: (this.state.components.findIndex((c: any) => c.name === `${loadedComp.name}`) > -1) ? this.state.components : [...this.state.components, loadedComp],
+					defaultCompName: defaultCompName
+				  });
+				
             })
             .catch(error => {
 				console.error(`"${compoName}" not yet supported: ${error}`);
@@ -62,11 +65,6 @@ class Content extends React.Component<any, any> {
 		let path = sitePath + '/' + categoryName;
 
 		let articleName = this.props.match.params.articleName;
-		this.setState({
-			categoryName: categoryName,
-			articleName: articleName
-		});
-
 		let article = this.props.articles.find((obj: any) => obj.Name === articleName );
 
 		// first load category if not presented, then use category path for intree parameter 
@@ -79,14 +77,23 @@ class Content extends React.Component<any, any> {
 				expand: ['CreatedBy', 'Translation', 'RelatedContent', 'Actions'],
 				query: 'TypeIs:' + articleType + ' AND Name:\'' + articleName + '\'',
 			}).then((result: any) => {
+				console.log('Article is loaded. State will be saved now!');
 				this.setState({
 					isDataFetched: true,
+					categoryName: categoryName,
+					articleName: articleName
 				});
 				this.addComponent(result.value.Type);
 			}).catch((err: any) => {
 				console.log(err);
 			});
 		} else {
+			console.log('Category and article names are will be set on State now!');
+			this.setState({
+				categoryName: categoryName,
+				articleName: articleName
+			});
+			
 			this.addComponent(article.Type);
 		}
 	}
