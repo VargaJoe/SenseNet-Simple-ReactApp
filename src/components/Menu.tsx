@@ -38,7 +38,7 @@ class Menu extends React.Component<Props, any> {
     
     public componentDidMount() {
         const menuPath = process.env.REACT_APP_MENU_PATH || DATA.menuPath;
-        const sitePath = process.env.REACT_APP_SITE_PATH || DATA.sitePath;
+        const sitePath = process.env.REACT_APP_SITE || DATA.sitePath;
         let menutType = process.env.REACT_APP_MENU_TYPE || DATA.menuType;
 
         let menuitems = this.props.getMenuItems(menuPath, {
