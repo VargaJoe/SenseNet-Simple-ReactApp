@@ -28,7 +28,7 @@ class Content extends React.Component<any, any> {
         if (this.state.components.findIndex((c: any) => c.name === compoName) === -1) {
             console.log(`Loading ${compoName} component...`);
         
-            import(`./content/${compoName}`)
+            await import(`./content/${compoName}`)
             .then((component: any) => {
 				const loadedComp = component.default.WrappedComponent;
                 this.setState({
@@ -39,7 +39,7 @@ class Content extends React.Component<any, any> {
 				console.log(loadedComp);
 				if (setDef) {
 					this.setState({
-						defaultComponent: `${loadedComp.name}`
+						defaultCompName: `${loadedComp.name}`
 					});
 					console.log(`${loadedComp.name} has been set as default component`);
 				}
@@ -52,8 +52,6 @@ class Content extends React.Component<any, any> {
 
 	componentDidMount() {
 		this.addComponent(defaultComponent, true);
-		console.log('Default component should be loaded in state:');
-		console.log(this.state.components);
 		this._initializeComponent();
 	}
 	
@@ -115,7 +113,7 @@ class Content extends React.Component<any, any> {
 		if (Compo === undefined) {
 			console.log('fallback selevted');
 			Compo = this.state.components.find((DynCom: any)  => {
-				return (DynCom.name === defaultComponent);
+				return (DynCom.name === this.state.defaultCompName);
 				});
 			console.log('Default component should be retrieved from state:');
 			console.log(this.state.components);
