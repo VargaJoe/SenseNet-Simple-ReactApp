@@ -45,7 +45,7 @@ class Content extends React.Component<any, any> {
 	
 	_initializeComponent() {
 		let articleType = process.env.REACT_APP_ARTICLE_TYPE || DATA.articleType;
-		let sitePath = process.env.REACT_APP_SITE || DATA.site;		
+		let sitePath = process.env.REACT_APP_SITE || DATA.site;
 		let categoryName = this.props.match.params.categoryName;
 		let path = sitePath + '/' + categoryName;
 
@@ -80,6 +80,8 @@ class Content extends React.Component<any, any> {
 	}
 
 	public render() {
+		let domain = process.env.REACT_APP_SERVICE_URL || DATA.apiUrl;
+
 		let articles = this.props.articles;
 		if (articles === undefined || articles === []) {
 			return null;
@@ -97,14 +99,18 @@ class Content extends React.Component<any, any> {
 
 		// fallback
 		if (Compo === undefined) {
+			console.log('fallback selevted');
 			Compo = this.state.components.find((DynCom: any)  => {
 				return (DynCom.name === 'LeisureArticle');
 				});
+		} else {
+			console.log(Compo.name + ' selevted');
 		}
 
 		if (Compo === undefined) {
+			console.log(Compo.name + ' not found');
 			return ( 
-				<div />
+				<div />				
 			);
 		}
 
@@ -114,7 +120,7 @@ class Content extends React.Component<any, any> {
 					<meta charSet="utf-8" />
 					<title>{siteTitle} - {article.DisplayName}</title>
 					{/* concat title from site name + article name */}
-					<link rel="canonical" href={`${window.location.href}`} />
+					<link rel="canonical" href={`${domain}/${this.state.categoryName}/${this.state.articleName}`} />
 					{/* concat url from article domain + article category + article name */}
 					{/* ${window.location.host}/${this.state.categoryName}/${this.state.articleName} */}
 				</Helmet>
