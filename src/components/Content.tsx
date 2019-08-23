@@ -104,6 +104,7 @@ class Content extends React.Component<any, any> {
 			Compo = this.state.components.find((DynCom: any)  => {
 				return (DynCom.name === defaultComponent);
 				});
+			console.log(this.state.components);
 			console.log(Compo);
 		} else {
 			console.log(Compo.name + ' selevted');
