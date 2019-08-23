@@ -31,7 +31,9 @@ class Content extends React.Component<any, any> {
             .then((component: any) => {
                 this.setState({
                     components: (this.state.components.findIndex((c: any) => c.name === `${compoName}`) > -1) ? this.state.components : [...this.state.components, component.default.WrappedComponent]
-                  });
+				  });
+				console.log(`${compoName} loaded! State should be updated:`);
+				console.log(this.state.components);
             })
             .catch(error => {
 				console.error(`"${compoName}" not yet supported: ${error}`);
@@ -41,6 +43,8 @@ class Content extends React.Component<any, any> {
 
 	componentDidMount() {
 		this.addComponent(defaultComponent);
+		console.log('Default component should be loaded in state:');
+		console.log(this.state.components);
 		this._initializeComponent();
 	}
 	
@@ -104,6 +108,7 @@ class Content extends React.Component<any, any> {
 			Compo = this.state.components.find((DynCom: any)  => {
 				return (DynCom.name === defaultComponent);
 				});
+			console.log('Default component should be retrieved from state:');
 			console.log(this.state.components);
 			console.log(Compo);
 		} else {
@@ -111,7 +116,7 @@ class Content extends React.Component<any, any> {
 		}
 
 		if (Compo === undefined) {
-			console.log('Dynamic component not found');
+			console.log('Masaka! Dynamic component not found. Not even default component!?');
 			return ( 
 				<div />				
 			);
