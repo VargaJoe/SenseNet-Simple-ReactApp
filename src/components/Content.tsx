@@ -5,6 +5,7 @@ import { Helmet } 		from 'react-helmet';
 const DATA = require('../config.json');
 let siteTitle = process.env.REACT_APP_SITE_TITLE || DATA.siteTitle;
 
+const defaultComponent = 'LeisureArticle';
 class Content extends React.Component<any, any> {
 	img: HTMLImageElement | null;
 	constructor(props: any) {
@@ -39,7 +40,7 @@ class Content extends React.Component<any, any> {
     }
 
 	componentDidMount() {
-		this.addComponent('LeisureArticle');
+		this.addComponent(defaultComponent);
 		this._initializeComponent();
 	}
 	
@@ -101,8 +102,9 @@ class Content extends React.Component<any, any> {
 		if (Compo === undefined) {
 			console.log('fallback selevted');
 			Compo = this.state.components.find((DynCom: any)  => {
-				return (DynCom.name === 'LeisureArticle');
+				return (DynCom.name === defaultComponent);
 				});
+			console.log(Compo);
 		} else {
 			console.log(Compo.name + ' selevted');
 		}
