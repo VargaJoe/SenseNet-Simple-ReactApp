@@ -80,7 +80,7 @@ class Content extends React.Component<any, any> {
 	}
 
 	public render() {
-		let domain = process.env.REACT_APP_SERVICE_URL || DATA.apiUrl;
+		let domain = process.env.REACT_APP_CANON_URL || DATA.siteUrl;
 
 		let articles = this.props.articles;
 		if (articles === undefined || articles === []) {
