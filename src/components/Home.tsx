@@ -32,7 +32,7 @@ class Home extends React.Component<any, any> {
 		} as IODataParams<GenericContent>);
 
         columns.then((result: any) => {
-            console.log(result.value.entities.entities);
+            // console.log(result.value.entities.entities);
             this.setState({
                 isDataFetched: true,
 				columns: result.value.entities.entities,
@@ -49,7 +49,7 @@ class Home extends React.Component<any, any> {
 		if (!this.state.isDataFetched) {
             return null;
         }
-		console.log(status);
+		// console.log(status);
 		
 		const columns = this.state.columns;
 		const colIds = this.state.ids;

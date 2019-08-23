@@ -7,7 +7,7 @@ interface Props {
 	icon: string;
 }
 
-class MenuItem extends React.Component<Props, {}> {
+class SmartFolderItem extends React.Component<Props, {}> {
 	
 	constructor(props: any) {
 		super(props);
@@ -22,16 +22,16 @@ class MenuItem extends React.Component<Props, {}> {
 	public render() {
 		return false ? (
 			<a href="external link comes here" className="a w3-bar-item w3-button w3-padding w3-text-teal">
-					<i className={'fa ' + this.props.icon + ' fa-fw w3-margin-right'} />
+					<i className={'fa fa-folder fa-fw w3-margin-right'} />
 					{this.props.name.toUpperCase()}
 			</a>
 		) : (
 			<Link to={this.props.pathTo} className="w3-bar-item w3-button w3-padding w3-text-teal" onClick={this.handleClick}>
-					<i className={'fa ' + this.props.icon + ' fa-fw w3-margin-right'} />
+					<i className={'fa fa-folder fa-fw w3-margin-right'} />
 					{this.props.name.toUpperCase()}
 			</Link>
 		);
 	}
 }
 
-export default MenuItem;
+export default SmartFolderItem;

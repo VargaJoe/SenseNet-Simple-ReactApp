@@ -1,6 +1,6 @@
-import * as React                           from 'react';
-import './App.css';
-import Body                                 from './components/Body';
+import * as React       from 'react';
+import                  './App.css';
+import Body             from './components/Body';
 
 export interface AppProps {
     store: any;

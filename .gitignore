@@ -2,3 +2,4 @@
 *.scssc
 build/*
 node_modules/*
+src/config.json
