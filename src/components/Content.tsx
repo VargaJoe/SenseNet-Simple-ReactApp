@@ -63,7 +63,7 @@ class Content extends React.Component<any, any> {
 		let sitePath = process.env.REACT_APP_SITE || DATA.site;
 		let categoryName = this.props.match.params.categoryName;
 		let path = sitePath + '/' + categoryName;
-
+		
 		let articleName = this.props.match.params.articleName;
 		let article = this.props.articles.find((obj: any) => obj.Name === articleName );
 
@@ -71,11 +71,11 @@ class Content extends React.Component<any, any> {
 		// instead article type, so it can load any type of content or category send type info
 		// OR only load category if not present with query info + content type AND load dynamically
 		// component according to content type AND sub component will load its own "article" content
-		if (article === undefined) {
+		if (articleName && article === undefined) {
 			this.props.loadArticleContent(path, {
 				select: ['CreationDate', 'CreatedBy', 'Description', 'DisplayName', 'Id', 'OriginalAuthor', 'Author', 'Publisher', 'PublishDate', 'Lead', 'Body', 'RelatedContent', 'Translation', 'Actions'],
 				expand: ['CreatedBy', 'Translation', 'RelatedContent', 'Actions'],
-				query: 'TypeIs:' + articleType + ' AND Name:\'' + articleName + '\'',
+				query: 'TypeIs%3A' + articleType + ' AND Name%3A\'' + articleName + '\'',
 			}).then((result: any) => {
 				console.log('Article is loaded. State will be saved now!');
 				this.setState({
@@ -100,12 +100,12 @@ class Content extends React.Component<any, any> {
 
 	public render() {
 		let domain = process.env.REACT_APP_CANON_URL || DATA.siteUrl;
-
+		let articleName = this.state.articleName;
 		let articles = this.props.articles;
 		if (articles === undefined || articles === []) {
 			return null;
 		}
-		let articleName = this.state.articleName;
+		
 		let article = articles.find(function (obj: any) { return obj.Name === articleName; });
         if (article === undefined) {
 			return null;

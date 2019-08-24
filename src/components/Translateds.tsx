@@ -54,7 +54,7 @@ class Translateds extends React.Component<any, any> {
 			let articlesGet = this.props.loadCategoryArticles(path, {
 				select: ['CreationDate', 'CreatedBy', 'Description', 'DisplayName', 'Id', 'OriginalAuthor', 'Author', 'Publisher', 'PublishDate', 'Lead', 'Body', 'RelatedContent', 'Translation', 'Actions'],
 				expand: ['CreatedBy', 'Translation', 'RelatedContent', 'Actions'],
-				query: 'TypeIs:' + articleType,
+				query: 'TypeIs%3A' + articleType,
 				orderby: [['PublishDate', 'desc'], ['Index', 'desc'], 'DisplayName'],
 				metadata: 'no'
 			} as IODataParams<CustomArticle>);

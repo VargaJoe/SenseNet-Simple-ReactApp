@@ -38,13 +38,13 @@ class Menu extends React.Component<Props, any> {
     
     public componentDidMount() {
         const menuPath = process.env.REACT_APP_MENU_PATH || DATA.menuPath;
-        const sitePath = process.env.REACT_APP_SITE || DATA.sitePath;
-        let menutType = process.env.REACT_APP_MENU_TYPE || DATA.menuType;
+        // const sitePath = process.env.REACT_APP_SITE || DATA.sitePath;
+        let menuType = process.env.REACT_APP_MENU_TYPE || DATA.menuType;
 
         let menuitems = this.props.getMenuItems(menuPath, {
             select: ['Name', 'IconName', 'Id', 'Path', 'Index', 'DisplayName', 'Type', 'Actions'],
             expand: ['Actions'],
-			query: 'InFolder:"' + sitePath + '" AND Type:' + menutType + ' AND Hidden:0 .AUTOFILTERS:OFF',
+			query: 'InFolder%3A"' + menuPath + '" AND Type%3A' + menuType + ' AND Hidden%3A0 .AUTOFILTERS%3AOFF',
 			orderby: ['Index', 'DisplayName']
 		} as IODataParams<GenericContent>);
 
@@ -63,6 +63,8 @@ class Menu extends React.Component<Props, any> {
     }
 
     public render() {
+        let linkType = process.env.REACT_APP_LINK_TYPE || DATA.linkType;
+
         if (!this.state.isDataFetched) {
             return null;
         }
@@ -76,7 +78,7 @@ class Menu extends React.Component<Props, any> {
                 let itemType = menuItems[key].Type;
                 // console.log(itemType);
                 switch (itemType) {
-                    case 'SoftLink': {
+                    case linkType: {
                         let browseAction = menuItems[key].Actions.find(function (obj: any) { return obj.Name === 'Browse'; });
                         let browseUrl = '';
                         if (browseAction !== undefined) {

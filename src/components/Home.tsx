@@ -27,7 +27,7 @@ class Home extends React.Component<any, any> {
 
         let columns = this.props.getHomeContent(colPath, {
 			select: ['Name', 'Id', 'Path', 'Index', 'DisplayName'],
-			query: 'Type:' + colType + ' AND Hidden:0 .AUTOFILTERS:OFF',
+			query: 'Type%3A' + colType + ' AND Hidden%3A0 .AUTOFILTERS%3AOFF',
 			orderby: ['Index', 'DisplayName']
 		} as IODataParams<GenericContent>);
 

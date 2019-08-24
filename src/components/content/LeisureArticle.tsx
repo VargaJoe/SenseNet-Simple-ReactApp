@@ -78,7 +78,7 @@ class LeisureArticle extends React.Component<Props, {}> {
 		);
 
 		return (
-			<div>
+			<div>				
 				{firstArticle}
 			</div>
 		);

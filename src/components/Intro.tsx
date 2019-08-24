@@ -26,9 +26,9 @@ class Intro extends React.Component<any, any> {
 
 		if (path !== undefined) {
 			let welcomeGet = this.props.loadIntro(path, {
-				select: ['DisplayName', 'Id', 'Author', 'PublishDate',  'Lead', 'Actions'],
+				select: ['DisplayName', 'Id', 'Author', 'PublishDate',  'Lead', 'Body', 'Description', 	'Actions'],
 				expand: ['CreatedBy', 'Actions/HxHImg'],
-				query: 'TypeIs:' + articleType,
+				query: 'TypeIs%3A' + articleType,
 				metadata: 'no',
 
 			} as any);
@@ -55,8 +55,14 @@ class Intro extends React.Component<any, any> {
 
 		const welcomeMessage = introItem ? (
 					<div>
+						<div className="Desc">
+							{introItem.Description}
+						</div>
 						<div className="lead">
 							{introItem.Lead}
+						</div>
+						<div className="body">
+							{introItem.Body}
 						</div>
 						<div className="small">{introItem.Author} (<Moment date={introItem.PublishDate} format="YYYY" />)</div>
 					</div>

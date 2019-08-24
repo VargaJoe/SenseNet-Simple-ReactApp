@@ -56,7 +56,7 @@ class Category extends React.Component<any, any> {
 
 			let categoryGet = this.props.loadCategoryContent(path, {
 				select: ['Name', 'IconName', 'Id', 'Path', 'Index', 'DisplayName'],
-				query: 'Type:' + menutType + ' AND Hidden:0 .AUTOFILTERS:OFF',
+				query: 'Type%3A' + menutType + ' AND Hidden%3A0 .AUTOFILTERS:OFF',
 				orderby: ['Index', 'DisplayName']
 			} as IODataParams<GenericContent>);
 	
@@ -65,7 +65,7 @@ class Category extends React.Component<any, any> {
 					// select: ['Publisher', 'Author', 'Description', 'DisplayName', 'Id', 'OriginalAuthor', 'Author', 'PublishDate', 'Index', 'Actions'],
 					select: ['CreationDate', 'CreatedBy', 'Description', 'DisplayName', 'Id', 'OriginalAuthor', 'Author', 'Publisher', 'PublishDate', 'Lead', 'Body', 'RelatedContent', 'Translation', 'Actions'],
 					expand: ['CreatedBy', 'Actions/HxHImg'],					
-					query: 'TypeIs:' + articleType,
+					query: 'TypeIs%3A' + articleType,
 					orderby: [['PublishDate', 'desc'], ['Index', 'desc'], 'DisplayName'],
 					metadata: 'no'
 				} as IODataParams<CustomArticle>);
@@ -84,7 +84,7 @@ class Category extends React.Component<any, any> {
 				// select: ['Publisher', 'Author', 'Description', 'DisplayName', 'Id', 'OriginalAuthor', 'Author', 'PublishDate', 'Index', 'Actions'],
 				select: ['CreationDate', 'CreatedBy', 'Description', 'DisplayName', 'Id', 'OriginalAuthor', 'Author', 'Publisher', 'PublishDate', 'Lead', 'Body', 'RelatedContent', 'Translation', 'Actions'],
 				expand: ['CreatedBy', 'Actions/HxHImg'],					
-				query: 'TypeIs:' + articleType,
+				query: 'TypeIs%3A' + articleType,
 				orderby: [['PublishDate', 'desc'], ['Index', 'desc'], 'DisplayName'],
 				metadata: 'no'
 			} as IODataParams<CustomArticle>);

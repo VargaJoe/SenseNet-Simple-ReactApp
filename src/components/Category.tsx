@@ -57,7 +57,7 @@ class Category extends React.Component<any, any> {
 			console.log('load category + articles');
 			let categoryGet = this.props.loadCategoryContent(path, {
 				select: ['Name', 'IconName', 'Id', 'Path', 'Index', 'DisplayName'],
-				query: 'Type:' + menutType + ' AND Hidden:0 .AUTOFILTERS:OFF',
+				query: 'Type%3A' + menutType + ' AND Hidden%3A0 .AUTOFILTERS%3AOFF',
 				orderby: ['Index', 'DisplayName']
 			} as IODataParams<GenericContent>);
 	
@@ -67,7 +67,7 @@ class Category extends React.Component<any, any> {
 				let articlesGet = this.props.loadCategoryArticles(category.Path, {
 					select: ['CreationDate', 'CreatedBy', 'Description', 'DisplayName', 'Id', 'OriginalAuthor', 'Author', 'Publisher', 'PublishDate', 'Lead', 'Body', 'RelatedContent', 'Translation', 'Actions'],
 					expand: ['CreatedBy', 'Translation', 'RelatedContent', 'Actions'],
-					query: 'TypeIs:' + articleType,
+					query: 'TypeIs%3A' + articleType,
 					orderby: [['PublishDate', 'desc'], ['Index', 'desc'], 'DisplayName'],
 					metadata: 'no'
 				} as IODataParams<CustomArticle>);
@@ -85,7 +85,7 @@ class Category extends React.Component<any, any> {
 			let articlesGet = this.props.loadCategoryArticles(category.Path, {
 				select: ['CreationDate', 'CreatedBy', 'Description', 'DisplayName', 'Id', 'OriginalAuthor', 'Author', 'Publisher', 'PublishDate', 'Lead', 'Body', 'RelatedContent', 'Translation', 'Actions'],
 				expand: ['CreatedBy', 'Translation', 'RelatedContent', 'Actions'],
-				query: 'TypeIs:' + articleType,
+				query: 'TypeIs%3A' + articleType,
 				orderby: [['PublishDate', 'desc'], ['Index', 'desc'], 'DisplayName'],
 				metadata: 'no'
 			} as IODataParams<CustomArticle>);
@@ -98,7 +98,7 @@ class Category extends React.Component<any, any> {
 		}		
 	}
 
-	public render() {
+	public render() {		
 		let categoryName = this.state.categoryName;
 		let categories = this.props.categories;
 		let category = categories.find(function (obj: any) { return obj.Name === categoryName; });
