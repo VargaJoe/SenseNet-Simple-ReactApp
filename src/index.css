@@ -84,3 +84,10 @@ body,h1,h2,h3,h4,h5,h6 {
   text-overflow: ellipsis;
 }
 
+.no-link {
+  display: none;
+}
+
+.t-item-icon {
+  margin: 0 3px;
+}
