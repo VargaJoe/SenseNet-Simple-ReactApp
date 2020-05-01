@@ -147,7 +147,7 @@ class Category extends React.Component<any, any> {
 	}
 
 	getArticleImage(article: any): any {
-		let articleImageObj = article.Actions.find(function (obj: any) { return obj.Name === 'MxMImg'; });
+		let articleImageObj = article.Actions.find(function (obj: any) { return obj.Name === 'HxHImg'; });
 		let articleImage = '';
 		if (articleImageObj) {
 			articleImage = articleImageObj.Url;
