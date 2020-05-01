@@ -40,14 +40,14 @@ class Content extends React.Component<any, any> {
 
 				console.log(`${compoName} loaded! State should be updated. Newly loaded component:`);
 				console.log(loadedComp);
+				console.log(loadedComp.name);
 				console.log('State will be saved now!');
                 this.setState({
 					components: (this.state.components.findIndex((c: any) => c.name === `${loadedComp.name}`) > -1) ? this.state.components : [...this.state.components, loadedComp],
 					defaultCompName: defaultCompName
 				  });
 				console.log('State is saved:');
-				console.log(this.state);
-				
+				console.log(this.state);				
             })
             .catch(error => {
 				console.error(`"${compoName}" not yet supported: ${error}`);
@@ -93,12 +93,12 @@ class Content extends React.Component<any, any> {
 			});
 		} else {
 			console.log('Category and article names are will be set on State now!');
-			this.setState({
-				categoryName: categoryName,
-				articleName: articleName
+			this.addComponent(article.Type).then(() => {
+				this.setState({
+					categoryName: categoryName,
+					articleName: articleName
+				});
 			});
-			
-			this.addComponent(article.Type);
 		}
 	}
 
