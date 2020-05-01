@@ -21,7 +21,7 @@ export const loadTranslatedManga = (path: string, options: IODataParams<any> = {
     // tslint:disable:completed-docs
     async payload(repository: Repository) {
         const contentPath = PathHelper.getContentUrl(path);
-        let actionPath = contentPath + '/GetTranslatedManga';
+        let actionPath = `${contentPath}/GetTranslatedManga`;
         console.log(path);
         console.log(contentPath);
         console.log(actionPath);
