@@ -112,13 +112,14 @@ class Content extends React.Component<any, any> {
 		}
 
 		// dynamic component by content type
+		console.log(`search for component: ${article.Type}`);
 		let Compo = this.state.components.find((DynCom: any)  => {
 			return (DynCom.name === `${article.Type}`);
 			});
 
 		// fallback
 		if (Compo === undefined) {
-			console.log('fallback selevted');
+			console.log('fallback selected');
 			Compo = this.state.components.find((DynCom: any)  => {
 				return (DynCom.name === this.state.defaultCompName);
 				});
@@ -126,7 +127,7 @@ class Content extends React.Component<any, any> {
 			console.log(this.state.components);
 			console.log(Compo);
 		} else {
-			console.log(Compo.name + ' selevted');
+			console.log(Compo.name + ' selected');
 		}
 
 		if (Compo === undefined) {
