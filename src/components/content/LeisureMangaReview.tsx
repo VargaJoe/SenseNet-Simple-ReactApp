@@ -33,7 +33,7 @@ class LeisureMangaReview extends React.Component<Props, {}> {
 				<div>
 					<h4 className="related-title">
 						{tLink.item.DisplayName + ' '}
-						<a href={tLink.item.BrowseUrl} className={tLink.item.BrowseUrl.length > 0 ? 'show-link' : 'no-link'} title="Letöltés">
+						<a href={tLink.item.BrowseUrl} className={tLink.item.BrowseUrl.length > 0 ? 'show-link' : 'no-link'} target="_blank" title="Letöltés">
 							<span className="download-link t-item-icon"><i className="fa fa-download" /></span>
 						</a>
 						<a href={tLink.item.ReaderUrl} className={tLink.item.ReaderUrl.length > 0 ? 'show-link' : 'no-link'} target="_blank" title="Olvasás online">
