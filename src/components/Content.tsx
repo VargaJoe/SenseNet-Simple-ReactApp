@@ -31,22 +31,21 @@ class Content extends React.Component<any, any> {
             await import(`./content/${compoName}`)
             .then((component: any) => {
 				const loadedComp = component.default.WrappedComponent;
-				console.log('component');
+				console.log('component loaded:');
 				console.log(component);
 
 				let defaultCompName = this.state.defaultCompName;
 
 				if (setDef) {
-					console.log(`${loadedComp.name} has been set as default component.`);
-					defaultCompName = `${loadedComp.name}`;
+					console.log(`${compoName} has been set as default component.`);
+					defaultCompName = `${compoName}`;
 				}
 
 				console.log(`${compoName} loaded! State should be updated. Newly loaded component:`);
 				console.log(loadedComp);
-				console.log(loadedComp.name);
 				console.log('State will be saved now!');
                 this.setState({
-					components: (this.state.components.findIndex((c: any) => c.name === `${loadedComp.name}`) > -1) ? this.state.components : [...this.state.components, loadedComp],
+					components: (this.state.components.findIndex((c: any) => c.name === `${compoName}`) > -1) ? this.state.components : [...this.state.components, {name: compoName, compo: loadedComp}],
 					defaultCompName: defaultCompName
 				  });
 				console.log('State is saved:');
@@ -120,29 +119,30 @@ class Content extends React.Component<any, any> {
 
 		// dynamic component by content type
 		console.log(`search for component: ${article.Type}`);
-		let Compo = this.state.components.find((DynCom: any)  => {
+		let CompoWrapper = this.state.components.find((DynCom: any)  => {
 			return (DynCom.name === `${article.Type}`);
 			});
 
 		// fallback
-		if (Compo === undefined) {
+		if (CompoWrapper === undefined) {
 			console.log('fallback selected');
-			Compo = this.state.components.find((DynCom: any)  => {
+			CompoWrapper = this.state.components.find((DynCom: any)  => {
 				return (DynCom.name === this.state.defaultCompName);
 				});
 			console.log('Default component should be retrieved from state:');
 			console.log(this.state.components);
-			console.log(Compo);
+			console.log(CompoWrapper);
 		} else {
-			console.log(Compo.name + ' selected');
+			console.log(CompoWrapper.name + ' selected');
 		}
 
-		if (Compo === undefined) {
+		if (CompoWrapper === undefined) {
 			console.log('Masaka! Dynamic component not found. Not even default component!?');
 			return ( 
 				<div />				
 			);
-		}
+		} 
+		let Compo = CompoWrapper.compo;
 
 		return (
 			<div>
