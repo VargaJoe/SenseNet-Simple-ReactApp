@@ -9,6 +9,7 @@ export const loadArticle = (path: string, options: IODataParams<any> = {}) => ({
             oDataOptions: options,
         });
         console.log('LOAD_ARTICLE');
+        console.log(data.d.results[0]);
         return data.d.results[0];
     },
 });
