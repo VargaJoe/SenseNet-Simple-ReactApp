@@ -57,3 +57,30 @@ body,h1,h2,h3,h4,h5,h6 {
   /* z-index: 1; */
   /* display: none; */
 }
+
+/* custom */
+.article-width {
+  width:  250px;
+}
+.float-left {
+  float: left;
+}
+
+.list-width {
+  width:  50px;
+}
+
+.list-box {
+  color:#000!important;
+  background-color:#fff!important;
+  padding: 16px;
+}
+
+.list-box-title {
+  max-height: 50px;  
+  flex: 1;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+

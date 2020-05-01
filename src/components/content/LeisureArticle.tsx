@@ -99,7 +99,7 @@ class LeisureArticle extends React.Component<Props, {}> {
 					<img src={imagePath}
 						onError={this.addDefaultImageUrl}
 						// defaultImageUrl
-						className="full-width" />
+						className="article-width" />
 				</div>
 			</div>			
 		);

@@ -136,9 +136,9 @@ class Category extends React.Component<any, any> {
 			.map((article: any) =>
 				(
 					<Link key={article.Id} to={'/' + categoryName + '/' + article.Name}>					
-						<div data-id={article.Id} className="w3-third w3-container w3-margin-bottom">
+						<div data-id={article.Id} className="w3-quarter w3-container w3-margin-bottom">
 							<img src={this.props.repositoryUrl + this.getArticleImage(article)} className="w3-hover-opacity full-width" />
-							<div className="w3-container w3-white">
+							<div className="w3-container w3-white list-box-title">
 								<p><b>{article.DisplayName}</b></p>
 								<p className="hidden">{article.Description}</p>
 								<div className="small hidden">{article.Author}</div>
