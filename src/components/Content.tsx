@@ -31,6 +31,9 @@ class Content extends React.Component<any, any> {
             await import(`./content/${compoName}`)
             .then((component: any) => {
 				const loadedComp = component.default.WrappedComponent;
+				console.log('component');
+				console.log(component);
+
 				let defaultCompName = this.state.defaultCompName;
 
 				if (setDef) {
