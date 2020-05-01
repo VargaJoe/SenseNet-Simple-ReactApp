@@ -45,6 +45,8 @@ class Content extends React.Component<any, any> {
 					components: (this.state.components.findIndex((c: any) => c.name === `${loadedComp.name}`) > -1) ? this.state.components : [...this.state.components, loadedComp],
 					defaultCompName: defaultCompName
 				  });
+				console.log('State is saved:');
+				console.log(this.state);
 				
             })
             .catch(error => {
@@ -78,12 +80,14 @@ class Content extends React.Component<any, any> {
 				query: 'TypeIs%3A' + articleType + ' AND Name%3A\'' + articleName + '\'',
 			}).then((result: any) => {
 				console.log('Article is loaded. State will be saved now!');
-				this.setState({
-					isDataFetched: true,
-					categoryName: categoryName,
-					articleName: articleName
+				this.addComponent(result.value.Type)
+				.then(() => {
+					this.setState({
+						isDataFetched: true,
+						categoryName: categoryName,
+						articleName: articleName
+					});
 				});
-				this.addComponent(result.value.Type);
 			}).catch((err: any) => {
 				console.log(err);
 			});
