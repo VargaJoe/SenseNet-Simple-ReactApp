@@ -39,8 +39,8 @@ class LeisureMangaReview extends React.Component<Props, {}> {
 						<a href={tLink.item.ReaderUrl} className={tLink.item.ReaderUrl.length > 0 ? 'show-link' : 'no-link'} target="_blank" title="Olvasás online">
 							<span className="reader-link t-item-icon"><i className="fa fa-eye" /></span>
 						</a>
-						<span className="reader-link t-item-icon" title="Olvasási irány: eredeti (jobbról balra)">
-							<i className="fa fa-arrow-alt-circle-left" />
+						<span className="reader-link t-item-icon" title={tLink.item.ReadDirection[0] !== 'leftright' ? 'Olvasási irány: jobbról balra' : 'Olvasási irány: balról jobbra'}>
+							<i className={tLink.item.ReadDirection[0] !== 'leftright' ? 'fa fa-arrow-alt-circle-left' : 'fa fa-arrow-alt-circle-right'} />
 						</span>
 					</h4>
 				</div>
