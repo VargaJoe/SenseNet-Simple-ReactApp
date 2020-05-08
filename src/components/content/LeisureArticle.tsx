@@ -4,13 +4,7 @@ import Moment from 'react-moment';
 import { loadArticle } 	from '../../reducers/article';
 const DATA = require('../../config.json');
 
-// interface Props {
-// 	article: any;
-// 	repositoryUrl: string;
-// }
-
-// class LeisureArticle extends React.Component<Props, {}> {
-class LeisureArticle extends React.Component<any, any> {
+class LeisureArticleContent extends React.Component<any, any> {
 	img: HTMLImageElement | null;
 	constructor(props: any) {
 		super(props);
@@ -36,12 +30,12 @@ class LeisureArticle extends React.Component<any, any> {
 		let path = sitePath + '/' + categoryName;
 		let articleName = this.props.articleName;
 
-		console.log('LeisureArticle control');
-		console.log(articleType);
-		console.log(sitePath);
-		console.log(categoryName);
-		console.log(path);
-		console.log(articleName);
+		// console.log('LEISUREARTICLECONTENT: LeisureArticle control');
+		// console.log(articleType);
+		// console.log(sitePath);
+		// console.log(categoryName);
+		// console.log(path);
+		// console.log(articleName);
 
 		// first load category if not presented, then use category path for intree parameter 
 		// instead article type, so it can load any type of content or category send type info
@@ -52,7 +46,7 @@ class LeisureArticle extends React.Component<any, any> {
 			expand: ['CreatedBy', 'Translation', 'RelatedContent', 'Actions'],
 			query: 'TypeIs%3A' + articleType + ' AND Name%3A\'' + articleName + '\'',
 		}).then((result: any) => {
-			console.log('LeisureArticle is loaded. State will be saved now!');			
+			console.log('LEISUREARTICLECONTENT: Article is loaded. State will be saved now!');			
 			this.setState({
 				isDataFetched: true,
 				article: result.value
@@ -171,5 +165,5 @@ const mapDispatchToProps = (dispatch: any) => {
 export default connect(
 	mapStateToProps,
 	mapDispatchToProps
-)(LeisureArticle as any);
+)(LeisureArticleContent as any);
 	
