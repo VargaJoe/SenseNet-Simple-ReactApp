@@ -6,6 +6,7 @@ const DATA = require('../config.json');
 let siteTitle = process.env.REACT_APP_SITE_TITLE || DATA.siteTitle;
 
 const defaultComponent = 'LeisureArticle';
+// const defaultComponent = 'GenericContent';
 class Content extends React.Component<any, any> {
 	img: HTMLImageElement | null;
 	constructor(props: any) {
