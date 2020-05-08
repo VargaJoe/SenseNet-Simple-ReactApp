@@ -29,33 +29,33 @@ class Category extends React.Component<any, any> {
 	addComponent = async (type: string, setDef: boolean = false) => {
         let compoName = `${type}`;
         if (this.state.components.findIndex((c: any) => c.name === compoName) === -1) {
-            console.log(`CATEGORYLIST: Loading ${compoName} component...`);
+            console.log(`CATEGORY: Loading ${compoName} component...`);
         
             await import(`./list/${compoName}`)
             .then((component: any) => {
 				const loadedComp = component.default.WrappedComponent;
-				console.log('CATEGORYLIST: component loaded:');
+				console.log('CATEGORY: component loaded:');
 				console.log(component);
 
 				let defaultCompName = this.state.defaultCompName;
 
 				if (setDef) {
-					console.log(`CATEGORYLIST: ${compoName} has been set as default component.`);
+					console.log(`CATEGORY: ${compoName} has been set as default component.`);
 					defaultCompName = `${compoName}`;
 				}
 
-				console.log(`CATEGORYLIST: ${compoName} loaded! State should be updated. Newly loaded component:`);
+				console.log(`CATEGORY: ${compoName} loaded! State should be updated. Newly loaded component:`);
 				console.log(loadedComp);
-				console.log('CATEGORYLIST: State will be saved now!');
+				console.log('CATEGORY: State will be saved now!');
                 this.setState({
 					components: (this.state.components.findIndex((c: any) => c.name === `${compoName}`) > -1) ? this.state.components : [...this.state.components, {name: compoName, compo: loadedComp}],
 					defaultCompName: defaultCompName
 				  });
-				console.log('CATEGORYLIST: State is saved:');
+				console.log('CATEGORY: State is saved:');
 				console.log(this.state);				
             })
             .catch(error => {
-				console.error(`CATEGORYLIST: "${compoName}" not yet supported: ${error}`);
+				console.error(`CATEGORY: "${compoName}" not yet supported: ${error}`);
 				this.addComponent(defaultComponent, true);
             });
         }
@@ -81,14 +81,14 @@ class Category extends React.Component<any, any> {
 				categoryName: categoryName,
 		});
 
-		console.log('CATEGORYLIST: load category');
+		console.log('CATEGORY: load category');
 		let categoryGet = this.props.loadCategoryContent(path, {
 			query: 'Type%3A' + menutType + ' AND Hidden%3A0 .AUTOFILTERS%3AOFF',
 			orderby: ['Index', 'DisplayName']
 		} as IODataParams<GenericContent>);
 
 		categoryGet.then((catResult: any) => {			
-			console.log('CATEGORYLIST: category loaded');
+			console.log('CATEGORY: category loaded');
 			let category = catResult.value;
 			this.addComponent(category.Type)
 			.then(() => {
@@ -121,26 +121,26 @@ class Category extends React.Component<any, any> {
 		
 		// *************************** start of dynamic content ***************************  //
 		// dynamic component by content type
-		console.log(`CATEGORYLIST: search for component: ${category.Type}`);
+		console.log(`CATEGORY: search for component: ${category.Type}`);
 		let CompoWrapper = this.state.components.find((DynCom: any)  => {
 			return (DynCom.name === `${category.Type}`);
 			});
 
 		// fallback
 		if (CompoWrapper === undefined) {
-			console.log('CATEGORYLIST: fallback selected');
+			console.log('CATEGORY: fallback selected');
 			CompoWrapper = this.state.components.find((DynCom: any)  => {
 				return (DynCom.name === this.state.defaultCompName);
 				});
-			console.log('CATEGORYLIST: Default component should be retrieved from state:');
+			console.log('CATEGORY: Default component should be retrieved from state:');
 			console.log(this.state.components);
 			console.log(CompoWrapper);
 		} else {
-			console.log('CATEGORYLIST: ' + CompoWrapper.name + ' selected');
+			console.log('CATEGORY: ' + CompoWrapper.name + ' selected');
 		}
 
 		if (CompoWrapper === undefined) {
-			console.log('CATEGORYLIST: Masaka! Dynamic component not found. Not even default component!?');
+			console.log('CATEGORY: Masaka! Dynamic component not found. Not even default component!?');
 			return ( 
 				<div />				
 			);

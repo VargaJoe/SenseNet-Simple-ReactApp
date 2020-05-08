@@ -16,7 +16,7 @@ class CustomArticle extends Folder {
 	PublishDate: Date;
 }
 
-class LeisureCategoryAsList extends React.Component<any, any> {
+class LeisureCategoryList extends React.Component<any, any> {
 	constructor(props: any) {
 		super(props);
 		this.state = {
@@ -46,10 +46,10 @@ class LeisureCategoryAsList extends React.Component<any, any> {
 				categoryName: category.Name
 		});
 
-		console.log('LeisureCategoryAsList category:');
+		console.log('LEISURECATEGORYLIST: inner category:');
 		console.log(category);
 
-		console.log('load articles');
+		console.log('LEISURECATEGORYLIST: load articles');
 		let articlesGet = this.props.loadCategoryArticles(path, {
 			select: ['CreationDate', 'CreatedBy', 'Description', 'DisplayName', 'Id', 'OriginalAuthor', 'Author', 'Publisher', 'PublishDate', 'Lead', 'Body', 'RelatedContent', 'Translation', 'Actions'],
 			expand: ['CreatedBy', 'Actions/HxHImg'],					
@@ -59,7 +59,7 @@ class LeisureCategoryAsList extends React.Component<any, any> {
 		} as IODataParams<CustomArticle>);
 
 		articlesGet.then((result: any) => {
-			console.log('articles has been loaded');
+			console.log('LEISURECATEGORYLIST: articles has been loaded');
 			console.log(result);
 			this.setState({
 				isDataFetched: true,
@@ -73,41 +73,17 @@ class LeisureCategoryAsList extends React.Component<any, any> {
 	public render() {
 		let categoryName = this.state.categoryName;
 		let category = this.props.category;
-		// let articles = this.props.articles;
 		let articles = this.state.articles;
-		// let loadedTags = this.props.loadedTags;
-		// console.log('wtf');
+		// console.log('LEISURECATEGORYLIST: wtf');
 		// console.log(category);
 		// console.log(articles);
 		// console.log(articles.length);
 		// console.log(loadedTags);
-          // if (category === undefined || articles === undefined || articles.length === 0 || !loadedTags.includes(categoryName)) {
-		// 	return null;
-		// }
+
 		if (category === undefined) {
 			return null;
 		}
-		
-		// articles = articles.filter((obj: any) => obj.Path.startsWith(category.Path));
-		// console.log('category articles');
-		// console.log(articles);
-		// console.log(this.props.articles);
 
-		// let homePageItems = this.state.articles;
-		// let homePageIds = this.state.ids;
-		// let categoryName = this.state.categoryName;
-		// let counter = 1;
-
-		// let categories = this.props.categories;
-		// let category = categories.filter((c: any) => c.Name === categoryName);
-		// let category = categories.find(function (obj: any) { return obj.Name === categoryName; });
-		// console.log(categoryName);
-		// console.log(categories);
-		// console.log(category);
-		// console.log(articles);
-		// console.log('end');
-
-		// const homePage = '';
 		const categoryArticles = articles
 			.map((article: any) =>
 				(
@@ -170,4 +146,4 @@ const mapDispatchToProps = (dispatch: any) => {
 export default withRouter(connect(
 	mapStateToProps,
 	mapDispatchToProps
-)(LeisureCategoryAsList as any));
+)(LeisureCategoryList as any));
