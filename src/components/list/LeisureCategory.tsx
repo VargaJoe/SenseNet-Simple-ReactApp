@@ -52,7 +52,7 @@ class LeisureCategoryList extends React.Component<any, any> {
 		console.log('LEISURECATEGORYLIST: load articles');
 		let articlesGet = this.props.loadCategoryArticles(path, {
 			select: ['CreationDate', 'CreatedBy', 'Description', 'DisplayName', 'Id', 'OriginalAuthor', 'Author', 'Publisher', 'PublishDate', 'Lead', 'Body', 'RelatedContent', 'Translation', 'Actions'],
-			expand: ['CreatedBy', 'Actions/HxHImg'],					
+			expand: ['CreatedBy',  'Translation', 'Actions/HxHImg'],					
 			query: 'TypeIs%3A' + articleType,
 			orderby: [['PublishDate', 'desc'], ['Index', 'desc'], 'DisplayName'],
 			metadata: 'no'
@@ -91,7 +91,9 @@ class LeisureCategoryList extends React.Component<any, any> {
 						<div data-id={article.Id} className="w3-quarter w3-container w3-margin-bottom">
 							<img src={this.props.repositoryUrl + this.getArticleImage(article)} className="w3-hover-opacity full-width" />
 							<div className="w3-container w3-white list-box-title">
-								<p><b>{article.DisplayName}</b></p>
+								<p><b>{article.DisplayName}</b>
+								<span className={article.Translation != null && article.Translation.length > 0 ? 'show-icon' : 'hide-icon'}><i className="fa fa-download" /></span>
+								</p>
 								<p className="hidden">{article.Description}</p>
 								<div className="small hidden">{article.Author}</div>
 								<div className="small hidden">
