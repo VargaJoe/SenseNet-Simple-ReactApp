@@ -5,11 +5,8 @@ import { loadArticles } from '../reducers/articles';
 import {
 	withRouter
 } 						from 'react-router-dom';
-// import Moment 			from 'react-moment';
-// import { Link } 		from 'react-router-dom';
 import { 
 	GenericContent, 
-// Folder
  } 			from '@sensenet/default-content-types';
 import { IODataParams } from '@sensenet/client-core';
 import { Helmet } 		from 'react-helmet';
@@ -17,11 +14,6 @@ import { Helmet } 		from 'react-helmet';
 const DATA = require('../config.json');
 let siteTitle = process.env.REACT_APP_SITE_TITLE || DATA.siteTitle;
 
-// class CustomArticle extends Folder {
-// 	PublishDate: Date;
-// }
-
-// const defaultComponent = 'LeisureCategory';
 const defaultComponent = 'Folder';
 class Category extends React.Component<any, any> {
 	constructor(props: any) {
@@ -37,33 +29,33 @@ class Category extends React.Component<any, any> {
 	addComponent = async (type: string, setDef: boolean = false) => {
         let compoName = `${type}`;
         if (this.state.components.findIndex((c: any) => c.name === compoName) === -1) {
-            console.log(`Loading ${compoName} component...`);
+            console.log(`CATEGORYLIST: Loading ${compoName} component...`);
         
             await import(`./list/${compoName}`)
             .then((component: any) => {
 				const loadedComp = component.default.WrappedComponent;
-				console.log('component loaded:');
+				console.log('CATEGORYLIST: component loaded:');
 				console.log(component);
 
 				let defaultCompName = this.state.defaultCompName;
 
 				if (setDef) {
-					console.log(`${compoName} has been set as default component.`);
+					console.log(`CATEGORYLIST: ${compoName} has been set as default component.`);
 					defaultCompName = `${compoName}`;
 				}
 
-				console.log(`${compoName} loaded! State should be updated. Newly loaded component:`);
+				console.log(`CATEGORYLIST: ${compoName} loaded! State should be updated. Newly loaded component:`);
 				console.log(loadedComp);
-				console.log('State will be saved now!');
+				console.log('CATEGORYLIST: State will be saved now!');
                 this.setState({
 					components: (this.state.components.findIndex((c: any) => c.name === `${compoName}`) > -1) ? this.state.components : [...this.state.components, {name: compoName, compo: loadedComp}],
 					defaultCompName: defaultCompName
 				  });
-				console.log('State is saved:');
+				console.log('CATEGORYLIST: State is saved:');
 				console.log(this.state);				
             })
             .catch(error => {
-				console.error(`"${compoName}" not yet supported: ${error}`);
+				console.error(`CATEGORYLIST: "${compoName}" not yet supported: ${error}`);
 				this.addComponent(defaultComponent, true);
             });
         }
@@ -81,8 +73,7 @@ class Category extends React.Component<any, any> {
 	}
 	
 	_initializeComponent(categoryName: string) {
-		// let menutType = process.env.REACT_APP_MENU_TYPE || DATA.menuType;
-		// let articleType = process.env.REACT_APP_ARTICLE_TYPE || DATA.articleType;
+		let menutType = process.env.REACT_APP_MENU_TYPE || DATA.menuType;
 		let sitePath = process.env.REACT_APP_SITE || DATA.site;		
 		let path = sitePath + '/' + categoryName;
 
@@ -90,35 +81,25 @@ class Category extends React.Component<any, any> {
 				categoryName: categoryName,
 		});
 
-		// let category = this.props.categories.find((obj: any) => obj.Name === categoryName );
-		// let loadedTags = this.props.loadedTags;
+		console.log('CATEGORYLIST: load category');
+		let categoryGet = this.props.loadCategoryContent(path, {
+			query: 'Type%3A' + menutType + ' AND Hidden%3A0 .AUTOFILTERS%3AOFF',
+			orderby: ['Index', 'DisplayName']
+		} as IODataParams<GenericContent>);
 
-		// if (category === undefined || !loadedTags.includes(categoryName)) {
-			console.log('load category');
-			let categoryGet = this.props.loadCategoryContent(path, {
-				// select: ['Name', 'IconName', 'Id', 'Path', 'Index', 'DisplayName'],
-				// query: 'Type%3A' + menutType + ' AND Hidden%3A0 .AUTOFILTERS%3AOFF',
-				orderby: ['Index', 'DisplayName']
-			} as IODataParams<GenericContent>);
-	
-			categoryGet.then((catResult: any) => {			
-				console.log('category loaded');
-				let category = catResult.value;
-				this.addComponent(category.Type)
-				.then(() => {
-					this.setState({
-						isDataFetched: true,
-						category: category
-					});
+		categoryGet.then((catResult: any) => {			
+			console.log('CATEGORYLIST: category loaded');
+			let category = catResult.value;
+			this.addComponent(category.Type)
+			.then(() => {
+				this.setState({
+					isDataFetched: true,
+					category: category
 				});
-				// .catch(() => {
-				// 	console.log('hiba');
-				// 	this.addComponent(defaultComponent, true);
-				// });
-			}).catch((err: any) => {
-				console.log(err);
 			});
-		// }
+		}).catch((err: any) => {
+			console.log(err);
+		});
 	}
 
 	public render() {
@@ -140,26 +121,26 @@ class Category extends React.Component<any, any> {
 		
 		// *************************** start of dynamic content ***************************  //
 		// dynamic component by content type
-		console.log(`search for component: ${category.Type}`);
+		console.log(`CATEGORYLIST: search for component: ${category.Type}`);
 		let CompoWrapper = this.state.components.find((DynCom: any)  => {
 			return (DynCom.name === `${category.Type}`);
 			});
 
 		// fallback
 		if (CompoWrapper === undefined) {
-			console.log('fallback selected');
+			console.log('CATEGORYLIST: fallback selected');
 			CompoWrapper = this.state.components.find((DynCom: any)  => {
 				return (DynCom.name === this.state.defaultCompName);
 				});
-			console.log('Default component should be retrieved from state:');
+			console.log('CATEGORYLIST: Default component should be retrieved from state:');
 			console.log(this.state.components);
 			console.log(CompoWrapper);
 		} else {
-			console.log(CompoWrapper.name + ' selected');
+			console.log('CATEGORYLIST: ' + CompoWrapper.name + ' selected');
 		}
 
 		if (CompoWrapper === undefined) {
-			console.log('Masaka! Dynamic component not found. Not even default component!?');
+			console.log('CATEGORYLIST: Masaka! Dynamic component not found. Not even default component!?');
 			return ( 
 				<div />				
 			);
@@ -185,15 +166,6 @@ class Category extends React.Component<any, any> {
 				</div>				
 			</div>
 		);
-	}
-
-	getArticleImage(article: any): any {
-		let articleImageObj = article.Actions.find(function (obj: any) { return obj.Name === 'HxHImg'; });
-		let articleImage = '';
-		if (articleImageObj) {
-			articleImage = articleImageObj.Url;
-		}
-		return articleImage;
 	}
 }
 

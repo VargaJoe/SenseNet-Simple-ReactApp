@@ -21,33 +21,33 @@ class Content extends React.Component<any, any> {
 	addComponent = async (type: string, setDef: boolean = false) => {
         let compoName = `${type}`;
         if (this.state.components.findIndex((c: any) => c.name === compoName) === -1) {
-            console.log(`Loading ${compoName} component...`);
+            console.log(`CONTENT: Loading ${compoName} component...`);
         
             await import(`./content/${compoName}`)
             .then((component: any) => {
 				const loadedComp = component.default.WrappedComponent;
-				console.log('component loaded:');
+				console.log('CONTENT: component loaded:');
 				console.log(component);
 
 				let defaultCompName = this.state.defaultCompName;
 
 				if (setDef) {
-					console.log(`${compoName} has been set as default component.`);
+					console.log(`CONTENT: ${compoName} has been set as default component.`);
 					defaultCompName = `${compoName}`;
 				}
 
-				console.log(`${compoName} loaded! State should be updated. Newly loaded component:`);
+				console.log(`CONTENT: ${compoName} loaded! State should be updated. Newly loaded component:`);
 				console.log(loadedComp);
-				console.log('State will be saved now!');
+				console.log('CONTENT: State will be saved now!');
                 this.setState({
 					components: (this.state.components.findIndex((c: any) => c.name === `${compoName}`) > -1) ? this.state.components : [...this.state.components, {name: compoName, compo: loadedComp}],
 					defaultCompName: defaultCompName
 				  });
-				console.log('State is saved:');
+				console.log('CONTENT: State is saved:');
 				console.log(this.state);				
             })
             .catch(error => {
-				console.error(`"${compoName}" not yet supported: ${error}`);
+				console.error(`CONTENT: "${compoName}" not yet supported: ${error}`);
             });
         }
     }
@@ -64,37 +64,21 @@ class Content extends React.Component<any, any> {
 		let path = sitePath + '/' + categoryName;
 		
 		let articleName = this.props.match.params.articleName;
-		// let article = this.props.articles.find((obj: any) => obj.Name === articleName );
-
-		// first load category if not presented, then use category path for intree parameter 
-		// instead article type, so it can load any type of content or category send type info
-		// OR only load category if not present with query info + content type AND load dynamically
-		// component according to content type AND sub component will load its own "article" content
-		// if (true && articleName && article === undefined) {
-			this.props.loadArticleContent(path, {
-				query: 'TypeIs%3A' + articleType + ' AND Name%3A\'' + articleName + '\'',
-			}).then((result: any) => {
-				console.log('Article is loaded. State will be saved now!');
-				this.addComponent(result.value.Type)
-				.then(() => {
-					this.setState({
-						isDataFetched: true,
-						categoryName: categoryName,
-						articleName: articleName
-					});
+		this.props.loadArticleContent(path, {
+			query: 'TypeIs%3A' + articleType + ' AND Name%3A\'' + articleName + '\'',
+		}).then((result: any) => {
+			console.log('CONTENT: Article is loaded. State will be saved now!');
+			this.addComponent(result.value.Type)
+			.then(() => {
+				this.setState({
+					isDataFetched: true,
+					categoryName: categoryName,
+					articleName: articleName
 				});
-			}).catch((err: any) => {
-				console.log(err);
 			});
-		// } else {
-		// 	console.log('Category and article names are will be set on State now!');
-		// 	this.addComponent(article.Type).then(() => {
-		// 		this.setState({
-		// 			categoryName: categoryName,
-		// 			articleName: articleName
-		// 		});
-		// 	});
-		// }
+		}).catch((err: any) => {
+			console.log(err);
+		});
 	}
 
 	public render() {
@@ -115,26 +99,26 @@ class Content extends React.Component<any, any> {
 		}
 
 		// dynamic component by content type
-		console.log(`search for component: ${article.Type}`);
+		console.log(`CONTENT: search for component: ${article.Type}`);
 		let CompoWrapper = this.state.components.find((DynCom: any)  => {
 			return (DynCom.name === `${article.Type}`);
 			});
 
 		// fallback
 		if (CompoWrapper === undefined) {
-			console.log('fallback selected');
+			console.log('CONTENT: fallback selected');
 			CompoWrapper = this.state.components.find((DynCom: any)  => {
 				return (DynCom.name === this.state.defaultCompName);
 				});
-			console.log('Default component should be retrieved from state:');
+			console.log('CONTENT: Default component should be retrieved from state:');
 			console.log(this.state.components);
 			console.log(CompoWrapper);
 		} else {
-			console.log(CompoWrapper.name + ' selected');
+			console.log('CONTENT: ' + CompoWrapper.name + ' selected');
 		}
 
 		if (CompoWrapper === undefined) {
-			console.log('Masaka! Dynamic component not found. Not even default component!?');
+			console.log('CONTENT: Masaka! Dynamic component not found. Not even default component!?');
 			return ( 
 				<div />				
 			);
