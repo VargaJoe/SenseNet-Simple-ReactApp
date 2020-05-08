@@ -18,11 +18,6 @@ class Content extends React.Component<any, any> {
 		};
 	}
 
-	addDefaultImageUrl(ev: any) {
-		// ev.target.src = defaultImage;
-		ev.target.className = 'hidden';
-	}
-
 	addComponent = async (type: string, setDef: boolean = false) => {
         let compoName = `${type}`;
         if (this.state.components.findIndex((c: any) => c.name === compoName) === -1) {
@@ -69,16 +64,14 @@ class Content extends React.Component<any, any> {
 		let path = sitePath + '/' + categoryName;
 		
 		let articleName = this.props.match.params.articleName;
-		let article = this.props.articles.find((obj: any) => obj.Name === articleName );
+		// let article = this.props.articles.find((obj: any) => obj.Name === articleName );
 
 		// first load category if not presented, then use category path for intree parameter 
 		// instead article type, so it can load any type of content or category send type info
 		// OR only load category if not present with query info + content type AND load dynamically
 		// component according to content type AND sub component will load its own "article" content
-		if (articleName && article === undefined) {
+		// if (true && articleName && article === undefined) {
 			this.props.loadArticleContent(path, {
-				select: ['CreationDate', 'CreatedBy', 'Description', 'DisplayName', 'Id', 'OriginalAuthor', 'Author', 'Publisher', 'PublishDate', 'Lead', 'Body', 'RelatedContent', 'Translation', 'Actions'],
-				expand: ['CreatedBy', 'Translation', 'RelatedContent', 'Actions'],
 				query: 'TypeIs%3A' + articleType + ' AND Name%3A\'' + articleName + '\'',
 			}).then((result: any) => {
 				console.log('Article is loaded. State will be saved now!');
@@ -93,18 +86,22 @@ class Content extends React.Component<any, any> {
 			}).catch((err: any) => {
 				console.log(err);
 			});
-		} else {
-			console.log('Category and article names are will be set on State now!');
-			this.addComponent(article.Type).then(() => {
-				this.setState({
-					categoryName: categoryName,
-					articleName: articleName
-				});
-			});
-		}
+		// } else {
+		// 	console.log('Category and article names are will be set on State now!');
+		// 	this.addComponent(article.Type).then(() => {
+		// 		this.setState({
+		// 			categoryName: categoryName,
+		// 			articleName: articleName
+		// 		});
+		// 	});
+		// }
 	}
 
 	public render() {
+		if (!this.state.isDataFetched) {
+            return null;
+        }
+
 		let domain = process.env.REACT_APP_CANON_URL || DATA.siteUrl;
 		let articleName = this.state.articleName;
 		let articles = this.props.articles;
@@ -154,7 +151,10 @@ class Content extends React.Component<any, any> {
 					{/* concat url from article domain + article category + article name */}
 					{/* ${window.location.host}/${this.state.categoryName}/${this.state.articleName} */}
 				</Helmet>
-				<Compo key={article.Id} article={article} repositoryUrl={this.props.repositoryUrl} />
+				<Compo key={article.Id} 
+					categoryName={this.props.match.params.categoryName} 
+					articleName={this.props.match.params.articleName} 
+					{...this.props} />
 			</div>
 		);
 	}

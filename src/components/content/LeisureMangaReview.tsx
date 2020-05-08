@@ -1,17 +1,21 @@
 import * as React from 'react';
 import { connect } from 'react-redux';
 import Moment from 'react-moment';
+import { loadArticle } 	from '../../reducers/article';
+const DATA = require('../../config.json');
 
-interface Props {
-	article: any;
-	repositoryUrl: string;
-}
+// interface Props {
+// 	article: any;
+// 	repositoryUrl: string;
+// }
 
-class LeisureMangaReview extends React.Component<Props, {}> {
+// class LeisureMangaReview extends React.Component<Props, {}> {
+	class LeisureMangaReview extends React.Component<any, any> {
 	img: HTMLImageElement | null;
 	constructor(props: any) {
 		super(props);
 		this.state = {
+			article: {},
 			isDataFetched: false,
 		};
 	}
@@ -21,9 +25,50 @@ class LeisureMangaReview extends React.Component<Props, {}> {
 		ev.target.className = 'hidden';
 	}
 
+	componentDidMount() {
+		this._initializeComponent();
+	}
+
+	_initializeComponent() {
+		let articleType = process.env.REACT_APP_ARTICLE_TYPE || DATA.articleType;
+		let sitePath = process.env.REACT_APP_SITE || DATA.site;
+		let categoryName = this.props.categoryName;
+		let path = sitePath + '/' + categoryName;
+		let articleName = this.props.articleName;
+
+		console.log('LeisureArticle control');
+		console.log(articleType);
+		console.log(sitePath);
+		console.log(categoryName);
+		console.log(path);
+		console.log(articleName);
+
+		// first load category if not presented, then use category path for intree parameter 
+		// instead article type, so it can load any type of content or category send type info
+		// OR only load category if not present with query info + content type AND load dynamically
+		// component according to content type AND sub component will load its own "article" content
+		this.props.loadArticleContent(path, {
+			select: ['CreationDate', 'CreatedBy', 'Description', 'DisplayName', 'Id', 'OriginalAuthor', 'Author', 'Publisher', 'PublishDate', 'Lead', 'Body', 'RelatedContent', 'Translation', 'Actions'],
+			expand: ['CreatedBy', 'Translation', 'RelatedContent', 'Actions'],
+			query: 'TypeIs%3A' + articleType + ' AND Name%3A\'' + articleName + '\'',
+		}).then((result: any) => {
+			console.log('LeisureArticle is loaded. State will be saved now!');			
+			this.setState({
+				isDataFetched: true,
+				article: result.value
+			});
+		}).catch((err: any) => {
+			console.log(err);
+		});
+	}
+
 	public render() {
-		let article = this.props.article;
-		
+		if (!this.state.isDataFetched) {
+            return null;
+        }
+
+		let article = this.state.article;
+
         if (article === undefined) {
 			return null;
 		}
@@ -160,7 +205,14 @@ const mapStateToProps = (state: any, match: any) => {
 	};
 };
 
+const mapDispatchToProps = (dispatch: any) => {
+	return {
+		loadArticleContent: (path: string, options: any) => dispatch(loadArticle(path, options)),
+    };
+};
+
 export default connect(
 	mapStateToProps,
+	mapDispatchToProps
 )(LeisureMangaReview as any);
 	

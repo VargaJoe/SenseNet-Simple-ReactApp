@@ -59,7 +59,8 @@ export const articles = (
             let newArt = article({}, action);
             return {
                 ...state,
-                articles: state.articles.findIndex(c => c.Id === newArt.Id) > -1 ? state.articles : [...state.articles, newArt]
+                // articles: state.articles.findIndex(c => c.Id === newArt.Id) > -1 ? state.articles : [...state.articles, newArt]
+                articles: [newArt]
             };
         }
         case 'LOAD_ARTICLES_SUCCESS': {
@@ -67,8 +68,10 @@ export const articles = (
                 ...state,
                 isDataLoading: false,
                 isDataFetched: true,
-                articles: [...action.payload.articles.results, ...state.articles].filter((s1, pos, arr) => arr.findIndex((s2) => s2.Id === s1.Id) === pos),
-                loadedTags: Array.from(new Set([...state.loadedTags, action.payload.tag]))
+                // articles: [...action.payload.articles.results, ...state.articles].filter((s1, pos, arr) => arr.findIndex((s2) => s2.Id === s1.Id) === pos),
+                articles: [...action.payload.articles.results],
+                // loadedTags: Array.from(new Set([...state.loadedTags, action.payload.tag]))
+                loadedTags: [action.payload.tag]
             };
         }
         case 'LOAD_ARTICLES_FAILURE': {

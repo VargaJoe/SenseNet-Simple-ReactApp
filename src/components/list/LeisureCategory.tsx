@@ -7,21 +7,21 @@ import {
 } from 'react-router-dom';
 import Moment from 'react-moment';
 import { Link } from 'react-router-dom';
-import { GenericContent, Folder } from '@sensenet/default-content-types';
+import { Folder } from '@sensenet/default-content-types';
 import { IODataParams } from '@sensenet/client-core';
 
-const DATA = require('../config.json');
+const DATA = require('../../config.json');
 
 class CustomArticle extends Folder {
 	PublishDate: Date;
 }
 
-class Category extends React.Component<any, any> {
+class LeisureCategoryAsList extends React.Component<any, any> {
 	constructor(props: any) {
 		super(props);
 		this.state = {
+			articles: [],
 			isDataFetched: false,
-			articles: Array,
 			ids: {},
 			categoryName: ''
 		};
@@ -29,90 +29,66 @@ class Category extends React.Component<any, any> {
 
 	componentWillReceiveProps(nextProps: any) {		
 		if (nextProps.match.params.categoryName !== this.props.match.params.categoryName) {
-			this._initializeComponent(nextProps.match.params.categoryName);
+			this._initializeComponent(nextProps.category);
 		}						
 	}	
 
 	componentDidMount() {
-		this._initializeComponent(this.props.match.params.categoryName);
+		this._initializeComponent(this.props.category);
 	}
 	
-	_initializeComponent(categoryName: string) {
-		let menutType = process.env.REACT_APP_MENU_TYPE || DATA.menuType;
+	_initializeComponent(category: any) {
 		let articleType = process.env.REACT_APP_ARTICLE_TYPE || DATA.articleType;
 		let sitePath = process.env.REACT_APP_SITE || DATA.site;		
-		let path = sitePath + '/' + categoryName;
+		let path = sitePath + '/' + category.Name;
 
 		this.setState({
-				categoryName: categoryName
+				categoryName: category.Name
 		});
 
-		let category = this.props.categories.find((obj: any) => obj.Name === categoryName );
-		let articles = this.props.articles;
-		let loadedTags = this.props.loadedTags;
+		console.log('LeisureCategoryAsList category:');
+		console.log(category);
 
-		if (category === undefined && (articles === undefined || articles === [] || articles.length === 0 || !loadedTags.includes(categoryName))) {
-			console.log('category + articles');
+		console.log('load articles');
+		let articlesGet = this.props.loadCategoryArticles(path, {
+			select: ['CreationDate', 'CreatedBy', 'Description', 'DisplayName', 'Id', 'OriginalAuthor', 'Author', 'Publisher', 'PublishDate', 'Lead', 'Body', 'RelatedContent', 'Translation', 'Actions'],
+			expand: ['CreatedBy', 'Actions/HxHImg'],					
+			query: 'TypeIs%3A' + articleType,
+			orderby: [['PublishDate', 'desc'], ['Index', 'desc'], 'DisplayName'],
+			metadata: 'no'
+		} as IODataParams<CustomArticle>);
 
-			let categoryGet = this.props.loadCategoryContent(path, {
-				select: ['Name', 'IconName', 'Id', 'Path', 'Index', 'DisplayName'],
-				query: 'Type%3A' + menutType + ' AND Hidden%3A0 .AUTOFILTERS:OFF',
-				orderby: ['Index', 'DisplayName']
-			} as IODataParams<GenericContent>);
-	
-			categoryGet.then(() => {
-				let articlesGet = this.props.loadCategoryArticles(path, {
-					// select: ['Publisher', 'Author', 'Description', 'DisplayName', 'Id', 'OriginalAuthor', 'Author', 'PublishDate', 'Index', 'Actions'],
-					select: ['CreationDate', 'CreatedBy', 'Description', 'DisplayName', 'Id', 'OriginalAuthor', 'Author', 'Publisher', 'PublishDate', 'Lead', 'Body', 'RelatedContent', 'Translation', 'Actions'],
-					expand: ['CreatedBy', 'Actions/HxHImg'],					
-					query: 'TypeIs%3A' + articleType,
-					orderby: [['PublishDate', 'desc'], ['Index', 'desc'], 'DisplayName'],
-					metadata: 'no'
-				} as IODataParams<CustomArticle>);
-
-				articlesGet.then((err: any) => {
-					console.log('Load category + articles');
-				}).catch((err: any) => {
-					console.log(err);
-				});
-			}).catch((err: any) => {
-				console.log(err);
+		articlesGet.then((result: any) => {
+			console.log('articles has been loaded');
+			console.log(result);
+			this.setState({
+				isDataFetched: true,
+				articles: result.value.articles.results
 			});
-		} else if (articles === undefined || articles === [] || articles.length === 0 || !loadedTags.includes(categoryName)) {
-			console.log('only articles');
-			let articlesGet = this.props.loadCategoryArticles(path, {
-				// select: ['Publisher', 'Author', 'Description', 'DisplayName', 'Id', 'OriginalAuthor', 'Author', 'PublishDate', 'Index', 'Actions'],
-				select: ['CreationDate', 'CreatedBy', 'Description', 'DisplayName', 'Id', 'OriginalAuthor', 'Author', 'Publisher', 'PublishDate', 'Lead', 'Body', 'RelatedContent', 'Translation', 'Actions'],
-				expand: ['CreatedBy', 'Actions/HxHImg'],					
-				query: 'TypeIs%3A' + articleType,
-				orderby: [['PublishDate', 'desc'], ['Index', 'desc'], 'DisplayName'],
-				metadata: 'no'
-			} as IODataParams<CustomArticle>);
-
-			articlesGet.then((err: any) => {
-				console.log('Load only articles');
-			}).catch((err: any) => {
-				console.log(err);
-			});
-		}		
+		}).catch((err: any) => {
+			console.log(err);
+		});
 	}
 
 	public render() {
 		let categoryName = this.state.categoryName;
-		let categories = this.props.categories;
-		let category = categories.find(function (obj: any) { return obj.Name === categoryName; });
-		let articles = this.props.articles;
-		let loadedTags = this.props.loadedTags;
+		let category = this.props.category;
+		// let articles = this.props.articles;
+		let articles = this.state.articles;
+		// let loadedTags = this.props.loadedTags;
 		// console.log('wtf');
 		// console.log(category);
 		// console.log(articles);
 		// console.log(articles.length);
 		// console.log(loadedTags);
-        if (category === undefined || articles === undefined || articles.length === 0 || !loadedTags.includes(categoryName)) {
+          // if (category === undefined || articles === undefined || articles.length === 0 || !loadedTags.includes(categoryName)) {
+		// 	return null;
+		// }
+		if (category === undefined) {
 			return null;
 		}
 		
-		articles = articles.filter((obj: any) => obj.Path.startsWith(category.Path));
+		// articles = articles.filter((obj: any) => obj.Path.startsWith(category.Path));
 		// console.log('category articles');
 		// console.log(articles);
 		// console.log(this.props.articles);
@@ -194,4 +170,4 @@ const mapDispatchToProps = (dispatch: any) => {
 export default withRouter(connect(
 	mapStateToProps,
 	mapDispatchToProps
-)(Category as any));
+)(LeisureCategoryAsList as any));
