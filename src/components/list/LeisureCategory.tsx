@@ -9,7 +9,7 @@ import Moment from 'react-moment';
 import { Link } from 'react-router-dom';
 import { Folder } from '@sensenet/default-content-types';
 import { IODataParams } from '@sensenet/client-core';
-import ProgressiveImage from 'react-progressive-graceful-image';
+import ProgressiveImage from 'react-progressive-image';
 
 const DATA = require('../../config.json');
 
