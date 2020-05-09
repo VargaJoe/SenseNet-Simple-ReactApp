@@ -9,6 +9,7 @@ import Moment from 'react-moment';
 import { Link } from 'react-router-dom';
 import { Folder } from '@sensenet/default-content-types';
 import { IODataParams } from '@sensenet/client-core';
+import ProgressiveImage from 'react-progressive-graceful-image';
 
 const DATA = require('../../config.json');
 
@@ -89,7 +90,13 @@ class LeisureCategoryList extends React.Component<any, any> {
 				(
 					<Link key={article.Id} to={'/' + categoryName + '/' + article.Name}>					
 						<div data-id={article.Id} className="w3-quarter w3-container w3-margin-bottom">
-							<img src={this.props.repositoryUrl + this.getArticleImage(article)} className="w3-hover-opacity full-width" />
+							{/* <img src={this.props.repositoryUrl + this.getArticleImage(article)} className="w3-hover-opacity full-width" /> */}
+							<ProgressiveImage
+								src={this.props.repositoryUrl + this.getArticleImage(article)}
+								placeholder={this.props.repositoryUrl + '/(structure)/Site/sample.png'}
+							>
+								{(src: string) => <img src={src} alt={article.DisplayName} className="w3-hover-opacity full-width" />}
+							</ProgressiveImage>
 							<div className="w3-container w3-white list-box-title">
 								<p><b>{article.DisplayName}</b>
 								<span className={article.Translation != null && article.Translation.length > 0 ? 'show-icon' : 'hide-icon'}><i className="fa fa-download" /></span>
