@@ -45,8 +45,8 @@ export const categories = (
             let newCat = category({}, action);
             return {
                 ...state,
-                // categories: state.categories.findIndex(c => c.Id === newCat.Id) > -1 ? state.categories : [...state.categories, newCat]
-                categories: [newCat]
+                categories: state.categories.findIndex(c => c.Id === newCat.Id) > -1 ? state.categories : [...state.categories, newCat]
+                // categories: [newCat]
             };
         }
         case 'LOAD_CATEGORIES_SUCCESS': {
@@ -58,8 +58,8 @@ export const categories = (
                 ...state,
                 isDataLoading: false,
                 isDataFetched: true,
-                // categories: [...action.payload.results, ...state.categories].filter((s1, pos, arr) => arr.findIndex((s2) => s2.Id === s1.Id) === pos)
-                categories: [...action.payload.results]
+                categories: [...action.payload.results, ...state.categories].filter((s1, pos, arr) => arr.findIndex((s2) => s2.Id === s1.Id) === pos)
+                // categories: [...action.payload.results]
                 
             };
         }

@@ -81,25 +81,37 @@ class Category extends React.Component<any, any> {
 				categoryName: categoryName,
 		});
 
-		console.log('CATEGORY: load category');
-		let categoryGet = this.props.loadCategoryContent(path, {
-			query: 'Type%3A' + menutType + ' AND Hidden%3A0 .AUTOFILTERS%3AOFF',
-			orderby: ['Index', 'DisplayName']
-		} as IODataParams<GenericContent>);
+		let category = this.props.categories.find((obj: any) => obj.Name === categoryName );
+		console.log('CATEGORY: initialze');
+		console.log(this.props.categories);
 
-		categoryGet.then((catResult: any) => {			
-			console.log('CATEGORY: category loaded');
-			let category = catResult.value;
-			this.addComponent(category.Type)
-			.then(() => {
-				this.setState({
-					isDataFetched: true,
-					category: category
+		if (category === undefined) {
+			console.log('CATEGORY: load category');
+			let categoryGet = this.props.loadCategoryContent(path, {
+				query: 'Type%3A' + menutType + ' AND Hidden%3A0 .AUTOFILTERS%3AOFF',
+				orderby: ['Index', 'DisplayName']
+			} as IODataParams<GenericContent>);
+
+			categoryGet.then((catResult: any) => {			
+				console.log('CATEGORY: category loaded');
+				category = catResult.value;
+				this.addComponent(category.Type)
+				.then(() => {
+					this.setState({
+						isDataFetched: true,
+						category: category
+					});
 				});
+			}).catch((err: any) => {
+				console.log(err);
 			});
-		}).catch((err: any) => {
-			console.log(err);
-		});
+		} else {
+			console.log('CATEGORY: category already loaded, set state');
+			this.setState({
+				isDataFetched: true,
+				category: category
+			});
+		}
 	}
 
 	public render() {
@@ -113,6 +125,9 @@ class Category extends React.Component<any, any> {
 		let categoryName = this.state.categoryName;
 		let categories = this.props.categories;
 		let category = categories.find(function (obj: any) { return obj.Name === categoryName; });
+
+		console.log('CATEGORY: render');
+		console.log(this.props.categories);
 
 		// if category can not identified at this point it's a dealbreaker
 		if (category === undefined) {
