@@ -1,6 +1,4 @@
-import {
-    Actions
-} from '@sensenet/redux';
+import { loadCategories } from '../reducers/categories';
 import * as React from 'react';
 import { connect } from 'react-redux';
 import MenuItem from './MenuItem';
@@ -16,7 +14,7 @@ const fontImportantClass = ' fi ';
 
 interface Props {
     menuTrigger: string;
-    getMenuItems: any;
+    getCategories: any;
     openMenu: Function;
     repositoryUrl: string;    
 }
@@ -37,23 +35,27 @@ class Menu extends React.Component<Props, any> {
     }
     
     public componentDidMount() {
+        console.log('MENU: initialize');
         const menuPath = process.env.REACT_APP_MENU_PATH || DATA.menuPath;
         // const sitePath = process.env.REACT_APP_SITE || DATA.sitePath;
         let menuType = process.env.REACT_APP_MENU_TYPE || DATA.menuType;
 
-        let menuitems = this.props.getMenuItems(menuPath, {
+        let menuitems = this.props.getCategories(menuPath, {
             select: ['Name', 'IconName', 'Id', 'Path', 'Index', 'DisplayName', 'Type', 'Actions'],
             expand: ['Actions'],
 			query: 'InFolder%3A"' + menuPath + '" AND Type%3A' + menuType + ' AND Hidden%3A0 .AUTOFILTERS%3AOFF',
 			orderby: ['Index', 'DisplayName']
-		} as IODataParams<GenericContent>);
-
+        } as IODataParams<GenericContent>);
+        
         menuitems.then((result: any) => {
-            console.log(result.value.entities.entities);
+            console.log('MENU: menuitems loaded');
+            console.log(result.value);
             this.setState({
                 isDataFetched: true,
-                menuItems: result.value.entities.entities,
-                ids: result.value.result
+                menuItems: result.value.results,
+                ids: result.value.results.map((obj: GenericContent) => {
+                    return obj.Id;
+                })
             });
         });
 
@@ -67,34 +69,37 @@ class Menu extends React.Component<Props, any> {
 
         if (!this.state.isDataFetched) {
             return null;
-        }
-        console.log(status);
-        
+        }        
+
+        console.log('MENU: render');
         const menuItems = this.state.menuItems;
         const menuIds = this.state.ids;
 
-        const menu = menuIds
-			.map((key: number) => {
-                let itemType = menuItems[key].Type;
-                // console.log(itemType);
+        console.log(menuItems);
+        console.log(menuIds);
+
+        const menu = menuItems
+			.map((article: any) => {
+                let itemType = article.Type;
                 switch (itemType) {
                     case linkType: {
-                        let browseAction = menuItems[key].Actions.find(function (obj: any) { return obj.Name === 'Browse'; });
+                        let browseAction = article.Actions.find(function (obj: any) { return obj.Name === 'Browse'; });
                         let browseUrl = '';
                         if (browseAction !== undefined) {
                             browseUrl = browseAction.Url;                            
                         }		
                         return (
-                            <LinkItem key={key} name={menuItems[key].DisplayName} icon={fontImportantClass + this.state.menuItems[key].IconName} pathTo={browseUrl} />
+                            <LinkItem key={article.Id} name={article.DisplayName} icon={fontImportantClass + article.IconName} pathTo={browseUrl} />
                         );
                     }
                     default: return (                
-                        <MenuItem key={key} name={menuItems[key].DisplayName} icon={fontImportantClass + this.state.menuItems[key].IconName} pathTo={'/' + menuItems[key].Name} />
+                        <MenuItem key={article.Id} name={article.DisplayName} icon={fontImportantClass + article.IconName} pathTo={'/' + article.Name} />
                     );
                 }
-            }
-        );
-        
+				
+                }
+			);
+
         return (
             <nav className={'w3-sidebar w3-white w3-animate-left ' + this.props.menuTrigger} id="mySidebar"><br/>
                 
@@ -129,6 +134,6 @@ const mapStateToProps = (state: any, match: any) => {
 export default connect(
     mapStateToProps,
     (dispatch) => ({
-        getMenuItems: (path: string, options: any) => dispatch(Actions.requestContent(path, options)),
+        getCategories: (path: string, options: any) => dispatch(loadCategories(path, options)),
     })
 )(Menu as any);
