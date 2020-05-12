@@ -56,7 +56,11 @@ class Category extends React.Component<any, any> {
             })
             .catch(error => {
 				console.error(`CATEGORY: "${compoName}" not yet supported: ${error}`);
-				this.addComponent(defaultComponent, true);
+				if (compoName === defaultComponent) {
+					console.error(`CATEGORY: general fault, default component is not supported`);
+				} else {
+					this.addComponent(defaultComponent, true);
+				}
             });
         }
     }

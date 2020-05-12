@@ -49,12 +49,17 @@ class Content extends React.Component<any, any> {
             })
             .catch(error => {
 				console.error(`CONTENT: "${compoName}" not yet supported: ${error}`);
+				if (compoName === defaultComponent) {
+					console.error(`CATEGORY: general fault, default component is not supported`);
+				} else {
+					this.addComponent(defaultComponent, true);
+				}
             });
         }
     }
 
 	componentDidMount() {
-		this.addComponent(defaultComponent, true);
+		// this.addComponent(defaultComponent, true);
 		this._initializeComponent();
 	}
 	
